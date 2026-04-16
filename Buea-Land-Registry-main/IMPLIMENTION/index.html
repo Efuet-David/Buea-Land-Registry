@@ -1,0 +1,2422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Buea Land Registry | Official Land Registration System</title>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <style>
+        /* ========== CSS RESET & VARIABLES ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0B3B2A;
+            --primary-dark: #062116;
+            --primary-light: #1E5E45;
+            --primary-soft: #E3F2E9;
+            --secondary: #B48B4A;
+            --secondary-dark: #8B6420;
+            --secondary-light: #D4AF37;
+            --text-dark: #1E2B2C;
+            --text-light: #4A5C5E;
+            --text-muted: #6F8A8D;
+            --background: #F5F8FA;
+            --white: #FFFFFF;
+            --gray-50: #F8FAFC;
+            --gray-100: #F1F4F7;
+            --gray-200: #E2E8F0;
+            --gray-300: #CBD5E0;
+            --gray-400: #94A3B8;
+            --success: #0B3B2A;
+            --warning: #B48B4A;
+            --danger: #B44334;
+            --info: #2C7A7B;
+            --shadow-xs: 0 2px 4px rgba(0,0,0,0.02);
+            --shadow-sm: 0 4px 6px rgba(0,0,0,0.03);
+            --shadow: 0 10px 25px rgba(0,0,0,0.03);
+            --shadow-md: 0 20px 40px rgba(0,0,0,0.05);
+            --shadow-lg: 0 30px 60px rgba(0,0,0,0.08);
+            --shadow-hover: 0 30px 50px rgba(11,59,42,0.15);
+            --radius-sm: 8px;
+            --radius: 12px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 32px;
+        }
+
+        /* ========== TYPOGRAPHY ========== */
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 700;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            color: var(--primary-dark);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-light);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto 4rem;
+        }
+
+        /* ========== BUTTONS ========== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 12px 28px;
+            border-radius: var(--radius);
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-decoration: none;
+            transition: var(--transition);
+            cursor: pointer;
+            border: none;
+            letter-spacing: 0.3px;
+        }
+
+        .btn i {
+            font-size: 1.1rem;
+            transition: var(--transition);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: var(--white);
+            box-shadow: var(--shadow);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .btn-primary:hover i {
+            transform: translateX(5px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: var(--white);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline-light {
+            background: transparent;
+            color: var(--white);
+            border: 2px solid rgba(255,255,255,0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-outline-light:hover {
+            background: var(--white);
+            color: var(--primary);
+            border-color: var(--white);
+        }
+
+        .btn-large {
+            padding: 16px 36px;
+            font-size: 1rem;
+        }
+
+        /* ========== NAVIGATION ========== */
+        .navbar {
+            background: var(--white);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+        }
+
+        .logo-icon {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-icon i {
+            font-size: 1.8rem;
+            color: var(--white);
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+            letter-spacing: -0.5px;
+            line-height: 1.2;
+        }
+
+        .logo-text small {
+            display: block;
+            font-size: 0.7rem;
+            font-weight: 400;
+            color: var(--text-light);
+            letter-spacing: 0.3px;
+        }
+
+        .logo-text span {
+            color: var(--secondary);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            padding: 8px 0;
+            position: relative;
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: var(--transition);
+        }
+
+        .nav-menu a:hover::after,
+        .nav-menu a.active::after {
+            width: 100%;
+        }
+
+        .nav-menu a.active {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            color: var(--primary);
+            cursor: pointer;
+            z-index: 1001;
+            transition: var(--transition);
+        }
+
+        .mobile-menu-btn:hover {
+            color: var(--secondary);
+        }
+
+        /* ========== USER PROFILE DROPDOWN (NEW) ========== */
+        .user-profile-menu {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .user-profile-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 6px 6px 6px 12px;
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: 40px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .user-profile-btn:hover {
+            background: var(--primary-soft);
+            border-color: var(--primary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .user-profile-btn .user-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--primary-dark);
+            display: block;
+        }
+
+        .user-profile-btn .user-avatar {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 10px rgba(11, 59, 42, 0.2);
+        }
+
+        .profile-dropdown {
+            position: absolute;
+            top: calc(100% + 12px);
+            right: 0;
+            width: 260px;
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--gray-200);
+            padding: 10px;
+            display: none;
+            z-index: 1000;
+            animation: slideInUp 0.3s ease;
+        }
+
+        .profile-dropdown.active {
+            display: block;
+        }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .dropdown-header {
+            padding: 15px;
+            border-bottom: 1px solid var(--gray-100);
+            margin-bottom: 10px;
+        }
+
+        .dropdown-header .name {
+            display: block;
+            font-weight: 700;
+            color: var(--primary-dark);
+            font-size: 1rem;
+        }
+
+        .dropdown-header .email {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .dropdown-list {
+            list-style: none;
+        }
+
+        .dropdown-item {
+            margin-bottom: 2px;
+        }
+
+        .dropdown-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            text-decoration: none;
+            color: var(--text-dark);
+            font-size: 0.9rem;
+            font-weight: 500;
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+        }
+
+        .dropdown-link:hover {
+            background: var(--primary-soft);
+            color: var(--primary);
+        }
+
+        .dropdown-link i {
+            width: 20px;
+            color: var(--secondary);
+            font-size: 1.1rem;
+        }
+
+        .dropdown-link.logout {
+            color: var(--danger);
+            margin-top: 10px;
+            border-top: 1px solid var(--gray-100);
+            padding-top: 15px;
+            border-radius: 0;
+        }
+
+        .dropdown-link.logout:hover {
+            background: #FFF5F5;
+        }
+
+        .dropdown-link.logout i {
+            color: var(--danger);
+        }
+        @media screen and (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .mobile-menu-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                backdrop-filter: blur(4px);
+                z-index: 998;
+                opacity: 0;
+                visibility: hidden;
+                transition: var(--transition);
+            }
+            
+            .mobile-menu-overlay.active {
+                opacity: 1;
+                visibility: visible;
+            }
+            
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 85%;
+                max-width: 350px;
+                height: 100vh;
+                background: var(--white);
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: flex-start;
+                padding: 100px 30px 40px;
+                transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                overflow-y: auto;
+                z-index: 999;
+                box-shadow: var(--shadow-lg);
+                gap: 30px;
+            }
+            
+            .nav-links.active {
+                right: 0;
+            }
+            
+            .nav-menu {
+                flex-direction: column;
+                width: 100%;
+                gap: 15px;
+            }
+            
+            .nav-menu li {
+                width: 100%;
+            }
+            
+            .nav-menu a {
+                display: block;
+                padding: 12px 20px;
+                font-size: 1.1rem;
+                border-radius: var(--radius);
+                background: var(--gray-50);
+                border: 1px solid var(--gray-200);
+            }
+            
+            .nav-menu a:hover {
+                background: var(--primary-soft);
+                color: var(--primary);
+            }
+            
+            .nav-menu a::after {
+                display: none;
+            }
+            
+            .auth-buttons {
+                flex-direction: column;
+                width: 100%;
+                gap: 15px;
+            }
+            
+            .auth-buttons .btn {
+                width: 100%;
+                text-align: center;
+                padding: 14px;
+                font-size: 1rem;
+            }
+            
+            /* Overlay when menu is open */
+            body.menu-open::before {
+                content: '';
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.5);
+                z-index: 998;
+                animation: fadeIn 0.3s ease;
+            }
+            
+            @keyframes fadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+        }
+
+        /* ========== HERO SECTION ========== */
+        .hero {
+            position: relative;
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+            color: var(--white);
+            padding: 60px 0 100px;
+            overflow: hidden;
+        }
+
+        .hero-bg-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.03"><path d="M10 10 L 90 10 L 90 90 L 10 90 Z" fill="none" stroke="white" stroke-width="2"/><circle cx="50" cy="50" r="20" fill="none" stroke="white" stroke-width="2"/></svg>');
+            background-size: 60px 60px;
+            pointer-events: none;
+        }
+
+        .hero-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 60px;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-content {
+            position: relative;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .hero-badge i {
+            color: var(--secondary);
+        }
+
+        .hero-content h1 {
+            font-size: 3.2rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            letter-spacing: -0.03em;
+        }
+
+        .hero-content h1 span {
+            color: var(--secondary);
+            position: relative;
+            display: inline-block;
+        }
+
+        .hero-content p {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+            max-width: 550px;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .hero-stat-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .hero-stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--secondary);
+        }
+
+        .hero-stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .hero-image {
+            position: relative;
+        }
+
+        .hero-image-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-lg);
+            padding: 50px 40px;
+            border: 1px solid rgba(255,255,255,0.2);
+            position: relative;
+            animation: float 6s ease-in-out infinite;
+            text-align: center;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .hero-image-card i {
+            font-size: 10rem;
+            color: rgba(255,255,255,0.15);
+            margin-bottom: 20px;
+        }
+
+        .hero-card-footer {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .hero-card-footer span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        /* ========== MINDCAF PARTNERSHIP ========== */
+        .mindcaf-section {
+            padding: 50px 0;
+            background: var(--white);
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .mindcaf-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .mindcaf-logo {
+            text-align: center;
+            padding: 30px;
+            background: linear-gradient(135deg, var(--primary-soft), var(--white));
+            border-radius: var(--radius);
+            border: 1px solid var(--gray-200);
+        }
+
+        .mindcaf-logo i {
+            font-size: 4rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .mindcaf-logo h3 {
+            font-size: 1.5rem;
+            color: var(--primary-dark);
+            margin-bottom: 5px;
+        }
+
+        .mindcaf-logo p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .mindcaf-content h2 {
+            font-size: 2rem;
+            color: var(--primary-dark);
+            margin-bottom: 20px;
+        }
+
+        .mindcaf-content p {
+            color: var(--text-light);
+            margin-bottom: 20px;
+            font-size: 1.05rem;
+        }
+
+        .mindcaf-features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .mindcaf-feature {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .mindcaf-feature i {
+            width: 30px;
+            height: 30px;
+            background: var(--primary-soft);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 0.9rem;
+        }
+
+        /* ========== VERIFICATION SEARCH ========== */
+        .verification-section {
+            padding: 60px 20px 80px;
+            position: relative;
+            z-index: 20;
+            background: linear-gradient(135deg, #F0F5FA 0%, #E8F0F5 100%);
+        }
+
+        .search-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 50px 50px;
+            box-shadow: 0 30px 60px -15px rgba(11, 59, 42, 0.3);
+            border: 1px solid rgba(180, 139, 74, 0.25);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .search-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--primary));
+            background-size: 200% 100%;
+            animation: gradientMove 3s ease infinite;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .search-container::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(11,59,42,0.03) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .search-header {
+            text-align: center;
+            margin-bottom: 35px;
+            position: relative;
+        }
+
+        .search-icon-wrapper {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary-soft), var(--white));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            border: 2px solid var(--secondary);
+            box-shadow: 0 10px 25px -5px rgba(180, 139, 74, 0.4);
+        }
+
+        .search-icon-wrapper i {
+            font-size: 2.2rem;
+            color: var(--primary);
+        }
+
+        .search-header h2 {
+            font-size: 2.3rem;
+            margin-bottom: 12px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--secondary-dark) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .search-header p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            max-width: 550px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .search-box-wrapper {
+            background: linear-gradient(135deg, #F8FAFD, #F0F4F9);
+            padding: 35px;
+            border-radius: var(--radius);
+            margin-bottom: 25px;
+            border: 1px solid rgba(180, 139, 74, 0.25);
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.02), 0 10px 20px -10px rgba(0,0,0,0.1);
+        }
+
+        .search-box {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .search-input-group {
+            flex: 1;
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-input-group i {
+            position: absolute;
+            left: 18px;
+            color: var(--secondary);
+            font-size: 1.2rem;
+            z-index: 2;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 18px 20px 18px 50px;
+            border: 2px solid rgba(180, 139, 74, 0.3);
+            border-radius: var(--radius);
+            font-size: 1.05rem;
+            transition: var(--transition);
+            background: var(--white);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: var(--white);
+            box-shadow: 0 0 0 5px rgba(11, 59, 42, 0.1), 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .search-box input::placeholder {
+            color: var(--gray-400);
+            font-weight: 300;
+        }
+
+        .verify-btn {
+            padding: 18px 40px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--white);
+            border: none;
+            border-radius: var(--radius);
+            font-weight: 600;
+            font-size: 1.05rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            white-space: nowrap;
+            box-shadow: 0 10px 20px -8px var(--primary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .verify-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .verify-btn:hover::before {
+            left: 100%;
+        }
+
+        .verify-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 30px -10px var(--primary);
+        }
+
+        .verify-btn i {
+            font-size: 1.2rem;
+            transition: var(--transition);
+        }
+
+        .verify-btn:hover i {
+            transform: scale(1.1);
+        }
+
+        .search-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .search-approved {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--primary-soft);
+            padding: 8px 18px;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            color: var(--primary-dark);
+            font-weight: 500;
+        }
+
+        .search-approved i {
+            color: var(--secondary);
+        }
+
+        .example-chips {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .example-chips span {
+            background: var(--white);
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--primary-dark);
+            cursor: pointer;
+            transition: var(--transition);
+            border: 1px solid rgba(180, 139, 74, 0.3);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .example-chips span:hover {
+            background: var(--primary);
+            color: var(--white);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -8px var(--primary);
+            border-color: transparent;
+        }
+
+        /* Verification Result */
+        .verification-result {
+            margin-top: 30px;
+            padding: 30px;
+            border-radius: var(--radius);
+            display: none;
+            animation: slideUp 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .verification-result.success {
+            background: linear-gradient(135deg, #E8F3EE, #D4E8DF);
+            border: 1px solid var(--primary);
+            box-shadow: 0 15px 30px -12px rgba(11, 59, 42, 0.2);
+            display: block;
+        }
+
+        .verification-result.error {
+            background: linear-gradient(135deg, #FEF2F2, #FEE2E2);
+            border: 1px solid var(--danger);
+            box-shadow: 0 15px 30px -12px rgba(180, 67, 52, 0.15);
+            display: block;
+        }
+
+        /* ========== TRUST BADGES ========== */
+        .trust-badges {
+            padding: 40px 0;
+            background: var(--white);
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .trust-grid {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .trust-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .trust-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--primary-soft);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+
+        .trust-text h4 {
+            font-size: 1rem;
+            margin-bottom: 4px;
+        }
+
+        .trust-text p {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        /* ========== STATISTICS SECTION ========== */
+        .stats {
+            padding: 80px 0;
+            background: linear-gradient(135deg, #F0F5FA 0%, var(--white) 100%);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+        }
+
+        .stat-card {
+            background: var(--white);
+            padding: 35px 25px;
+            border-radius: var(--radius);
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 1px solid var(--gray-200);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transform: scaleX(0);
+            transition: var(--transition);
+        }
+
+        .stat-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .stat-icon {
+            width: 70px;
+            height: 70px;
+            background: var(--primary-soft);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: var(--primary);
+            font-size: 1.8rem;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+            display: block;
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        /* ========== FEATURES SECTION ========== */
+        .features {
+            padding: 100px 0;
+            background: var(--white);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+        }
+
+        .feature-card {
+            background: var(--white);
+            padding: 40px 30px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 1px solid var(--gray-200);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transform: scaleX(0);
+            transition: var(--transition);
+        }
+
+        .feature-card:hover::after {
+            transform: scaleX(1);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary-soft), var(--white));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 25px;
+            color: var(--primary);
+            font-size: 2rem;
+            border: 1px solid var(--gray-200);
+        }
+
+        .feature-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: var(--primary-dark);
+        }
+
+        .feature-card p {
+            color: var(--text-light);
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        /* ========== HOW IT WORKS ========== */
+        .how-it-works {
+            padding: 100px 0;
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+            color: var(--white);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .how-bg-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.05"><path d="M10 10 L 90 10 L 90 90 L 10 90 Z" fill="none" stroke="white" stroke-width="2"/></svg>');
+            background-size: 40px 40px;
+        }
+
+        .how-it-works .section-title {
+            color: var(--white);
+        }
+
+        .how-it-works .section-subtitle {
+            color: rgba(255,255,255,0.8);
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .step-card {
+            text-align: center;
+            padding: 40px 20px;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius);
+            border: 1px solid rgba(255,255,255,0.2);
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .step-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255,255,255,0.15);
+        }
+
+        .step-number {
+            width: 50px;
+            height: 50px;
+            background: var(--secondary);
+            color: var(--primary-dark);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0 auto 20px;
+        }
+
+        .step-card i {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            margin-bottom: 15px;
+        }
+
+        .step-card h3 {
+            color: var(--white);
+            margin-bottom: 10px;
+        }
+
+        .step-card p {
+            color: rgba(255,255,255,0.8);
+            font-size: 0.95rem;
+        }
+
+        /* ========== TESTIMONIALS ========== */
+        .testimonials {
+            padding: 100px 0;
+            background: var(--white);
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .testimonial-card {
+            background: var(--white);
+            padding: 35px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--gray-200);
+            transition: var(--transition);
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .testimonial-rating {
+            color: var(--secondary);
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
+
+        .testimonial-text {
+            color: var(--text-dark);
+            font-style: italic;
+            line-height: 1.7;
+            margin-bottom: 25px;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary-soft), var(--primary-light));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        .author-info h4 {
+            font-size: 1rem;
+            margin-bottom: 4px;
+        }
+
+        .author-info p {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        /* ========== CTA SECTION ========== */
+        .cta {
+            padding: 80px 0;
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-dark) 100%);
+            color: var(--white);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: rotate 30s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .cta-content {
+            max-width: 700px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .cta p {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cta .btn-primary {
+            background: var(--white);
+            color: var(--primary);
+        }
+
+        .cta .btn-primary:hover {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        /* ========== FOOTER ========== */
+        .footer {
+            background: var(--primary-dark);
+            color: var(--white);
+            padding: 80px 0 30px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1.5fr;
+            gap: 50px;
+            margin-bottom: 50px;
+        }
+
+        .footer-about p {
+            color: rgba(255,255,255,0.7);
+            margin: 20px 0;
+            line-height: 1.7;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .footer-social a {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            transition: var(--transition);
+        }
+
+        .footer-social a:hover {
+            background: var(--secondary);
+            transform: translateY(-3px);
+        }
+
+        .footer-links h3 {
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+            color: var(--white);
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .footer-links a:hover {
+            color: var(--secondary);
+            transform: translateX(5px);
+        }
+
+        .footer-contact p {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 15px;
+        }
+
+        .footer-contact i {
+            color: var(--secondary);
+            width: 20px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.6);
+            font-size: 0.9rem;
+        }
+
+        /* ========== RESPONSIVE DESIGN ========== */
+        @media screen and (max-width: 1200px) {
+            .hero-content h1 {
+                font-size: 2.8rem;
+            }
+            
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .mindcaf-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media screen and (max-width: 992px) {
+            .hero-container {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 40px;
+            }
+            
+            .hero-content p {
+                margin-left: auto;
+                margin-right: auto;
+            }
+            
+            .hero-stats {
+                justify-content: center;
+            }
+            
+            .stats-grid,
+            .features-grid,
+            .steps-grid,
+            .testimonials-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .trust-grid {
+                justify-content: center;
+            }
+            
+            .mindcaf-features {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            .stats-grid,
+            .features-grid,
+            .steps-grid,
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            
+            .footer-social {
+                justify-content: center;
+            }
+            
+            .footer-contact p {
+                justify-content: center;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+            }
+            
+            .hero-container {
+                padding: 0 20px;
+            }
+            
+            .hero-content h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero-stats {
+                flex-direction: column;
+                gap: 20px;
+                align-items: center;
+            }
+            
+            .search-container {
+                padding: 30px 25px;
+            }
+            
+            .search-box {
+                flex-direction: column;
+            }
+            
+            .verify-btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .search-footer {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .example-chips {
+                justify-content: center;
+            }
+            
+            .trust-grid {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .trust-item {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .mindcaf-grid {
+                text-align: center;
+            }
+            
+            .mindcaf-feature {
+                justify-content: center;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .hero-content h1 {
+                font-size: 1.8rem;
+            }
+            
+            .hero-image-card i {
+                font-size: 6rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .search-header h2 {
+                font-size: 1.6rem;
+            }
+            
+            .search-icon-wrapper {
+                width: 60px;
+                height: 60px;
+            }
+            
+            .search-icon-wrapper i {
+                font-size: 1.6rem;
+            }
+            
+            .search-box-wrapper {
+                padding: 20px;
+            }
+            
+            .example-chips span {
+                padding: 6px 12px;
+                font-size: 0.85rem;
+            }
+            
+            .stat-number {
+                font-size: 2rem;
+            }
+            
+            .feature-card {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="mobileOverlay"></div>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-map-marked-alt"></i>
+                </div>
+                <div class="logo-text">
+                    BueaLand<span>Registry</span>
+                    <small>Secure Land Registration</small>
+                </div>
+            </div>
+
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <div class="nav-links" id="navLinks">
+                <ul class="nav-menu">
+                    <li><a href="#" class="active">Home</a></li>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#how-it-works">How It Works</a></li>
+                    <li><a href="#testimonials">Testimonials</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+
+                <div class="auth-buttons" id="authButtons">
+                    <a href="login.html" class="btn btn-outline">Login</a>
+                    <a href="register.html" class="btn btn-primary">Register</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-bg-pattern"></div>
+        <div class="hero-container">
+            <div class="hero-content" data-aos="fade-right">
+                <div class="hero-badge">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Trusted Land Registration Platform</span>
+                </div>
+                
+                <h1>Secure Land Registration <span>& Verification</span> System</h1>
+                <p>Prevent double sales and protect your property rights with Cameroon's trusted digital land registry platform. Real-time verification, secure transfers, and complete ownership history.</p>
+                
+                <div class="hero-buttons">
+                    <a href="register.html" class="btn btn-primary btn-large">
+                        <i class="fas fa-user-plus"></i> Get Started
+                    </a>
+                    <a href="#verify" class="btn btn-outline-light btn-large">
+                        <i class="fas fa-play-circle"></i> How It Works
+                    </a>
+                </div>
+                
+                <div class="hero-stats">
+                    <div class="hero-stat-item">
+                        <span class="hero-stat-number">3,482+</span>
+                        <span class="hero-stat-label">Registered Users</span>
+                    </div>
+                    <div class="hero-stat-item">
+                        <span class="hero-stat-number">1,247+</span>
+                        <span class="hero-stat-label">Verified Plots</span>
+                    </div>
+                    <div class="hero-stat-item">
+                        <span class="hero-stat-number">156+</span>
+                        <span class="hero-stat-label">Safe Transfers</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="hero-image" data-aos="fade-left" data-aos-delay="200">
+                <div class="hero-image-card">
+                    <i class="fas fa-draw-polygon"></i>
+                    <div class="hero-card-footer">
+                        <span><i class="fas fa-map-pin"></i> Buea, Cameroon</span>
+                        <span><i class="fas fa-certificate"></i> Official Registry</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Land Verification Search -->
+    <section class="verification-section" id="verify">
+        <div class="search-container" data-aos="fade-up">
+            <div class="search-header">
+                <div class="search-icon-wrapper">
+                    <i class="fas fa-search"></i>
+                </div>
+                <h2><span class="gradient-text">Verify Land Ownership</span> Instantly</h2>
+                <p>Enter the unique Plot ID to verify ownership and status before any transaction</p>
+            </div>
+            
+            <div class="search-box-wrapper">
+                <div class="search-box">
+                    <div class="search-input-group">
+                        <i class="fas fa-map-pin"></i>
+                        <input type="text" id="plotIdInput" placeholder="Enter Plot ID (e.g., BUEA-2024-001)" value="BUEA-2024-001">
+                    </div>
+                    <button onclick="verifyLand()" class="verify-btn">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Verify Now</span>
+                    </button>
+                </div>
+                
+                <div class="search-footer">
+                    <div class="search-approved">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Verified Database</span>
+                    </div>
+                    <div class="example-chips">
+                        <span onclick="document.getElementById('plotIdInput').value = 'BUEA-2024-001'"><i class="fas fa-search"></i> BUEA-2024-001</span>
+                        <span onclick="document.getElementById('plotIdInput').value = 'BUEA-2024-002'"><i class="fas fa-search"></i> BUEA-2024-002</span>
+                        <span onclick="document.getElementById('plotIdInput').value = 'BUEA-2023-045'"><i class="fas fa-search"></i> BUEA-2023-045</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="verificationResult" class="verification-result">
+                <!-- Result will be displayed here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust Badges -->
+    <section class="trust-badges">
+        <div class="container">
+            <div class="trust-grid">
+                <div class="trust-item">
+                    <div class="trust-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="trust-text">
+                        <h4>Secure Platform</h4>
+                        <p>Bank-level Security</p>
+                    </div>
+                </div>
+                <div class="trust-item">
+                    <div class="trust-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="trust-text">
+                        <h4>24/7 Verification</h4>
+                        <p>Instant Results</p>
+                    </div>
+                </div>
+                <div class="trust-item">
+                    <div class="trust-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <div class="trust-text">
+                        <h4>Trusted by Thousands</h4>
+                        <p>Community Approved</p>
+                    </div>
+                </div>
+                <div class="trust-item">
+                    <div class="trust-icon">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                    <div class="trust-text">
+                        <h4>1,247+ Plots</h4>
+                        <p>Registered & Verified</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Statistics Section -->
+    <section class="stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-card" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="stat-icon">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                    <span class="stat-number" id="totalPlots">1,247</span>
+                    <span class="stat-label">Registered Plots</span>
+                </div>
+                <div class="stat-card" data-aos="zoom-in" data-aos-delay="200">
+                    <div class="stat-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <span class="stat-number" id="verifiedPlots">892</span>
+                    <span class="stat-label">Verified Plots</span>
+                </div>
+                <div class="stat-card" data-aos="zoom-in" data-aos-delay="300">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <span class="stat-number" id="totalUsers">3,482</span>
+                    <span class="stat-label">Registered Users</span>
+                </div>
+                <div class="stat-card" data-aos="zoom-in" data-aos-delay="400">
+                    <div class="stat-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <span class="stat-number" id="transfers">156</span>
+                    <span class="stat-label">Safe Transfers</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <h2 class="section-title" data-aos="fade-up">Why Choose Our Platform</h2>
+            <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">Secure, transparent, and easy-to-use land registration system</p>
+            
+            <div class="features-grid">
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Double Sale Prevention</h3>
+                    <p>Unique Plot IDs and GPS coordinate verification prevent fraudulent multiple sales of the same property. Every plot is uniquely identified and tracked.</p>
+                </div>
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="feature-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3>Instant Verification</h3>
+                    <p>Buyers can verify land ownership instantly using the unique Plot ID before making any payment. Get complete ownership details in seconds.</p>
+                </div>
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="400">
+                    <div class="feature-icon">
+                        <i class="fas fa-history"></i>
+                    </div>
+                    <h3>Ownership History</h3>
+                    <p>Complete track record of all land transactions ensuring transparency in every transfer. View complete ownership history of any registered plot.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works" id="how-it-works">
+        <div class="how-bg-pattern"></div>
+        <div class="container">
+            <h2 class="section-title" data-aos="fade-up">How It Works</h2>
+            <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">Four simple steps to secure your land</p>
+            
+            <div class="steps-grid">
+                <div class="step-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="step-number">1</div>
+                    <i class="fas fa-user-plus"></i>
+                    <h3>Register Account</h3>
+                    <p>Create your account as a Land Owner or Buyer with your basic information</p>
+                </div>
+                <div class="step-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="step-number">2</div>
+                    <i class="fas fa-map-marked-alt"></i>
+                    <h3>Register Land</h3>
+                    <p>Submit land details, GPS coordinates, and documents for verification</p>
+                </div>
+                <div class="step-card" data-aos="fade-up" data-aos-delay="400">
+                    <div class="step-number">3</div>
+                    <i class="fas fa-check-double"></i>
+                    <h3>Official Verification</h3>
+                    <p>Administrators verify documents and approve legitimate land plots</p>
+                </div>
+                <div class="step-card" data-aos="fade-up" data-aos-delay="500">
+                    <div class="step-number">4</div>
+                    <i class="fas fa-handshake"></i>
+                    <h3>Safe Transactions</h3>
+                    <p>Buyers verify before purchase, preventing double sales</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials" id="testimonials">
+        <div class="container">
+            <h2 class="section-title" data-aos="fade-up">What Our Users Say</h2>
+            <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">Trusted by landowners and buyers across Buea</p>
+            
+            <div class="testimonials-grid">
+                <div class="testimonial-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"This system saved me from buying land that was already sold to three different people. The verification tool is a lifesaver!"</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">DN</div>
+                        <div class="author-info">
+                            <h4>Desmond Nembo</h4>
+                            <p>Land Buyer, Molyko</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"This platform has brought transparency to land transactions in our community. Highly recommended!"</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">EP</div>
+                        <div class="author-info">
+                            <h4>Epie Kajeta</h4>
+                            <p>Traditional Council, Bokwaongo</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card" data-aos="fade-up" data-aos-delay="400">
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"Registering my land was quick and easy. Now potential buyers can verify my ownership instantly. No more disputes!"</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">ME</div>
+                        <div class="author-info">
+                            <h4>Marie E.</h4>
+                            <p>Land Owner, Great Soppo</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container">
+            <div class="cta-content" data-aos="zoom-in">
+                <h2>Ready to Secure Your Land?</h2>
+                <p>Join thousands of Cameroonians who trust our platform for safe, transparent land transactions.</p>
+                <div class="cta-buttons">
+                    <a href="register.html" class="btn btn-primary btn-large">
+                        <i class="fas fa-user-plus"></i> Create Free Account
+                    </a>
+                    <a href="register.html" class="btn btn-outline-light btn-large">
+                        <i class="fas fa-map-marked-alt"></i> Register Your Land
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <div class="logo">
+                        <div class="logo-icon">
+                            <i class="fas fa-map-marked-alt"></i>
+                        </div>
+                        <div class="logo-text" style="color: white;">BueaLand<span>Registry</span></div>
+                    </div>
+                    <p>Secure land registration platform preventing double sales and ensuring transparent land transactions in Buea, Cameroon.</p>
+                    <div class="footer-social">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Home</a></li>
+                        <li><a href="#features"><i class="fas fa-chevron-right"></i> Features</a></li>
+                        <li><a href="#how-it-works"><i class="fas fa-chevron-right"></i> How It Works</a></li>
+                        <li><a href="#testimonials"><i class="fas fa-chevron-right"></i> Testimonials</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h3>Services</h3>
+                    <ul>
+                        <li><a href="LandRegistrationPage.html"><i class="fas fa-chevron-right"></i> Register Land</a></li>
+                        <li><a href="LandVerificationPage.html"><i class="fas fa-chevron-right"></i> Verify Land</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Transfer Ownership</a></li>
+                        <li><a href="userdashboard.html"><i class="fas fa-chevron-right"></i> User Dashboard</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h3>Contact Us</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> Buea, Cameroon</p>
+                    <p><i class="fas fa-phone"></i> +237 652642768</p>
+                    <p><i class="fas fa-envelope"></i> info@buealand.cm</p>
+                    <p><i class="fas fa-clock"></i> Mon - Fri: 8:00 AM - 5:00 PM</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 BueaLand Registry. All rights reserved. @Dave Weby</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- AOS Animation Library -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <script>
+        // ========== INITIALIZE AOS ==========
+        AOS.init({
+            duration: 800,
+            once: true,
+            offset: 100
+        });
+
+        // ========== SAMPLE DATA ==========
+        const propertiesDB = [
+            {
+                plotId: 'BUEA-2024-001',
+                ownerName: 'Tayim Rene',
+                location: 'Molyko, Buea',
+                size: '500 sq m',
+                status: 'verified',
+                gpsCoordinates: '4.1667° N, 9.2333° E',
+                registrationDate: '2024-01-15'
+            },
+            {
+                plotId: 'BUEA-2024-002',
+                ownerName: 'Ndifo Fransoir',
+                location: 'Bokwaongo, Buea',
+                size: '750 sq m',
+                status: 'verified',
+                gpsCoordinates: '4.1583° N, 9.2417° E',
+                registrationDate: '2024-02-20'
+            },
+            {
+                plotId: 'BUEA-2023-045',
+                ownerName: 'Peter Pan',
+                location: 'Molyko, Buea',
+                size: '300 sq m',
+                status: 'disputed',
+                gpsCoordinates: '4.1625° N, 9.2375° E',
+                registrationDate: '2023-11-10',
+                disputeDetails: 'Active dispute filed on 2026-03-01'
+            }
+        ];
+
+         // ========== MOBILE MENU TOGGLE ==========
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navLinks = document.getElementById('navLinks');
+        const mobileOverlay = document.getElementById('mobileOverlay');
+        const body = document.body;
+
+        function toggleMenu(show) {
+            if (show) {
+                navLinks.classList.add('active');
+                mobileOverlay.classList.add('active');
+                mobileMenuBtn.innerHTML = '<i class="fas fa-times"></i>';
+                body.classList.add('menu-open');
+            } else {
+                navLinks.classList.remove('active');
+                mobileOverlay.classList.remove('active');
+                mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                body.classList.remove('menu-open');
+            }
+        }
+
+        mobileMenuBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isActive = navLinks.classList.contains('active');
+            toggleMenu(!isActive);
+        });
+
+        // Close when clicking overlay
+        mobileOverlay.addEventListener('click', () => toggleMenu(false));
+
+        // Close menu when clicking on a link
+        document.querySelectorAll('.nav-menu a, .auth-buttons a').forEach(link => {
+            link.addEventListener('click', () => {
+                toggleMenu(false);
+            });
+        });
+
+        // Close menu on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && navLinks.classList.contains('active')) {
+                toggleMenu(false);
+            }
+        });
+
+        // ========== LAND VERIFICATION FUNCTION ==========
+        function verifyLand() {
+            const plotId = document.getElementById('plotIdInput').value.trim();
+            const resultDiv = document.getElementById('verificationResult');
+            
+            // Show loading state
+            resultDiv.innerHTML = '<div style="text-align: center;"><i class="fas fa-spinner fa-spin"></i> Verifying land...</div>';
+            resultDiv.className = 'verification-result';
+            
+            // Simulate API call delay
+            setTimeout(() => {
+                const property = propertiesDB.find(p => p.plotId === plotId);
+                
+                if (property) {
+                    if (property.status === 'verified') {
+                        resultDiv.innerHTML = `
+                            <div style="display: flex; align-items: flex-start; gap: 20px;">
+                                <div style="font-size: 2.5rem; color: var(--success);">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <div style="flex: 1;">
+                                    <h3 style="color: var(--success); margin-bottom: 15px;">✓ Land Verified Successfully!</h3>
+                                    <div style="display: grid; grid-template-columns: 120px 1fr; gap: 10px;">
+                                        <strong>Plot ID:</strong> <span>${property.plotId}</span>
+                                        <strong>Owner:</strong> <span>${property.ownerName}</span>
+                                        <strong>Location:</strong> <span>${property.location}</span>
+                                        <strong>Size:</strong> <span>${property.size}</span>
+                                        <strong>GPS:</strong> <span>${property.gpsCoordinates}</span>
+                                        <strong>Status:</strong> <span style="color: var(--success); font-weight: 600;">VERIFIED</span>
+                                    </div>
+                                    <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid var(--gray-200);">
+                                        <i class="fas fa-shield-alt" style="color: var(--success);"></i>
+                                        This land is safe for purchase.
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        resultDiv.className = 'verification-result success';
+                    } else {
+                        resultDiv.innerHTML = `
+                            <div style="display: flex; align-items: flex-start; gap: 20px;">
+                                <div style="font-size: 2.5rem; color: var(--danger);">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <div style="flex: 1;">
+                                    <h3 style="color: var(--danger); margin-bottom: 15px;">⚠ Warning: Land Under Dispute</h3>
+                                    <div style="display: grid; grid-template-columns: 120px 1fr; gap: 10px;">
+                                        <strong>Plot ID:</strong> <span>${property.plotId}</span>
+                                        <strong>Owner:</strong> <span>${property.ownerName}</span>
+                                        <strong>Location:</strong> <span>${property.location}</span>
+                                        <strong>Size:</strong> <span>${property.size}</span>
+                                        <strong>Dispute:</strong> <span>${property.disputeDetails || 'Active dispute'}</span>
+                                        <strong>Status:</strong> <span style="color: var(--danger); font-weight: 600;">DISPUTED</span>
+                                    </div>
+                                    <div style="margin-top: 20px; padding: 15px; background: rgba(180, 67, 52, 0.1); border-radius: var(--radius); color: var(--danger);">
+                                        <i class="fas fa-exclamation-circle"></i>
+                                        Do not purchase this land until the dispute is resolved.
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        resultDiv.className = 'verification-result error';
+                    }
+                } else {
+                    resultDiv.innerHTML = `
+                        <div style="display: flex; align-items: flex-start; gap: 20px;">
+                            <div style="font-size: 2.5rem; color: var(--danger);">
+                                <i class="fas fa-times-circle"></i>
+                            </div>
+                            <div style="flex: 1;">
+                                <h3 style="color: var(--danger); margin-bottom: 15px;">✗ Land Not Found</h3>
+                                <p>No land registered with Plot ID: <strong>${plotId}</strong></p>
+                                <div style="margin-top: 20px; padding: 15px; background: var(--gray-100); border-radius: var(--radius);">
+                                    <p><strong>Try these examples:</strong></p>
+                                    <div style="display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap;">
+                                        <span onclick="document.getElementById('plotIdInput').value = 'BUEA-2024-001'; verifyLand();" style="cursor: pointer; color: var(--primary); background: var(--white); padding: 5px 15px; border-radius: 20px;">BUEA-2024-001</span>
+                                        <span onclick="document.getElementById('plotIdInput').value = 'BUEA-2024-002'; verifyLand();" style="cursor: pointer; color: var(--primary); background: var(--white); padding: 5px 15px; border-radius: 20px;">BUEA-2024-002</span>
+                                    </div>
+                                </div>
+                                <div style="margin-top: 15px;">
+                                    <a href="LandRegistrationPage.html" style="color: var(--primary);">Register this land <i class="fas fa-arrow-right"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    resultDiv.className = 'verification-result error';
+                }
+            }, 20);
+        }
+
+        // ========== ANIMATE STATISTICS ==========
+        function animateNumbers() {
+            const stats = [
+                { element: document.getElementById('totalPlots'), target: 1247 },
+                { element: document.getElementById('verifiedPlots'), target: 892 },
+                { element: document.getElementById('totalUsers'), target: 3482 },
+                { element: document.getElementById('transfers'), target: 156 }
+            ];
+
+            stats.forEach(stat => {
+                let current = 0;
+                const increment = stat.target / 50;
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= stat.target) {
+                        stat.element.textContent = stat.target.toLocaleString();
+                        clearInterval(timer);
+                    } else {
+                        stat.element.textContent = Math.floor(current).toLocaleString();
+                    }
+                }, 30);
+            });
+        }
+
+        // ========== SMOOTH SCROLL ==========
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // ========== NAVBAR SCROLL EFFECT ==========
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.style.background = 'rgba(255,255,255,0.98)';
+                navbar.style.boxShadow = 'var(--shadow-md)';
+            } else {
+                navbar.style.background = 'var(--white)';
+                navbar.style.boxShadow = 'var(--shadow)';
+            }
+        });
+
+        // ========== AUTH CHECK ==========
+        function checkAuth() {
+            const user = localStorage.getItem('bueaUser');
+            if (user) {
+                const u = JSON.parse(user);
+                const authButtons = document.getElementById('authButtons');
+                if (authButtons) {
+                    const initials = u.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+                    authButtons.innerHTML = `
+                        <div class="user-profile-menu">
+                            <div class="user-profile-btn" id="userProfileBtn">
+                                <span class="user-name">${u.name.split(' ')[0]}</span>
+                                <div class="user-avatar">${initials}</div>
+                                <i class="fas fa-chevron-down" style="font-size: 0.7rem; color: var(--text-muted);"></i>
+                            </div>
+                            <div class="profile-dropdown" id="profileDropdown">
+                                <div class="dropdown-header">
+                                    <span class="name">${u.name}</span>
+                                    <span class="email">${u.email || 'user@example.com'}</span>
+                                </div>
+                                <ul class="dropdown-list">
+                                    <li class="dropdown-item">
+                                        <a href="userdashboard.html" class="dropdown-link">
+                                            <i class="fas fa-th-large"></i> Dashboard
+                                        </a>
+                                    </li>
+                                    <li class="dropdown-item">
+                                        <a href="profile.html" class="dropdown-link">
+                                            <i class="fas fa-user-circle"></i> My Profile
+                                        </a>
+                                    </li>
+                                    <li class="dropdown-item">
+                                        <a href="settings.html" class="dropdown-link">
+                                            <i class="fas fa-cog"></i> Settings
+                                        </a>
+                                    </li>
+                                    <li class="dropdown-item">
+                                        <a href="#" class="dropdown-link logout" id="logoutBtn">
+                                            <i class="fas fa-sign-out-alt"></i> Sign Out
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    `;
+
+                    // Dropdown Toggle Logic
+                    const btn = document.getElementById('userProfileBtn');
+                    const dropdown = document.getElementById('profileDropdown');
+                    
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        dropdown.classList.toggle('active');
+                    });
+
+                    document.addEventListener('click', () => {
+                        dropdown.classList.remove('active');
+                    });
+
+                    // Logout Logic
+                    document.getElementById('logoutBtn').addEventListener('click', (e) => {
+                        e.preventDefault();
+                        localStorage.removeItem('bueaUser');
+                        window.location.reload();
+                    });
+                }
+                
+                // Update hero button
+                const heroButtons = document.querySelector('.hero-buttons');
+                if (heroButtons) {
+                    heroButtons.innerHTML = `
+                        <a href="userdashboard.html" class="btn btn-primary btn-large">
+                            <i class="fas fa-th-large"></i> Go to Dashboard
+                        </a>
+                        <a href="#verify" class="btn btn-outline-light btn-large">
+                            <i class="fas fa-search"></i> Verify Land
+                        </a>
+                    `;
+                }
+            }
+        }
+
+        // Start animations when page loads
+        window.addEventListener('load', () => {
+            checkAuth();
+            animateNumbers();
+            
+            // Auto-verify the example plot on page load
+            setTimeout(() => {
+                verifyLand();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Create Account | Buea Land Registry</title>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ========== CSS RESET & VARIABLES ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0B3B2A;
+            --primary-dark: #062116;
+            --primary-light: #1E5E45;
+            --primary-soft: #E8F3EE;
+            --primary-glow: rgba(11, 59, 42, 0.15);
+            --secondary: #B48B4A;
+            --secondary-dark: #8B6420;
+            --secondary-light: #D4AF37;
+            --secondary-soft: #F8F0E0;
+            --text-dark: #1A2A2A;
+            --text-light: #4F6F6F;
+            --text-muted: #7E9A9A;
+            --background: #F8FAFC;
+            --white: #FFFFFF;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-400: #9CA3AF;
+            --success: #0B3B2A;
+            --success-light: #E8F3EE;
+            --warning: #B48B4A;
+            --warning-light: #FEF3E2;
+            --danger: #DC2626;
+            --danger-light: #FEF2F2;
+            --shadow-xs: 0 2px 4px rgba(0,0,0,0.02);
+            --shadow-sm: 0 4px 6px rgba(0,0,0,0.03);
+            --shadow: 0 10px 25px rgba(0,0,0,0.04);
+            --shadow-md: 0 20px 40px rgba(0,0,0,0.06);
+            --shadow-lg: 0 30px 60px rgba(0,0,0,0.08);
+            --shadow-xl: 0 40px 80px rgba(0,0,0,0.12);
+            --shadow-hover: 0 30px 50px var(--primary-glow);
+            --radius-sm: 8px;
+            --radius: 12px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --radius-xl: 32px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: linear-gradient(135deg, var(--gray-100) 0%, var(--white) 100%);
+            color: var(--text-dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ========== PROFESSIONAL NAVIGATION ========== */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            position: relative;
+            z-index: 1001;
+        }
+
+        .logo-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .logo:hover .logo-icon {
+            transform: scale(1.05);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .logo-icon i {
+            font-size: 1.8rem;
+            color: var(--white);
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-text .main {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+            letter-spacing: -0.5px;
+            line-height: 1.2;
+        }
+
+        .logo-text .main span {
+            color: var(--secondary);
+        }
+
+        .logo-text .sub {
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: var(--text-light);
+            letter-spacing: 0.3px;
+        }
+
+        /* Desktop Navigation */
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 24px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            padding: 8px 16px;
+            border-radius: var(--radius);
+            position: relative;
+        }
+
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: var(--transition);
+            opacity: 0;
+        }
+
+        .nav-links a:hover::before,
+        .nav-links a.active::before {
+            width: 70%;
+            opacity: 1;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--primary);
+            background: var(--primary-soft);
+        }
+
+        .nav-buttons {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 24px;
+            border-radius: var(--radius);
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-decoration: none;
+            transition: var(--transition);
+            cursor: pointer;
+            border: none;
+            white-space: nowrap;
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: var(--white);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--white);
+            box-shadow: var(--shadow);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        /* Mobile Menu Button */
+        .mobile-menu-btn {
+            display: none;
+            width: 48px;
+            height: 48px;
+            background: var(--white);
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius);
+            color: var(--primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 1001;
+            transition: var(--transition);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mobile-menu-btn:hover {
+            background: var(--primary-soft);
+            border-color: var(--primary);
+            transform: scale(1.05);
+        }
+
+        .mobile-menu-btn.active {
+            background: var(--primary);
+            color: var(--white);
+            border-color: var(--primary);
+        }
+
+        /* Mobile Menu Overlay */
+        .mobile-menu-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            z-index: 998;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .mobile-menu-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 85%;
+            max-width: 400px;
+            height: 100vh;
+            background: var(--white);
+            z-index: 999;
+            transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow-xl);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .mobile-menu.active {
+            right: 0;
+        }
+
+        .mobile-menu-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(135deg, var(--primary-soft), var(--white));
+        }
+
+        .mobile-menu-header .logo-icon {
+            width: 40px;
+            height: 40px;
+        }
+
+        .mobile-menu-header .logo-icon i {
+            font-size: 1.5rem;
+        }
+
+        .mobile-menu-close {
+            width: 40px;
+            height: 40px;
+            background: var(--white);
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius);
+            color: var(--text-dark);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mobile-menu-close:hover {
+            background: var(--danger-light);
+            color: var(--danger);
+            border-color: var(--danger);
+            transform: rotate(90deg);
+        }
+
+        .mobile-menu-body {
+            flex: 1;
+            padding: 24px;
+        }
+
+        .mobile-menu-links {
+            list-style: none;
+            margin-bottom: 32px;
+        }
+
+        .mobile-menu-links li {
+            margin-bottom: 8px;
+        }
+
+        .mobile-menu-links a {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 20px;
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 600;
+            font-size: 1.1rem;
+            border-radius: var(--radius);
+            transition: var(--transition);
+            background: var(--gray-50);
+            border: 2px solid transparent;
+        }
+
+        .mobile-menu-links a i {
+            width: 24px;
+            color: var(--secondary);
+            font-size: 1.2rem;
+            transition: var(--transition);
+        }
+
+        .mobile-menu-links a:hover {
+            background: var(--primary-soft);
+            color: var(--primary);
+            border-color: var(--primary);
+            transform: translateX(5px);
+        }
+
+        .mobile-menu-links a:hover i {
+            color: var(--primary);
+            transform: scale(1.1);
+        }
+
+        .mobile-menu-links a.active {
+            background: var(--primary);
+            color: var(--white);
+            border-color: var(--primary);
+        }
+
+        .mobile-menu-links a.active i {
+            color: var(--white);
+        }
+
+        .mobile-menu-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 2px solid var(--gray-200);
+        }
+
+        .mobile-menu-buttons .btn {
+            width: 100%;
+            padding: 16px;
+            font-size: 1rem;
+        }
+
+        .mobile-menu-footer {
+            padding: 24px;
+            border-top: 1px solid var(--gray-200);
+            text-align: center;
+            background: var(--gray-50);
+        }
+
+        .mobile-menu-footer p {
+            color: var(--text-light);
+            font-size: 0.85rem;
+        }
+
+        /* ========== REGISTRATION SECTION ========== */
+        .registration-section {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+        }
+
+        .registration-container {
+            max-width: 700px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .registration-card {
+            background: var(--white);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-xl);
+            overflow: hidden;
+            border: 1px solid var(--gray-200);
+            animation: slideUpFade 0.6s ease;
+        }
+
+        @keyframes slideUpFade {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .registration-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--white);
+            padding: 48px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .registration-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+            animation: rotate 25s linear infinite;
+        }
+
+        .registration-header::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 0;
+            right: 0;
+            height: 40px;
+            background: linear-gradient(135deg, transparent 50%, var(--white) 50%);
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .registration-header i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: var(--secondary);
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 50%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            position: relative;
+            z-index: 1;
+        }
+
+        .registration-header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 8px;
+            font-weight: 800;
+            position: relative;
+            z-index: 1;
+        }
+
+        .registration-header p {
+            opacity: 0.9;
+            font-size: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .registration-form {
+            padding: 48px;
+            background: var(--white);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--text-dark);
+        }
+
+        .form-group label i {
+            color: var(--secondary);
+            font-size: 1rem;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-wrapper i {
+            position: absolute;
+            left: 16px;
+            color: var(--gray-400);
+            font-size: 1.1rem;
+            transition: var(--transition);
+            z-index: 1;
+        }
+
+        .input-wrapper input,
+        .input-wrapper select {
+            width: 100%;
+            padding: 16px 20px 16px 48px;
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius);
+            font-size: 1rem;
+            transition: var(--transition);
+            background: var(--gray-50);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: var(--text-dark);
+        }
+
+        .input-wrapper input:focus,
+        .input-wrapper select:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: var(--white);
+            box-shadow: 0 0 0 4px var(--primary-glow);
+        }
+
+        .input-wrapper input:hover,
+        .input-wrapper select:hover {
+            border-color: var(--secondary);
+            background: var(--white);
+        }
+
+        .input-wrapper.focused i {
+            color: var(--primary);
+            transform: scale(1.1);
+        }
+
+        /* Password Strength Meter */
+        .password-strength {
+            margin-top: 8px;
+        }
+
+        .strength-bars {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 4px;
+        }
+
+        .strength-bar {
+            flex: 1;
+            height: 4px;
+            background: var(--gray-200);
+            border-radius: 2px;
+            transition: var(--transition);
+        }
+
+        .strength-bar.active:nth-child(1) { background: var(--danger); }
+        .strength-bar.active:nth-child(2) { background: var(--warning); }
+        .strength-bar.active:nth-child(3) { background: var(--warning); }
+        .strength-bar.active:nth-child(4) { background: var(--success); }
+
+        .strength-text {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .strength-text i {
+            font-size: 0.8rem;
+        }
+
+        /* Role Selection */
+        .role-selection {
+            margin-bottom: 32px;
+        }
+
+        .role-selection label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 16px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .role-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .role-option {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .role-option input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .role-card {
+            background: var(--gray-50);
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius);
+            padding: 24px 20px;
+            text-align: center;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .role-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transform: translateX(-100%);
+            transition: var(--transition);
+        }
+
+        .role-option input[type="radio"]:checked + .role-card {
+            border-color: var(--primary);
+            background: var(--primary-soft);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .role-option input[type="radio"]:checked + .role-card::before {
+            transform: translateX(0);
+        }
+
+        .role-card i {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+            transition: var(--transition);
+        }
+
+        .role-option input[type="radio"]:checked + .role-card i {
+            color: var(--secondary);
+            transform: scale(1.1);
+        }
+
+        .role-card h4 {
+            font-size: 1.2rem;
+            margin-bottom: 6px;
+            color: var(--primary-dark);
+            font-weight: 700;
+        }
+
+        .role-card p {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        /* Terms Checkbox */
+        .terms {
+            margin: 32px 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+            background: var(--gray-50);
+            border-radius: var(--radius);
+            border: 1px solid var(--gray-200);
+        }
+
+        .terms input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: var(--primary);
+        }
+
+        .terms label {
+            font-size: 0.95rem;
+            color: var(--text-light);
+            flex: 1;
+        }
+
+        .terms a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 700;
+            transition: var(--transition);
+        }
+
+        .terms a:hover {
+            color: var(--secondary);
+            text-decoration: underline;
+        }
+
+        /* Register Button */
+        .register-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--white);
+            border: none;
+            border-radius: var(--radius);
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .register-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .register-btn:hover::before {
+            left: 100%;
+        }
+
+        .register-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .register-btn i {
+            transition: var(--transition);
+        }
+
+        .register-btn:hover i {
+            transform: translateX(5px);
+        }
+
+        .register-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Login Link */
+        .login-link {
+            text-align: center;
+            margin-top: 25px;
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        .login-link a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 700;
+            margin-left: 5px;
+            transition: var(--transition);
+        }
+
+        .login-link a:hover {
+            color: var(--secondary);
+            text-decoration: underline;
+        }
+
+        /* Messages */
+        .message-container {
+            margin-bottom: 24px;
+        }
+
+        .error-message,
+        .success-message {
+            padding: 16px 20px;
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.95rem;
+            animation: slideInDown 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+
+        .error-message {
+            background: var(--danger-light);
+            color: var(--danger);
+            border-left-color: var(--danger);
+        }
+
+        .success-message {
+            background: var(--success-light);
+            color: var(--success);
+            border-left-color: var(--success);
+        }
+
+        .error-message i,
+        .success-message i {
+            font-size: 1.2rem;
+        }
+
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .field-error {
+            color: var(--danger);
+            font-size: 0.8rem;
+            margin-top: 5px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            display: none;
+        }
+
+        .field-error.show {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--white);
+            padding: 24px 0;
+            border-top: 1px solid var(--gray-200);
+            text-align: center;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        /* ========== RESPONSIVE DESIGN ========== */
+        @media screen and (max-width: 1024px) {
+            .nav-container {
+                padding: 0 24px;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            .nav-container {
+                padding: 0 20px;
+            }
+
+            .nav-links,
+            .nav-buttons {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: flex;
+            }
+
+            .registration-header {
+                padding: 40px 30px;
+            }
+
+            .registration-header h1 {
+                font-size: 2rem;
+            }
+
+            .registration-form {
+                padding: 40px 30px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .role-options {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .role-card {
+                padding: 20px;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .nav-container {
+                padding: 0 16px;
+            }
+
+            .logo-icon {
+                width: 40px;
+                height: 40px;
+            }
+
+            .logo-icon i {
+                font-size: 1.5rem;
+            }
+
+            .logo-text .main {
+                font-size: 1.2rem;
+            }
+
+            .mobile-menu-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+
+            .registration-header {
+                padding: 32px 20px;
+            }
+
+            .registration-header i {
+                font-size: 3rem;
+                padding: 15px;
+            }
+
+            .registration-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .registration-form {
+                padding: 32px 20px;
+            }
+
+            .form-group label {
+                font-size: 0.9rem;
+            }
+
+            .input-wrapper input,
+            .input-wrapper select {
+                padding: 14px 16px 14px 45px;
+                font-size: 0.95rem;
+            }
+
+            .role-card {
+                padding: 16px;
+            }
+
+            .role-card i {
+                font-size: 2rem;
+            }
+
+            .role-card h4 {
+                font-size: 1.1rem;
+            }
+
+            .role-card p {
+                font-size: 0.8rem;
+            }
+
+            .terms {
+                padding: 12px;
+                flex-wrap: wrap;
+            }
+
+            .register-btn {
+                padding: 16px;
+                font-size: 1rem;
+            }
+
+            .login-link {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media screen and (max-width: 360px) {
+            .logo-text .main {
+                font-size: 1rem;
+            }
+
+            .logo-text .sub {
+                font-size: 0.6rem;
+            }
+
+            .registration-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .registration-header p {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-map-marked-alt"></i>
+                </div>
+                <div class="logo-text">
+                    <span class="main">BueaLand<span>Registry</span></span>
+                    <span class="sub">Secure Land Registration</span>
+                </div>
+            </a>
+
+            <!-- Desktop Navigation -->
+            <div class="nav-menu">
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="index.html#features">Features</a></li>
+                    <li><a href="index.html#how-it-works">How It Works</a></li>
+                    <li><a href="index.html#contact">Contact</a></li>
+                </ul>
+
+                <div class="nav-buttons">
+                    <a href="login.html" class="btn btn-outline">Login</a>
+                    <a href="register.html" class="btn btn-primary">Register</a>
+                </div>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-menu-header">
+            <div class="logo-icon">
+                <i class="fas fa-map-marked-alt"></i>
+            </div>
+            <button class="mobile-menu-close" id="mobileMenuClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <div class="mobile-menu-body">
+            <ul class="mobile-menu-links">
+                <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="index.html#features"><i class="fas fa-star"></i> Features</a></li>
+                <li><a href="index.html#how-it-works"><i class="fas fa-map-signs"></i> How It Works</a></li>
+                <li><a href="index.html#testimonials"><i class="fas fa-comments"></i> Testimonials</a></li>
+                <li><a href="index.html#contact"><i class="fas fa-envelope"></i> Contact</a></li>
+            </ul>
+
+            <div class="mobile-menu-buttons">
+                <a href="login.html" class="btn btn-outline">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </a>
+                <a href="register.html" class="btn btn-primary">
+                    <i class="fas fa-user-plus"></i> Register
+                </a>
+            </div>
+        </div>
+
+        <div class="mobile-menu-footer">
+            <p>&copy; 2026 BueaLand Registry. All rights reserved.</p>
+        </div>
+    </div>
+
+    <!-- Registration Section -->
+    <section class="registration-section">
+        <div class="registration-container">
+            <div class="registration-card">
+                <div class="registration-header">
+                    <i class="fas fa-user-plus"></i>
+                    <h1>Create Account</h1>
+                    <p>Join thousands of users securing their land in Buea</p>
+                </div>
+
+                <div class="registration-form">
+                    <!-- Message Container -->
+                    <div id="messageContainer" class="message-container"></div>
+
+                    <form id="registrationForm" onsubmit="handleRegistration(event)" novalidate>
+                        <!-- Full Name -->
+                        <div class="form-group">
+                            <label><i class="fas fa-user"></i> Full Name</label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-user"></i>
+                                <input type="text" id="fullName" placeholder="Enter your full name" value="">
+                            </div>
+                            <div id="nameError" class="field-error">
+                                <i class="fas fa-exclamation-circle"></i>
+                                Please enter your full name
+                            </div>
+                        </div>
+
+                        <!-- Email Address -->
+                        <div class="form-group">
+                            <label><i class="fas fa-envelope"></i> Email Address</label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-envelope"></i>
+                                <input type="email" id="email" placeholder="Enter your email" value="">
+                            </div>
+                            <div id="emailError" class="field-error">
+                                <i class="fas fa-exclamation-circle"></i>
+                                Please enter a valid email address
+                            </div>
+                        </div>
+
+                        <!-- Phone Number -->
+                        <div class="form-group">
+                            <label><i class="fas fa-phone"></i> Phone Number</label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-phone"></i>
+                                <input type="tel" id="phone" placeholder="6XXXXXXXX" value="">
+                            </div>
+                            <div id="phoneError" class="field-error">
+                                <i class="fas fa-exclamation-circle"></i>
+                                Please enter a valid Cameroonian phone number (6XXXXXXXX)
+                            </div>
+                        </div>
+
+                        <!-- Password and Confirm Password Row -->
+                        <div class="form-row">
+                            <!-- Password -->
+                            <div class="form-group">
+                                <label><i class="fas fa-lock"></i> Password</label>
+                                <div class="input-wrapper">
+                                    <i class="fas fa-lock"></i>
+                                    <input type="password" id="password" placeholder="Create password" value="">
+                                </div>
+                                <div class="password-strength">
+                                    <div class="strength-bars" id="strengthBars">
+                                        <div class="strength-bar"></div>
+                                        <div class="strength-bar"></div>
+                                        <div class="strength-bar"></div>
+                                        <div class="strength-bar"></div>
+                                    </div>
+                                    <div id="strengthText" class="strength-text">
+                                        <i class="fas fa-info-circle"></i>
+                                        Enter a password
+                                    </div>
+                                </div>
+                                <div id="passwordError" class="field-error">
+                                    <i class="fas fa-exclamation-circle"></i>
+                                    Password must be at least 8 characters
+                                </div>
+                            </div>
+
+                            <!-- Confirm Password -->
+                            <div class="form-group">
+                                <label><i class="fas fa-lock"></i> Confirm Password</label>
+                                <div class="input-wrapper">
+                                    <i class="fas fa-lock"></i>
+                                    <input type="password" id="confirmPassword" placeholder="Confirm password" value="">
+                                </div>
+                                <div id="confirmError" class="field-error">
+                                    <i class="fas fa-exclamation-circle"></i>
+                                    Passwords do not match
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- User Role Selection -->
+                        <div class="role-selection">
+                            <label><i class="fas fa-user-tag"></i> I want to register as:</label>
+                            <div class="role-options">
+                                <label class="role-option">
+                                    <input type="radio" name="userRole" value="" checked>
+                                    <div class="role-card">
+                                        <i class="fas fa-map-marked-alt"></i>
+                                        <h4>Land Owner</h4>
+                                        <p>Register and manage your land</p>
+                                    </div>
+                                </label>
+                                <label class="role-option">
+                                    <input type="radio" name="userRole" value="">
+                                    <div class="role-card">
+                                        <i class="fas fa-handshake"></i>
+                                        <h4>Buyer</h4>
+                                        <p>Verify and purchase land</p>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Terms and Conditions -->
+                        <div class="terms">
+                            <input type="checkbox" id="terms" checked>
+                            <label for="terms">
+                                I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                            </label>
+                        </div>
+
+                        <!-- Register Button -->
+                        <button type="submit" class="register-btn" id="registerBtn">
+                            <i class="fas fa-user-plus"></i>
+                            Create Account
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+
+                        <!-- Login Link -->
+                        <div class="login-link">
+                            Already have an account? <a href="login.html">Login here</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 BueaLand Registry. All rights reserved. Secure Land Registration Platform.</p>
+        </div>
+    </footer>
+
+    <script>
+        // ========== MOBILE MENU FUNCTIONALITY ==========
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenuClose = document.getElementById('mobileMenuClose');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileOverlay = document.getElementById('mobileMenuOverlay');
+        const body = document.body;
+
+        function openMobileMenu() {
+            mobileMenu.classList.add('active');
+            mobileOverlay.classList.add('active');
+            mobileMenuBtn.classList.add('active');
+            body.style.overflow = 'hidden';
+        }
+
+        function closeMobileMenu() {
+            mobileMenu.classList.remove('active');
+            mobileOverlay.classList.remove('active');
+            mobileMenuBtn.classList.remove('active');
+            body.style.overflow = '';
+        }
+
+        mobileMenuBtn.addEventListener('click', openMobileMenu);
+        mobileMenuClose.addEventListener('click', closeMobileMenu);
+        mobileOverlay.addEventListener('click', closeMobileMenu);
+
+        // Close on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && mobileMenu.classList.contains('active')) {
+                closeMobileMenu();
+            }
+        });
+
+        // ========== INPUT FOCUS EFFECTS ==========
+        document.querySelectorAll('.input-wrapper input').forEach(input => {
+            input.addEventListener('focus', () => {
+                input.parentElement.classList.add('focused');
+            });
+            
+            input.addEventListener('blur', () => {
+                input.parentElement.classList.remove('focused');
+            });
+        });
+
+        // ========== USERS DATABASE (localStorage) ==========
+        function getUsers() {
+            const users = localStorage.getItem('users');
+            return users ? JSON.parse(users) : [];
+        }
+
+        function saveUser(user) {
+            const users = getUsers();
+            users.push(user);
+            localStorage.setItem('users', JSON.stringify(users));
+        }
+
+        // Initialize with sample users if empty
+        if (!localStorage.getItem('users')) {
+            const sampleUsers = [
+                {
+                    id: 'USR' + Date.now().toString().slice(-5),
+                    name: 'Tayim Rene',
+                    email: 'rene@example.com',
+                    phone: '677123456',
+                    password: 'password123',
+                    role: 'landowner',
+                    joined: new Date().toISOString().split('T')[0]
+                },
+                {
+                    id: 'USR' + (Date.now() + 1).toString().slice(-5),
+                    name: 'Jane Smith',
+                    email: 'jane@example.com',
+                    phone: '677123457',
+                    password: 'password123',
+                    role: 'buyer',
+                    joined: new Date().toISOString().split('T')[0]
+                }
+            ];
+            localStorage.setItem('users', JSON.stringify(sampleUsers));
+        }
+
+        // ========== PASSWORD STRENGTH METER ==========
+        const passwordInput = document.getElementById('password');
+        const strengthBars = document.querySelectorAll('.strength-bar');
+        const strengthText = document.getElementById('strengthText');
+
+        passwordInput.addEventListener('input', function() {
+            const password = this.value;
+            const strength = checkPasswordStrength(password);
+            
+            // Reset bars
+            strengthBars.forEach(bar => bar.classList.remove('active'));
+            
+            if (strength === 0) {
+                // No bars active
+                strengthText.innerHTML = '<i class="fas fa-info-circle"></i> Enter a password';
+            } else if (strength === 1) {
+                // Weak - 1 bar
+                strengthBars[0].classList.add('active');
+                strengthText.innerHTML = '<i class="fas fa-exclamation-triangle" style="color: var(--danger);"></i> Weak password';
+            } else if (strength === 2) {
+                // Fair - 2 bars
+                strengthBars[0].classList.add('active');
+                strengthBars[1].classList.add('active');
+                strengthText.innerHTML = '<i class="fas fa-exclamation-circle" style="color: var(--warning);"></i> Fair password';
+            } else if (strength === 3) {
+                // Good - 3 bars
+                strengthBars[0].classList.add('active');
+                strengthBars[1].classList.add('active');
+                strengthBars[2].classList.add('active');
+                strengthText.innerHTML = '<i class="fas fa-check-circle" style="color: var(--warning);"></i> Good password';
+            } else {
+                // Strong - 4 bars
+                strengthBars.forEach(bar => bar.classList.add('active'));
+                strengthText.innerHTML = '<i class="fas fa-check-circle" style="color: var(--success);"></i> Strong password';
+            }
+        });
+
+        function checkPasswordStrength(password) {
+            if (!password) return 0;
+            
+            let score = 0;
+            
+            // Length check
+            if (password.length >= 8) score++;
+            if (password.length >= 12) score++;
+            
+            // Character variety
+            if (/[a-z]/.test(password) && /[A-Z]/.test(password)) score++;
+            if (/[0-9]/.test(password)) score++;
+            if (/[^a-zA-Z0-9]/.test(password)) score++;
+            
+            // Return strength level (0-4)
+            if (score <= 2) return 1;
+            if (score <= 3) return 2;
+            if (score <= 4) return 3;
+            return 4;
+        }
+
+        // ========== FORM VALIDATION ==========
+        function showMessage(type, text) {
+            const container = document.getElementById('messageContainer');
+            const messageClass = type === 'error' ? 'error-message' : 'success-message';
+            const icon = type === 'error' ? 'fa-exclamation-circle' : 'fa-check-circle';
+            
+            container.innerHTML = `
+                <div class="${messageClass}">
+                    <i class="fas ${icon}"></i>
+                    <span>${text}</span>
+                </div>
+            `;
+            
+            // Auto hide after 5 seconds
+            setTimeout(() => {
+                container.innerHTML = '';
+            }, 5000);
+        }
+
+        function validateForm() {
+            const fullName = document.getElementById('fullName').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const terms = document.getElementById('terms').checked;
+
+            let isValid = true;
+
+            // Reset error messages
+            document.querySelectorAll('.field-error').forEach(el => el.classList.remove('show'));
+
+            // Validate full name
+            if (!fullName) {
+                document.getElementById('nameError').classList.add('show');
+                isValid = false;
+            }
+
+            // Validate email
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!email || !emailRegex.test(email)) {
+                document.getElementById('emailError').classList.add('show');
+                isValid = false;
+            }
+
+            // Validate phone (Cameroonian format)
+            const phoneRegex = /^[6][0-9]{8}$/;
+            if (!phone || !phoneRegex.test(phone)) {
+                document.getElementById('phoneError').classList.add('show');
+                isValid = false;
+            }
+
+            // Validate password
+            if (!password || password.length < 8) {
+                document.getElementById('passwordError').classList.add('show');
+                isValid = false;
+            }
+
+            // Validate confirm password
+            if (password !== confirmPassword) {
+                document.getElementById('confirmError').classList.add('show');
+                isValid = false;
+            }
+
+            // Validate terms
+            if (!terms) {
+                showMessage('error', 'You must agree to the Terms of Service');
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        // ========== CHECK IF EMAIL EXISTS ==========
+        function emailExists(email) {
+            const users = getUsers();
+            return users.some(user => user.email.toLowerCase() === email.toLowerCase());
+        }
+
+        // ========== HANDLE REGISTRATION ==========
+        function handleRegistration(event) {
+            event.preventDefault();
+
+            // Clear previous messages
+            document.getElementById('messageContainer').innerHTML = '';
+
+            // Validate form
+            if (!validateForm()) {
+                return;
+            }
+
+            // Get form values
+            const fullName = document.getElementById('fullName').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const password = document.getElementById('password').value;
+            const role = document.querySelector('input[name="userRole"]:checked').value;
+
+            // Check if email already exists
+            if (emailExists(email)) {
+                showMessage('error', 'An account with this email already exists. Please login or use a different email.');
+                return;
+            }
+
+            // Create new user
+            const newUser = {
+                id: 'USR' + Date.now().toString().slice(-5),
+                name: fullName,
+                email: email,
+                phone: phone,
+                password: password, // In real app, this should be encrypted
+                role: role,
+                joined: new Date().toISOString().split('T')[0]
+            };
+
+            // Save user to database
+            saveUser(newUser);
+
+            // Show success message
+            showMessage('success', 'Registration successful! Redirecting to login...');
+
+            // Disable button to prevent double submission
+            document.getElementById('registerBtn').disabled = true;
+
+            // Redirect to login page after 2 seconds
+            setTimeout(() => {
+                window.location.href = 'login.html';
+            }, 2000);
+        }
+
+        // ========== ANIMATE STATS ON LOAD ==========
+        window.addEventListener('load', () => {
+            // Trigger password strength check for default value
+            const event = new Event('input');
+            passwordInput.dispatchEvent(event);
+        });
+    </script>
+</body>
+</html>

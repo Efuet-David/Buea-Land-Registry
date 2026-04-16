@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | BueaLand Registry</title>
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0B3B2A;
+            --primary-dark: #07291d;
+            --primary-light: #65b5a5;
+            --secondary: #B48B4A;
+            --secondary-dark: #846231;
+            --accent: #f59e0b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --slate-50: #f8fafc;
+            --slate-100: #f1f5f9;
+            --slate-200: #e2e8f0;
+            --slate-300: #94a3b8;
+            --slate-800: #07291d;
+            --slate-900: #031710;
+            --white: #ffffff;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.12);
+            --radius: 12px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--slate-50);
+            color: var(--slate-900);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* ========== SIDEBAR ========== */
+        .sidebar {
+            width: 280px;
+            background: var(--slate-900);
+            color: var(--white);
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            z-index: 1001;
+            transition: var(--transition);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 40px;
+            padding: 0 10px;
+        }
+
+        .logo i {
+            font-size: 24px;
+            color: var(--secondary);
+        }
+
+        .logo span {
+            font-family: 'Outfit', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-menu {
+            list-style: none;
+            flex: 1;
+        }
+
+        .nav-item {
+            margin-bottom: 8px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 14px 18px;
+            text-decoration: none;
+            color: var(--slate-300);
+            border-radius: 10px;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--white);
+        }
+
+        .nav-link.active {
+            background: var(--primary);
+        }
+
+        .nav-link i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .logout-btn {
+            margin-top: auto;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 20px;
+        }
+
+        /* ========== MAIN CONTENT ========== */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 30px;
+            transition: var(--transition);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .welcome h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+
+        .welcome p {
+            color: var(--slate-300);
+            font-size: 14px;
+        }
+
+        .admin-profile {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .admin-avatar {
+            width: 45px;
+            height: 45px;
+            background: var(--primary);
+            color: var(--white);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+            box-shadow: var(--shadow);
+        }
+
+        /* ========== DASHBOARD CARDS ========== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: var(--white);
+            padding: 25px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stat-icon {
+            width: 55px;
+            height: 55px;
+            background: var(--slate-50);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+
+        .stat-card.primary .stat-icon {
+            color: var(--primary);
+            background: rgba(79, 70, 229, 0.1);
+        }
+
+        .stat-card.secondary .stat-icon {
+            color: var(--secondary);
+            background: rgba(14, 165, 233, 0.1);
+        }
+
+        .stat-card.success .stat-icon {
+            color: var(--success);
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .stat-card.warning .stat-icon {
+            color: var(--warning);
+            background: rgba(245, 158, 11, 0.1);
+        }
+
+        .stat-info h3 {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--slate-300);
+            margin-bottom: 5px;
+        }
+
+        .stat-info .value {
+            font-size: 26px;
+            font-weight: 800;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        /* ========== TABLES ========== */
+        .data-section {
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            margin-bottom: 40px;
+        }
+
+        .section-header {
+            padding: 25px;
+            border-bottom: 1px solid var(--slate-200);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-header h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 20px;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            padding: 10px 15px 10px 40px;
+            border-radius: 8px;
+            border: 1px solid var(--slate-200);
+            outline: none;
+            width: 250px;
+            transition: var(--transition);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--slate-300);
+        }
+
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: var(--slate-50);
+            text-align: left;
+            padding: 15px 25px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--slate-300);
+            text-transform: uppercase;
+        }
+
+        td {
+            padding: 18px 25px;
+            border-bottom: 1px solid var(--slate-100);
+            font-size: 14px;
+        }
+
+        .badge {
+            padding: 5px 12px;
+            border-radius: 30px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge-verified {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .badge-disputed {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .badge-available {
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #166534;
+        }
+
+        .badge-sold {
+            background: #f1f5f9;
+            color: #475569;
+        }
+
+        .badge-unavailable {
+            background: #f8fafc;
+            color: #94a3b8;
+            border: 1px dashed #cbd5e1;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-action {
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 14px;
+        }
+
+        .btn-verify {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+
+        .btn-verify:hover {
+            background: var(--success);
+            color: var(--white);
+        }
+
+        .btn-edit {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary);
+        }
+
+        .btn-edit:hover {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .btn-delete {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+        }
+
+        .btn-delete:hover {
+            background: var(--danger);
+            color: var(--white);
+        }
+
+        .btn-view {
+            background: rgba(14, 165, 233, 0.1);
+            color: var(--secondary);
+        }
+
+        .btn-view:hover {
+            background: var(--secondary);
+            color: var(--white);
+        }
+
+        /* ========== MODAL ========== */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(5px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--white);
+            width: 500px;
+            border-radius: var(--radius);
+            padding: 30px;
+            box-shadow: var(--shadow-lg);
+            animation: modalSlide 0.3s ease;
+        }
+
+        @keyframes modalSlide {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--slate-200);
+            border-radius: 8px;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: var(--transition);
+        }
+
+        .btn-cancel {
+            background: var(--slate-100);
+            color: var(--slate-900);
+        }
+
+        .btn-save {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        /* ========== TOAST ========== */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--slate-900);
+            color: var(--white);
+            padding: 15px 25px;
+            border-radius: 12px;
+            display: none;
+            align-items: center;
+            gap: 12px;
+            box-shadow: var(--shadow-lg);
+            border-left: 4px solid var(--success);
+            z-index: 9999;
+            animation: toastIn 0.3s ease;
+        }
+
+        @keyframes toastIn {
+            from {
+                transform: translateX(50px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 80px;
+                padding: 30px 10px;
+            }
+
+            .logo span,
+            .nav-link span {
+                display: none;
+            }
+
+            .nav-link {
+                justify-content: center;
+            }
+
+            .main-content {
+                margin-left: 80px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 20px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="logo">
+            <i class="fas fa-landmark"></i>
+            <span>ADMIN CORE</span>
+        </div>
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="#overview" class="nav-link active" onclick="switchSection('overview')">
+                    <i class="fas fa-th-large"></i>
+                    <span>Overview</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#registry" class="nav-link" onclick="switchSection('registry')">
+                    <i class="fas fa-map-marked-alt"></i>
+                    <span>Land Registry</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#users" class="nav-link" onclick="switchSection('users')">
+                    <i class="fas fa-users-cog"></i>
+                    <span>User Management</span>
+                </a>
+            </li>
+        </ul>
+        <div class="logout-btn">
+            <a href="index.html" class="nav-link" onclick="localStorage.removeItem('bueaUser')">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Sign Out</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="header">
+            <div class="welcome">
+                <h1 id="welcomeTitle">Dashboard Overview</h1>
+                <p id="currentDate"></p>
+            </div>
+            <div class="admin-profile">
+                <span id="adminRoleDisplay">System Administrator</span>
+                <div class="admin-avatar" id="adminAvatar">A</div>
+            </div>
+        </div>
+
+        <!-- Global Stats -->
+        <div class="stats-grid">
+            <div class="stat-card primary">
+                <div class="stat-icon"><i class="fas fa-users"></i></div>
+                <div class="stat-info">
+                    <h3>Total Users</h3>
+                    <div class="value" id="countUsers">0</div>
+                </div>
+            </div>
+            <div class="stat-card warning">
+                <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                <div class="stat-info">
+                    <h3>Pending Land</h3>
+                    <div class="value" id="countPending">0</div>
+                </div>
+            </div>
+            <div class="stat-card success">
+                <div class="stat-icon"><i class="fas fa-check-double"></i></div>
+                <div class="stat-info">
+                    <h3>Verified Land</h3>
+                    <div class="value" id="countVerified">0</div>
+                </div>
+            </div>
+            <div class="stat-card secondary">
+                <div class="stat-icon"><i class="fas fa-map"></i></div>
+                <div class="stat-info">
+                    <h3>Total Registry</h3>
+                    <div class="value" id="countTotal">0</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Registry Section -->
+        <div id="sectionRegistry" class="data-section">
+            <div class="section-header">
+                <h2>Registry Management</h2>
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search Plot ID or Owner..." onkeyup="searchRegistry(this.value)">
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table id="registryTable">
+                    <thead>
+                        <tr>
+                            <th>Plot ID</th>
+                            <th>Owner</th>
+                            <th>Location</th>
+                            <th>Status/Availability</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="registryBody">
+                        <!-- Data injected by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- User Section -->
+        <div id="sectionUsers" class="data-section" style="display: none;">
+            <div class="section-header">
+                <h2>User Management</h2>
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search by name or email..." onkeyup="searchUsers(this.value)">
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table id="userTable">
+                    <thead>
+                        <tr>
+                            <th>User ID</th>
+                            <th>Full Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Joined</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="userBody">
+                        <!-- Data injected by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Edit Property Record</h2>
+                <button class="btn-action" onclick="closeModal()"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="editPlotId">
+                <div class="form-group">
+                    <label>Plot ID</label>
+                    <input type="text" id="dispPlotId" class="form-control" disabled>
+                </div>
+                <div class="form-group">
+                    <label>Location</label>
+                    <input type="text" id="editLocation" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Size</label>
+                    <input type="text" id="editSize" class="form-control">
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div class="form-group">
+                        <label>Registry Status</label>
+                        <select id="editStatus" class="form-control">
+                            <option value="pending">Pending</option>
+                            <option value="verified">Verified</option>
+                            <option value="disputed">Under Dispute</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Availability</label>
+                        <select id="editAvailability" class="form-control">
+                            <option value="available">Available</option>
+                            <option value="sold">Sold</option>
+                            <option value="unavailable">Unavailable</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-cancel" onclick="closeModal()">Cancel</button>
+                <button class="btn btn-save" onclick="saveEdit()">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMsg">Action completed successfully</span>
+    </div>
+
+    <script>
+        // ========== STATE MANAGEMENT ==========
+        let users = JSON.parse(localStorage.getItem('users') || '[]');
+        let allProperties = [];
+        let currentSection = 'overview';
+
+        // Unified Data Source Loader
+        function getCombinedProperties() {
+            const hardcoded = [
+                {
+                    id: 'BUEA-2024-001',
+                    owner: { name: 'Tayim Rene', id: 'USR001', registered: '2024-01-15', phone: '+237 677123456', email: 'tayim.rene@email.com' },
+                    location: 'Molyko, Buea', size: '500 sq m', status: 'verified', availability: 'available', price: '15,000,000 FCFA', registeredDate: '2024-01-15', verifiedDate: '2024-01-20', certificateNumber: 'CERT-2024-001', landUse: 'Residential',
+                    history: [{ date: '2024-01-15', event: 'Land Registered', officer: 'Reg. Officer', details: 'Initial registration' }]
+                },
+                {
+                    id: 'BUEA-2024-002',
+                    owner: { name: 'Akana Smith', id: 'USR002', registered: '2024-02-20', phone: '+237 677123457', email: 'akana.smith@email.com' },
+                    location: 'Bokwaongo, Buea', size: '750 sq m', status: 'verified', availability: 'sold', price: '22,500,000 FCFA', registeredDate: '2024-02-20', verifiedDate: '2024-02-25', certificateNumber: 'CERT-2024-002', landUse: 'Commercial', soldDate: '2024-03-15', soldTo: 'Michael Johnson',
+                    history: [{ date: '2024-02-20', event: 'Land Registered', officer: 'Reg. Officer', details: 'Initial registration' }]
+                }
+            ];
+
+            const userProps = JSON.parse(localStorage.getItem('userProperties') || '[]');
+
+            // Merge: User properties take priority if IDs match
+            const combined = [...userProps];
+            hardcoded.forEach(h => {
+                if (!combined.find(c => c.id === h.id)) {
+                    combined.push(h);
+                }
+            });
+
+            return combined;
+        }
+
+        // ========== INITIALIZATION ==========
+        window.onload = () => {
+            const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('currentDate').innerText = new Date().toLocaleDateString('en-US', dateOptions);
+            
+            // Set Admin Info
+            const currentUser = JSON.parse(localStorage.getItem('bueaUser') || '{"name":"System Admin","role":"admin"}');
+            document.getElementById('welcomeTitle').innerHTML = 'Dashboard Overview <span style="font-size: 0.9rem; background: var(--primary); color: white; padding: 4px 12px; border-radius: 20px; vertical-align: middle; margin-left: 10px; font-family: \'Inter\'; font-weight: 600;">You</span>';
+            const adminRoleDisplay = document.getElementById('adminRoleDisplay');
+            if(adminRoleDisplay) adminRoleDisplay.innerHTML = currentUser.name + ' <span style="font-size: 0.7rem; background: rgba(11, 59, 42, 0.1); color: var(--primary); padding: 2px 8px; border-radius: 10px; margin-left: 5px; font-weight: 600;">You</span>';
+            
+            const adminAvatar = document.getElementById('adminAvatar');
+            if(adminAvatar) adminAvatar.innerText = currentUser.name.split(' ').map(n => n[0]).join('').toUpperCase();
+
+            allProperties = getCombinedProperties();
+            updateStats();
+            renderRegistry();
+            renderUsers();
+
+            // Welcome Message
+            if (localStorage.getItem('showWelcomeToast') === 'true') {
+                showToast(`Welcome Administrator, ${currentUser.name}!`);
+                localStorage.removeItem('showWelcomeToast');
+            }
+        };
+
+        function switchSection(section) {
+            currentSection = section;
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            document.querySelector(`[onclick="switchSection('${section}')"]`).classList.add('active');
+
+            document.getElementById('welcomeTitle').innerText = section === 'overview' ? 'Dashboard Overview' :
+                section === 'registry' ? 'Land Registry Management' : 'User Account Management';
+
+            document.getElementById('sectionRegistry').style.display = (section === 'overview' || section === 'registry') ? 'block' : 'none';
+            document.getElementById('sectionUsers').style.display = section === 'users' ? 'block' : 'none';
+        }
+
+        function updateStats() {
+            const pending = allProperties.filter(p => p.status === 'pending').length;
+            const verified = allProperties.filter(p => p.status === 'verified').length;
+
+            document.getElementById('countUsers').innerText = users.length;
+            document.getElementById('countPending').innerText = pending;
+            document.getElementById('countVerified').innerText = verified;
+            document.getElementById('countTotal').innerText = allProperties.length;
+        }
+
+        // ========== REGISTRY CRUD ==========
+        function renderRegistry(filter = '') {
+            const body = document.getElementById('registryBody');
+            body.innerHTML = '';
+
+            const filtered = allProperties.filter(p =>
+                p.id.toLowerCase().includes(filter.toLowerCase()) ||
+                (typeof p.owner === 'object' ? p.owner.name : p.owner).toLowerCase().includes(filter.toLowerCase())
+            );
+
+            filtered.forEach(p => {
+                const ownerName = typeof p.owner === 'object' ? p.owner.name : p.owner;
+                const tr = document.createElement('tr');
+                const availability = p.availability || 'unavailable';
+                tr.innerHTML = `
+                    <td style="font-weight: 700;">${p.id}</td>
+                    <td>${ownerName}</td>
+                    <td>${p.location}</td>
+                    <td>
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <span class="badge badge-${p.status}">${p.status}</span>
+                            <select class="form-control" style="font-size: 11px; padding: 4px 8px; height: auto;" onchange="quickUpdateAvailability('${p.id}', this.value)">
+                                <option value="available" ${availability === 'available' ? 'selected' : ''}>Available</option>
+                                <option value="sold" ${availability === 'sold' ? 'selected' : ''}>Sold</option>
+                                <option value="unavailable" ${availability === 'unavailable' ? 'selected' : ''}>Unavailable</option>
+                            </select>
+                        </div>
+                    </td>
+                    <td class="actions">
+                        ${p.status === 'pending' ? `<button class="btn-action btn-verify" title="Verify Registration" onclick="verifyLand('${p.id}')"><i class="fas fa-check"></i></button>` : ''}
+                        <button class="btn-action btn-edit" title="Edit Record" onclick="openEditModal('${p.id}')"><i class="fas fa-pen"></i></button>
+                        <button class="btn-action btn-delete" title="Delete Plot" onclick="deleteLand('${p.id}')"><i class="fas fa-trash"></i></button>
+                    </td>
+                `;
+                body.appendChild(tr);
+            });
+
+            if (filtered.length === 0) {
+                body.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 40px; color: #94a3b8;">No matching land records found.</td></tr>';
+            }
+        }
+
+        function verifyLand(id) {
+            if (confirm(`Are you sure you want to verify Plot ${id}?`)) {
+                const index = allProperties.findIndex(p => p.id === id);
+                if (index !== -1) {
+                    allProperties[index].status = 'verified';
+                    allProperties[index].verifiedDate = new Date().toLocaleDateString();
+                    allProperties[index].certificateNumber = 'CERT-' + id;
+                    saveRegistry();
+                    showToast('Property verified successfully!');
+                }
+            }
+        }
+
+        function quickUpdateAvailability(id, newValue) {
+            const index = allProperties.findIndex(p => p.id === id);
+            if (index !== -1) {
+                allProperties[index].availability = newValue;
+                saveRegistry();
+                showToast(`Availability updated to ${newValue}`);
+            }
+        }
+
+        function deleteLand(id) {
+            if (confirm(`CRITICAL: Are you sure you want to delete Plot ${id}? This cannot be undone.`)) {
+                allProperties = allProperties.filter(p => p.id !== id);
+                saveRegistry();
+                showToast('Property deleted successfully!', 'danger');
+            }
+        }
+
+        function saveRegistry() {
+            // Save only non-hardcoded OR modified hardcoded properties?
+            // To simplify, we save EVERYTHING to localStorage['userProperties'] as the "Master Registry"
+            localStorage.setItem('userProperties', JSON.stringify(allProperties));
+            updateStats();
+            renderRegistry();
+        }
+
+        function searchRegistry(val) { renderRegistry(val); }
+
+        // ========== USER CRUD ==========
+        function renderUsers(filter = '') {
+            const body = document.getElementById('userBody');
+            body.innerHTML = '';
+
+            const filtered = users.filter(u =>
+                u.name.toLowerCase().includes(filter.toLowerCase()) ||
+                u.email.toLowerCase().includes(filter.toLowerCase())
+            );
+
+            filtered.forEach(u => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td style="font-family: monospace;">${u.id || 'N/A'}</td>
+                    <td style="font-weight: 600;">${u.name}</td>
+                    <td>${u.email}</td>
+                    <td><span class="badge ${u.role === 'admin' ? 'badge-verified' : ''}" style="background: ${u.role === 'admin' ? '#4f46e5' : '#e2e8f0'}; color: ${u.role === 'admin' ? 'white' : '#64748b'};">${u.role}</span></td>
+                    <td>${u.joined || '2024-01-01'}</td>
+                    <td class="actions">
+                        ${u.role !== 'admin' ? `<button class="btn-action btn-delete" title="Delete User" onclick="deleteUser('${u.email}')"><i class="fas fa-user-minus"></i></button>` : 'System'}
+                    </td>
+                `;
+                body.appendChild(tr);
+            });
+        }
+
+        function deleteUser(email) {
+            if (confirm(`Are you sure you want to delete user ${email}?`)) {
+                users = users.filter(u => u.email !== email);
+                localStorage.setItem('users', JSON.stringify(users));
+                updateStats();
+                renderUsers();
+                showToast('User account removed.', 'warning');
+            }
+        }
+
+        function searchUsers(val) { renderUsers(val); }
+
+        // ========== EDIT MODAL ==========
+        function openEditModal(id) {
+            const p = allProperties.find(prop => prop.id === id);
+            if (p) {
+                document.getElementById('editPlotId').value = p.id;
+                document.getElementById('dispPlotId').value = p.id;
+                document.getElementById('editLocation').value = p.location;
+                // Price field was removed from HTML previously by multi-replace, let's keep it consistent
+                document.getElementById('editSize').value = p.size;
+                document.getElementById('editStatus').value = p.status;
+                document.getElementById('editAvailability').value = p.availability || 'unavailable';
+                document.getElementById('editModal').classList.add('active');
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('editModal').classList.remove('active');
+        }
+
+        function saveEdit() {
+            const id = document.getElementById('editPlotId').value;
+            const index = allProperties.findIndex(p => p.id === id);
+
+            if (index !== -1) {
+                allProperties[index].location = document.getElementById('editLocation').value;
+                // Price field excluded to match template
+                allProperties[index].size = document.getElementById('editSize').value;
+                allProperties[index].status = document.getElementById('editStatus').value;
+                allProperties[index].availability = document.getElementById('editAvailability').value;
+
+                // If marks as verified, ensure certificate exists
+                if (allProperties[index].status === 'verified' && !allProperties[index].certificateNumber) {
+                    allProperties[index].certificateNumber = 'CERT-' + id;
+                    allProperties[index].verifiedDate = new Date().toLocaleDateString();
+                }
+
+                saveRegistry();
+                closeModal();
+                showToast('Record updated successfully!');
+            }
+        }
+
+        // ========== UTILS ==========
+        function showToast(msg, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toastMsg');
+            toastMsg.innerText = msg;
+            toast.style.borderLeftColor = type === 'success' ? 'var(--success)' :
+                type === 'danger' ? 'var(--danger)' : 'var(--warning)';
+            toast.style.display = 'flex';
+            setTimeout(() => { toast.style.display = 'none'; }, 3000);
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard | BueaLand Registry</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary: #0B3B2A;
+            --primary-dark: #07291d;
+            --primary-light: #65b5a5;
+            --secondary: #B48B4A;
+            --secondary-dark: #846231;
+            --accent: #f59e0b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --slate-50: #f8fafc;
+            --slate-100: #f1f5f9;
+            --slate-200: #e2e8f0;
+            --slate-300: #94a3b8;
+            --slate-800: #07291d;
+            --slate-900: #031710;
+            --white: #ffffff;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.12);
+            --radius: 12px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--slate-50);
+            color: var(--slate-900);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* ========== SIDEBAR ========== */
+        .sidebar {
+            width: 280px;
+            background: var(--slate-900);
+            color: var(--white);
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            z-index: 1001;
+            transition: var(--transition);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 40px;
+            padding: 0 10px;
+            text-decoration: none;
+            color: var(--white);
+        }
+
+        .logo i {
+            font-size: 24px;
+            color: var(--secondary);
+        }
+
+        .logo span {
+            font-family: 'Outfit', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-menu {
+            list-style: none;
+            flex: 1;
+        }
+
+        .nav-item {
+            margin-bottom: 8px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 14px 18px;
+            text-decoration: none;
+            color: var(--slate-300);
+            border-radius: 10px;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--white);
+        }
+
+        .nav-link.active {
+            background: var(--primary);
+        }
+
+        .nav-link i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .logout-btn {
+            margin-top: auto;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 20px;
+        }
+
+        /* ========== MAIN CONTENT ========== */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 30px;
+            transition: var(--transition);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .welcome h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+
+        .welcome p {
+            color: var(--slate-300);
+            font-size: 14px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            background: var(--secondary);
+            color: var(--white);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+            box-shadow: var(--shadow);
+            text-transform: uppercase;
+        }
+
+        /* ========== DASHBOARD CARDS ========== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: var(--white);
+            padding: 25px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stat-icon {
+            width: 55px;
+            height: 55px;
+            background: var(--slate-50);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+
+        .stat-card.primary .stat-icon { color: var(--primary); background: rgba(11, 59, 42, 0.1); }
+        .stat-card.secondary .stat-icon { color: var(--secondary); background: rgba(180, 139, 74, 0.1); }
+        .stat-card.success .stat-icon { color: var(--success); background: rgba(16, 185, 129, 0.1); }
+        .stat-card.warning .stat-icon { color: var(--warning); background: rgba(245, 158, 11, 0.1); }
+
+        .stat-info h3 {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--slate-300);
+            margin-bottom: 5px;
+        }
+
+        .stat-info .value {
+            font-size: 26px;
+            font-weight: 800;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        /* ========== DASHBOARD GRID ========== */
+        .dashboard-main-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 25px;
+        }
+
+        /* ========== TABLES & SECTIONS ========== */
+        .data-section {
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            margin-bottom: 25px;
+        }
+
+        .section-header {
+            padding: 20px 25px;
+            border-bottom: 1px solid var(--slate-200);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-header h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 18px;
+        }
+
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: var(--slate-50);
+            text-align: left;
+            padding: 12px 25px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--slate-300);
+            text-transform: uppercase;
+        }
+
+        td {
+            padding: 15px 25px;
+            border-bottom: 1px solid var(--slate-100);
+            font-size: 14px;
+        }
+
+        .badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge-pending { background: #fef3c7; color: #92400e; }
+        .badge-verified { background: #dcfce7; color: #166534; }
+        .badge-available { background: #dcfce7; color: #166534; border: 1px solid #166534; }
+        .badge-sold { background: #f1f5f9; color: #475569; }
+
+        /* ========== CHART ========== */
+        .chart-container {
+            padding: 20px;
+            height: 300px;
+        }
+
+        /* ========== ACTIVITY LIST ========== */
+        .activity-list {
+            list-style: none;
+        }
+
+        .activity-item {
+            padding: 15px 25px;
+            border-bottom: 1px solid var(--slate-100);
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .activity-icon {
+            width: 35px;
+            height: 35px;
+            border-radius: 8px;
+            background: var(--slate-50);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 14px;
+        }
+
+        .activity-info p {
+            font-size: 13px;
+            margin-bottom: 3px;
+        }
+
+        .activity-info span {
+            font-size: 11px;
+            color: var(--slate-300);
+        }
+
+        /* ========== ACTIONS ========== */
+        .btn-registry {
+            padding: 12px 20px;
+            background: var(--primary);
+            color: var(--white);
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: var(--transition);
+        }
+
+        .btn-registry:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 1200px) {
+            .dashboard-main-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar { width: 80px; padding: 30px 10px; }
+            .logo span, .nav-link span { display: none; }
+            .nav-link { justify-content: center; }
+            .main-content { margin-left: 80px; }
+        }
+
+        @media (max-width: 768px) {
+            .main-content { padding: 20px; }
+            .stats-grid { grid-template-columns: 1fr; }
+        }
+
+        /* ========== TOAST ========== */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--slate-900);
+            color: var(--white);
+            padding: 15px 25px;
+            border-radius: 12px;
+            display: none;
+            align-items: center;
+            gap: 12px;
+            box-shadow: var(--shadow-lg);
+            border-left: 4px solid var(--success);
+            z-index: 9999;
+            animation: toastIn 0.3s ease;
+        }
+
+        @keyframes toastIn {
+            from { transform: translateX(50px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <a href="index.html" class="logo">
+            <i class="fas fa-landmark"></i>
+            <span>BUEALAND</span>
+        </a>
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="#dashboard" class="nav-link active">
+                    <i class="fas fa-th-large"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="my-properties.html" class="nav-link">
+                    <i class="fas fa-map-marked-alt"></i>
+                    <span>My Properties</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="LandRegistrationPage.html" class="nav-link">
+                    <i class="fas fa-plus-circle"></i>
+                    <span>Register Land</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="LandVerificationPage.html" class="nav-link">
+                    <i class="fas fa-search-location"></i>
+                    <span>Verify Land</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="help.html" class="nav-link">
+                    <i class="fas fa-question-circle"></i>
+                    <span>Help & Support</span>
+                </a>
+            </li>
+        </ul>
+        <div class="logout-btn">
+            <a href="#" id="logoutBtn" class="nav-link">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Sign Out</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <button onclick="window.history.back()" class="btn-back">
+            <i class="fas fa-arrow-left"></i> Back
+        </button>
+        <div class="header">
+            <div class="welcome">
+                <h1>Welcome back, <span id="welcomeName">User</span>! <span style="font-size: 0.9rem; background: var(--primary); color: white; padding: 4px 12px; border-radius: 20px; vertical-align: middle; margin-left: 10px; font-family: 'Inter'; font-weight: 600;">You</span></h1>
+                <p id="currentDate"></p>
+            </div>
+            <div class="user-profile">
+                <div class="user-avatar" id="userAvatar">U</div>
+                <div>
+                    <div style="font-weight: 700; font-size: 14px;" id="userName">User Name</div>
+                    <div style="font-size: 12px; color: var(--slate-300);" id="userRole">Land Owner</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Global Stats -->
+        <div class="stats-grid">
+            <div class="stat-card primary">
+                <div class="stat-icon"><i class="fas fa-map"></i></div>
+                <div class="stat-info">
+                    <h3>Total Properties</h3>
+                    <div class="value" id="countTotal">0</div>
+                </div>
+            </div>
+            <div class="stat-card success">
+                <div class="stat-icon"><i class="fas fa-check-double"></i></div>
+                <div class="stat-info">
+                    <h3>Verified Plots</h3>
+                    <div class="value" id="countVerified">0</div>
+                </div>
+            </div>
+            <div class="stat-card warning">
+                <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                <div class="stat-info">
+                    <h3>Pending Approval</h3>
+                    <div class="value" id="countPending">0</div>
+                </div>
+            </div>
+            <div class="stat-card secondary">
+                <div class="stat-icon"><i class="fas fa-coins"></i></div>
+                <div class="stat-info">
+                    <h3>Estimated Value</h3>
+                    <div class="value" id="totalValue">0M</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-main-grid">
+            <!-- Main Column -->
+            <div class="main-column">
+                <!-- Activity Chart -->
+                <div class="data-section">
+                    <div class="section-header">
+                        <h2>Registration Activity</h2>
+                        <a href="LandRegistrationPage.html" class="btn-registry">
+                            <i class="fas fa-plus"></i> New Registration
+                        </a>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="activityChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Recent Properties Table -->
+                <div class="data-section">
+                    <div class="section-header">
+                        <h2>Recent Properties</h2>
+                        <a href="my-properties.html" style="color: var(--primary); font-size: 13px; font-weight: 600; text-decoration: none;">View All</a>
+                    </div>
+                    <div class="table-responsive">
+                        <table id="propertiesTable">
+                            <thead>
+                                <tr>
+                                    <th>Plot ID</th>
+                                    <th>Location</th>
+                                    <th>Size</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="propertiesBody">
+                                <!-- Loaded via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Side Column -->
+            <div class="side-column">
+                <div class="data-section">
+                    <div class="section-header">
+                        <h2>Recent Activity</h2>
+                    </div>
+                    <ul class="activity-list" id="activityList">
+                        <!-- Loaded via JS -->
+                    </ul>
+                </div>
+
+                <div class="data-section" style="background: var(--primary); color: var(--white); padding: 25px; border: none;">
+                    <h3 style="font-family: 'Outfit'; margin-bottom: 10px;">Need Help?</h3>
+                    <p style="font-size: 13px; opacity: 0.8; margin-bottom: 20px;">Get in touch with our experts for any land registration issues.</p>
+                    <a href="help.html" style="display: block; width: 100%; padding: 12px; background: var(--secondary); color: white; text-align: center; border-radius: 8px; text-decoration: none; font-weight: 700;">Support Center</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMsg">Action completed successfully</span>
+    </div>
+
+    <script>
+        // ========== STATE MANAGEMENT ==========
+        const currentUser = JSON.parse(localStorage.getItem('bueaUser'));
+        
+        if (!currentUser) {
+            window.location.href = 'login.html';
+        }
+
+        // ========== INITIALIZATION ==========
+        window.onload = () => {
+            const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('currentDate').innerText = new Date().toLocaleDateString('en-US', dateOptions);
+            
+            // Set User Info
+            const firstName = currentUser.name.split(' ')[0];
+            document.getElementById('welcomeName').innerText = firstName;
+            document.getElementById('userName').innerHTML = currentUser.name + ' <span style="font-size: 0.7rem; background: rgba(11, 59, 42, 0.1); color: var(--primary); padding: 2px 8px; border-radius: 10px; margin-left: 5px; font-weight: 600;">You</span>';
+            document.getElementById('userRole').innerText = currentUser.role === 'admin' ? 'Administrator' : currentUser.role;
+            document.getElementById('userAvatar').innerText = currentUser.name.split(' ').map(n => n[0]).join('').toUpperCase();
+
+            renderDashboard();
+            initChart();
+
+            // Welcome Message
+            if (localStorage.getItem('showWelcomeToast') === 'true') {
+                showToast(`Welcome back, ${currentUser.name}!`);
+                localStorage.removeItem('showWelcomeToast');
+            }
+        };
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toastMsg');
+            toastMsg.innerText = msg;
+            toast.style.display = 'flex';
+            setTimeout(() => { toast.style.display = 'none'; }, 4000);
+        }
+
+        function renderDashboard() {
+            // Unify logic from my-properties
+            const hardcoded = [
+                { id: 'BUEA-2024-001', location: 'Molyko, Buea', size: '500 sq m', status: 'verified', owner: { name: 'Tayim Rene', email: 'rene@example.com' } },
+                { id: 'BUEA-2024-002', location: 'Bokwaongo, Buea', size: '750 sq m', status: 'verified', owner: { name: 'Akana Smith', email: 'jane@example.com' } }
+            ];
+            
+            const userProps = JSON.parse(localStorage.getItem('userProperties') || '[]');
+            const combined = [...userProps];
+            hardcoded.forEach(h => {
+                if (!combined.find(c => c.id === h.id)) {
+                    combined.push(h);
+                }
+            });
+
+            // Filter for current user
+            const myProperties = combined.filter(p => {
+                const ownerEmail = typeof p.owner === 'object' ? p.owner.email : p.owner;
+                return ownerEmail === currentUser.email;
+            });
+
+            // Update Stats
+            document.getElementById('countTotal').innerText = myProperties.length;
+            document.getElementById('countVerified').innerText = myProperties.filter(p => p.status === 'verified').length;
+            document.getElementById('countPending').innerText = myProperties.filter(p => p.status === 'pending').length;
+            document.getElementById('totalValue').innerText = (myProperties.length * 15) + 'M'; // Mock calc
+
+            // Render Table
+            const body = document.getElementById('propertiesBody');
+            body.innerHTML = '';
+            
+            myProperties.slice(0, 5).forEach(p => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td style="font-weight: 700;">${p.id}</td>
+                    <td>${p.location}</td>
+                    <td>${p.size}</td>
+                    <td><span class="badge badge-${p.status}">${p.status}</span></td>
+                `;
+                body.appendChild(tr);
+            });
+
+            if (myProperties.length === 0) {
+                body.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 40px; color: #94a3b8;">You have no registered properties yet.</td></tr>';
+            }
+
+            // Render Activity
+            const actList = document.getElementById('activityList');
+            const activities = [
+                { icon: 'fa-check', text: 'Property BUEA-001 verified', time: '2 hours ago' },
+                { icon: 'fa-plus', text: 'New land registration started', time: 'Yesterday' },
+                { icon: 'fa-user-edit', text: 'Profile information updated', time: '3 days ago' }
+            ];
+
+            actList.innerHTML = activities.map(a => `
+                <li class="activity-item">
+                    <div class="activity-icon"><i class="fas ${a.icon}"></i></div>
+                    <div class="activity-info">
+                        <p>${a.text}</p>
+                        <span>${a.time}</span>
+                    </div>
+                </li>
+            `).join('');
+        }
+
+        function initChart() {
+            const ctx = document.getElementById('activityChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [{
+                        label: 'Properties Registered',
+                        data: [1, 2, 1, 3, 2, 4],
+                        borderColor: '#0B3B2A',
+                        backgroundColor: 'rgba(11, 59, 42, 0.05)',
+                        tension: 0.4,
+                        fill: true,
+                        borderWidth: 3,
+                        pointBackgroundColor: '#B48B4A'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.05)' } },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+        }
+
+        document.getElementById('logoutBtn').onclick = () => {
+            localStorage.removeItem('bueaUser');
+            window.location.href = 'login.html';
+        };
+    </script>
+</body>
+</html>

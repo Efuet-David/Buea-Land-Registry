@@ -1,0 +1,2245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Verify Land | Buea Land Registry</title>
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- jsPDF for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!-- html2canvas for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <style>
+        /* ========== RESET & VARIABLES ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0B3B2A;
+            --primary-dark: #062116;
+            --primary-light: #1E5E45;
+            --primary-soft: #E8F3EE;
+            --secondary: #B48B4A;
+            --secondary-light: #D4AF37;
+            --neutral-50: #f9fafb;
+            --neutral-100: #f3f4f6;
+            --neutral-200: #e5e7eb;
+            --neutral-300: #d1d5db;
+            --neutral-400: #9ca3af;
+            --neutral-500: #6b7280;
+            --neutral-600: #4b5563;
+            --neutral-700: #374151;
+            --neutral-800: #1f2937;
+            --neutral-900: #111827;
+            --success: #10b981;
+            --success-light: #d1fae5;
+            --warning: #f59e0b;
+            --warning-light: #fed7aa;
+            --error: #ef4444;
+            --error-light: #fee2e2;
+            --info: #3b82f6;
+            --info-light: #dbeafe;
+            --sold: #6b7280;
+            --sold-light: #f3f4f6;
+            --available: #10b981;
+            --available-light: #d1fae5;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+            --radius: 0.5rem;
+            --radius-lg: 1rem;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--neutral-50);
+            color: var(--neutral-900);
+            line-height: 1.5;
+            min-height: 100vh;
+        }
+
+        body.menu-open {
+            overflow: hidden;
+        }
+
+        /* ========== NAVIGATION ========== */
+        .navbar {
+            background: white;
+            border-bottom: 1px solid var(--neutral-200);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 1rem 0;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .nav-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            z-index: 1001;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-icon i {
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .logo-text {
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--neutral-900);
+        }
+
+        .logo-text span {
+            color: var(--secondary);
+        }
+
+        /* Desktop Navigation */
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 8px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            padding: 8px 16px;
+            border-radius: var(--radius);
+            font-weight: 500;
+            color: var(--neutral-600);
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .nav-links a:hover {
+            background: var(--neutral-100);
+            color: var(--primary);
+        }
+
+        .nav-links a.active {
+            background: var(--primary-soft);
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .notification-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius);
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            color: var(--neutral-600);
+            transition: all 0.2s;
+        }
+
+        .notification-btn:hover {
+            background: var(--neutral-100);
+            color: var(--primary);
+        }
+
+        .profile-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 4px 8px 4px 4px;
+            background: transparent;
+            border: none;
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+        }
+
+        .profile-btn:hover {
+            background: var(--neutral-100);
+        }
+
+        .profile-avatar {
+            width: 36px;
+            height: 36px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .profile-menu {
+            position: relative;
+        }
+
+        .profile-dropdown {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            width: 280px;
+            background: white;
+            border-radius: var(--radius-lg);
+            box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+            border: 1px solid var(--neutral-200);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 50;
+        }
+
+        .profile-menu.active .profile-dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-header-profile {
+            padding: 20px;
+            border-bottom: 1px solid var(--neutral-200);
+        }
+
+        .dropdown-header-profile .name {
+            font-weight: 600;
+            color: var(--neutral-900);
+            margin-bottom: 4px;
+        }
+
+        .dropdown-header-profile .email {
+            font-size: 0.9rem;
+            color: var(--neutral-500);
+        }
+
+        .profile-dropdown-menu {
+            padding: 8px;
+            list-style: none;
+        }
+
+        .profile-dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: var(--radius);
+            color: var(--neutral-700);
+            text-decoration: none;
+            transition: all 0.2s;
+            font-size: 0.95rem;
+        }
+
+        .profile-dropdown-item i {
+            width: 20px;
+            color: var(--neutral-400);
+            transition: all 0.2s;
+        }
+
+        .profile-dropdown-item:hover {
+            background: var(--primary-soft);
+            color: var(--primary);
+        }
+
+        .profile-dropdown-item:hover i {
+            color: var(--primary);
+        }
+
+        .dropdown-divider-profile {
+            height: 1px;
+            background: var(--neutral-200);
+            margin: 8px;
+        }
+
+        .profile-dropdown-item.logout {
+            color: var(--danger);
+        }
+
+        .profile-dropdown-item.logout i {
+            color: var(--danger);
+        }
+
+        .profile-dropdown-item.logout:hover {
+            background: var(--danger-light);
+        }
+
+        /* Mobile Menu Button */
+        .mobile-menu-btn {
+            display: none;
+            width: 44px;
+            height: 44px;
+            background: transparent;
+            border: 2px solid var(--neutral-200);
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--neutral-600);
+            transition: all 0.2s;
+            z-index: 1001;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mobile-menu-btn:hover {
+            background: var(--primary-soft);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .mobile-menu-btn.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        /* Mobile Menu Overlay */
+        .mobile-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 998;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -300px;
+            width: 280px;
+            height: 100vh;
+            background: white;
+            z-index: 999;
+            transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .mobile-menu.active {
+            right: 0;
+        }
+
+        .mobile-menu-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--neutral-200);
+            background: var(--primary-soft);
+        }
+
+        .mobile-user-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .mobile-avatar {
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+
+        .mobile-user-details h4 {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .mobile-user-details p {
+            font-size: 0.9rem;
+            color: var(--neutral-500);
+        }
+
+        .mobile-menu-body {
+            flex: 1;
+            padding: 24px;
+        }
+
+        .mobile-menu-section {
+            margin-bottom: 32px;
+        }
+
+        .mobile-menu-section h3 {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--neutral-500);
+            margin-bottom: 16px;
+        }
+
+        .mobile-menu-links {
+            list-style: none;
+        }
+
+        .mobile-menu-links li {
+            margin-bottom: 8px;
+        }
+
+        .mobile-menu-links a {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 14px 16px;
+            border-radius: var(--radius);
+            color: var(--neutral-700);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s;
+            background: var(--neutral-50);
+            border: 1px solid transparent;
+        }
+
+        .mobile-menu-links a i {
+            width: 24px;
+            color: var(--neutral-400);
+        }
+
+        .mobile-menu-links a:hover {
+            background: var(--primary-soft);
+            border-color: var(--primary-200);
+            color: var(--primary);
+            transform: translateX(5px);
+        }
+
+        .mobile-menu-links a:hover i {
+            color: var(--primary);
+        }
+
+        .mobile-menu-links a.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .mobile-menu-links a.active i {
+            color: white;
+        }
+
+        .mobile-menu-footer {
+            padding: 24px;
+            border-top: 1px solid var(--neutral-200);
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--neutral-500);
+            background: var(--neutral-50);
+        }
+
+        /* ========== MAIN CONTENT ========== */
+        .main-content {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 24px;
+        }
+
+        /* ========== PAGE HEADER ========== */
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 12px;
+        }
+
+        .page-header p {
+            font-size: 1.1rem;
+            color: var(--neutral-600);
+        }
+
+        /* ========== SEARCH CARD ========== */
+        .search-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--neutral-200);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            margin-bottom: 32px;
+        }
+
+        .search-header {
+            background: var(--primary);
+            padding: 32px;
+            color: white;
+        }
+
+        .search-header-content {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .search-header-icon {
+            width: 64px;
+            height: 64px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+
+        .search-header-text h2 {
+            font-size: 1.8rem;
+            margin-bottom: 4px;
+        }
+
+        .search-body {
+            padding: 32px;
+        }
+
+        /* Search Box */
+        .search-box {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .search-input-wrapper {
+            flex: 1;
+            position: relative;
+        }
+
+        .search-input-wrapper i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--neutral-400);
+        }
+
+        .search-input-wrapper input {
+            width: 100%;
+            padding: 16px 16px 16px 48px;
+            border: 2px solid var(--neutral-200);
+            border-radius: var(--radius);
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+
+        .search-input-wrapper input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px var(--primary-soft);
+        }
+
+        .search-btn {
+            padding: 0 32px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius);
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .search-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        /* Example Chips */
+        .example-ids {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--neutral-200);
+        }
+
+        .example-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--neutral-600);
+        }
+
+        .example-chips {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .example-chip {
+            padding: 8px 20px;
+            background: var(--neutral-100);
+            border: 1px solid var(--neutral-200);
+            border-radius: 40px;
+            font-size: 0.95rem;
+            color: var(--neutral-700);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .example-chip:hover {
+            background: var(--primary-soft);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* Recent Searches */
+        .recent-searches {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .recent-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--neutral-600);
+        }
+
+        .recent-items {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .recent-item {
+            padding: 6px 16px;
+            background: var(--neutral-100);
+            border-radius: 40px;
+            font-size: 0.9rem;
+            color: var(--neutral-700);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .recent-item:hover {
+            background: var(--primary-soft);
+            color: var(--primary);
+        }
+
+        /* ========== VERIFICATION RESULT ========== */
+        .result-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--neutral-200);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .status-banner {
+            padding: 24px 32px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            border-bottom: 1px solid var(--neutral-200);
+        }
+
+        .status-banner.verified-available {
+            background: var(--available-light);
+        }
+
+        .status-banner.verified-sold {
+            background: var(--sold-light);
+        }
+
+        .status-banner.disputed {
+            background: var(--error-light);
+        }
+
+        .status-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+        }
+
+        .status-banner.verified-available .status-icon {
+            background: var(--available);
+            color: white;
+        }
+
+        .status-banner.verified-sold .status-icon {
+            background: var(--sold);
+            color: white;
+        }
+
+        .status-banner.disputed .status-icon {
+            background: var(--error);
+            color: white;
+        }
+
+        .status-text {
+            flex: 1;
+        }
+
+        .status-text h3 {
+            font-size: 1.3rem;
+            margin-bottom: 4px;
+        }
+
+        .status-badge {
+            padding: 8px 24px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 1rem;
+            background: white;
+        }
+
+        .status-badge.available {
+            background: var(--available);
+            color: white;
+        }
+
+        .status-badge.sold {
+            background: var(--sold);
+            color: white;
+        }
+
+        .status-badge.disputed {
+            background: var(--error);
+            color: white;
+        }
+
+        .availability-tag {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+
+        .availability-tag.available {
+            background: var(--available-light);
+            color: var(--available);
+            border: 1px solid var(--available);
+        }
+
+        .availability-tag.sold {
+            background: var(--sold-light);
+            color: var(--sold);
+            border: 1px solid var(--sold);
+        }
+
+        .result-body {
+            padding: 32px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .info-card {
+            background: var(--neutral-50);
+            border-radius: var(--radius);
+            padding: 24px;
+            border: 1px solid var(--neutral-200);
+        }
+
+        .info-card h4 {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--neutral-200);
+            color: var(--primary);
+        }
+
+        .info-row {
+            display: flex;
+            margin-bottom: 12px;
+        }
+
+        .info-label {
+            width: 120px;
+            color: var(--neutral-600);
+            font-weight: 500;
+        }
+
+        .info-value {
+            flex: 1;
+            font-weight: 500;
+        }
+
+        .info-value.verified {
+            color: var(--available);
+        }
+
+        .info-value.sold {
+            color: var(--sold);
+        }
+
+        .info-value.disputed {
+            color: var(--error);
+        }
+
+        .price-tag {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .history-section {
+            margin-top: 32px;
+        }
+
+        .history-section h4 {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 32px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 11px;
+            top: 8px;
+            bottom: 8px;
+            width: 2px;
+            background: var(--neutral-200);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 24px;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: -32px;
+            width: 24px;
+            height: 24px;
+            background: white;
+            border: 2px solid var(--secondary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .timeline-dot i {
+            font-size: 0.7rem;
+            color: var(--secondary);
+        }
+
+        .timeline-content {
+            background: var(--neutral-50);
+            border-radius: var(--radius);
+            padding: 16px 20px;
+            border: 1px solid var(--neutral-200);
+        }
+
+        .timeline-content .date {
+            font-size: 0.9rem;
+            color: var(--secondary);
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .result-actions {
+            display: flex;
+            gap: 16px;
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 2px solid var(--neutral-200);
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: var(--radius);
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .btn-success {
+            background: var(--available);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #0b9f6e;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--neutral-300);
+            color: var(--neutral-700);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .loading-spinner {
+            text-align: center;
+            padding: 60px;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--neutral-200);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 60px;
+            background: white;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--neutral-200);
+        }
+
+        .no-results i {
+            font-size: 4rem;
+            color: var(--neutral-300);
+            margin-bottom: 20px;
+        }
+
+        .no-results h3 {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+            color: var(--neutral-700);
+        }
+
+        /* Toast Container */
+        .toast-container {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            z-index: 9999;
+        }
+
+        .toast {
+            background: white;
+            border-radius: 0.5rem;
+            padding: 16px 20px;
+            margin-bottom: 12px;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 300px;
+            animation: slideIn 0.3s ease;
+            border-left: 4px solid;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* PDF Report Styles */
+        .report-container {
+            position: absolute;
+            left: -9999px;
+            top: 0;
+            width: 800px;
+            background: white;
+            padding: 40px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .report-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .report-header h1 {
+            color: var(--primary);
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        .report-header h2 {
+            color: var(--secondary);
+            font-size: 1.3rem;
+            font-weight: 500;
+        }
+
+        .report-section {
+            margin-bottom: 25px;
+        }
+
+        .report-section h3 {
+            color: var(--primary);
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--neutral-200);
+        }
+
+        .report-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .report-item {
+            margin-bottom: 12px;
+        }
+
+        .report-item strong {
+            display: block;
+            color: var(--neutral-600);
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+        }
+
+        .report-item span {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--neutral-900);
+        }
+
+        .report-status {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-weight: 600;
+        }
+
+        .report-status.available {
+            background: var(--available-light);
+            color: var(--available);
+        }
+
+        .report-status.sold {
+            background: var(--sold-light);
+            color: var(--sold);
+        }
+
+        .report-status.disputed {
+            background: var(--error-light);
+            color: var(--error);
+        }
+
+        .report-footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--neutral-200);
+            text-align: center;
+            color: var(--neutral-500);
+            font-size: 0.9rem;
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media screen and (max-width: 1024px) {
+            .profile-info {
+                display: none;
+            }
+
+            .notification-btn {
+                display: flex;
+            }
+
+            /* Mobile menu on tablet */
+            .mobile-menu { max-width: 280px; }
+        }
+
+        @media screen and (max-width: 900px) {
+            .nav-menu {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: flex;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .search-box {
+                flex-direction: column;
+            }
+
+            .search-btn {
+                width: 100%;
+                padding: 16px;
+                justify-content: center;
+            }
+
+            /* Navbar responsive */
+            .navbar { padding: 10px 0; }
+            .nav-container { padding: 0 12px; }
+            .logo-text { font-size: 1.1rem; }
+            .logo-icon { width: 36px; height: 36px; font-size: 1.3rem; }
+        }
+
+        @media screen and (max-width: 768px) {
+            .nav-container {
+                padding: 0 12px;
+            }
+
+            .logo-icon {
+                width: 32px;
+                height: 32px;
+            }
+
+            .logo-icon i {
+                font-size: 1.1rem;
+            }
+
+            .logo-text {
+                font-size: 1rem;
+            }
+
+            .logo-text .sub {
+                display: none;
+            }
+
+            .mobile-menu {
+                max-width: 85vw;
+            }
+
+            .mobile-avatar {
+                width: 40px;
+                height: 40px;
+                font-size: 0.9rem;
+            }
+
+            .mobile-user-details h4 {
+                font-size: 0.9rem;
+            }
+
+            .mobile-user-details p {
+                font-size: 0.75rem;
+            }
+
+            .mobile-menu-links a {
+                padding: 10px 16px;
+                font-size: 0.9rem;
+            }
+
+            .mobile-menu-section h3 {
+                padding: 10px 16px;
+                font-size: 0.8rem;
+            }
+
+            .main-content {
+                margin: 24px auto;
+                padding: 0 16px;
+            }
+
+            .page-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .search-header {
+                padding: 24px;
+            }
+
+            .search-header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .search-header-text h2 {
+                font-size: 1.5rem;
+            }
+
+            .search-body {
+                padding: 24px;
+            }
+
+            .example-ids {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .recent-searches {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .status-banner {
+                flex-direction: column;
+                text-align: center;
+                padding: 20px;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .result-actions {
+                flex-direction: column;
+            }
+
+            .result-actions .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .info-row {
+                flex-direction: column;
+                gap: 4px;
+            }
+
+            .info-label {
+                width: auto;
+            }
+
+            .toast {
+                min-width: auto;
+                width: calc(100vw - 32px);
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            /* Navbar ultra-compact */
+            .navbar { padding: 8px 0; }
+            .nav-container { padding: 0 8px; gap: 8px; }
+            .logo-icon { width: 28px; height: 28px; font-size: 1rem; }
+            .logo-text { font-size: 0.9rem; }
+            .logo-text .sub { display: none; }
+
+            /* Mobile menu ultra-compact */
+            .mobile-menu {
+                width: 85vw;
+                max-width: 260px;
+            }
+
+            .mobile-menu-header {
+                padding: 12px;
+            }
+
+            .mobile-avatar {
+                width: 36px;
+                height: 36px;
+                font-size: 0.85rem;
+            }
+
+            .mobile-user-details h4 {
+                font-size: 0.85rem;
+            }
+
+            .mobile-user-details p {
+                font-size: 0.7rem;
+            }
+
+            .mobile-menu-links a {
+                padding: 8px 12px;
+                font-size: 0.85rem;
+                gap: 8px;
+            }
+
+            .mobile-menu-section h3 {
+                padding: 8px 12px;
+                font-size: 0.75rem;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+
+            /* Page content */
+            .main-content { padding: 0 12px; margin: 20px auto; }
+            .page-header h1 { font-size: 1.4rem; margin-bottom: 16px; }
+            .page-header p { font-size: 0.9rem; }
+
+            /* Search area */
+            .search-header {
+                padding: 20px 16px;
+                border-radius: 12px;
+            }
+
+            .search-header-icon {
+                width: 48px;
+                height: 48px;
+                font-size: 1.4rem;
+            }
+
+            .search-header-text h2 {
+                font-size: 1.2rem;
+                line-height: 1.4;
+            }
+
+            .search-header-text p {
+                font-size: 0.85rem;
+            }
+
+            .search-body { padding: 16px; }
+
+            /* Search examples */
+            .example-chip {
+                padding: 6px 12px;
+                font-size: 0.8rem;
+                border-radius: 16px;
+            }
+
+            /* Search input */
+            .search-box {
+                margin: 16px 0;
+                gap: 8px;
+            }
+
+            .search-input {
+                padding: 12px;
+                font-size: 0.95rem;
+            }
+
+            .search-btn {
+                padding: 12px;
+                font-size: 0.85rem;
+            }
+
+            /* Results */
+            .result-content { padding: 16px 0; }
+
+            .status-banner {
+                padding: 16px;
+                gap: 12px;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+                padding: 0;
+            }
+
+            .info-card {
+                padding: 12px;
+            }
+
+            .info-card strong {
+                font-size: 0.8rem;
+            }
+
+            .result-actions {
+                gap: 8px;
+                margin-top: 20px;
+                padding-top: 16px;
+                flex-direction: column;
+            }
+
+            .result-actions .btn {
+                width: 100%;
+                padding: 12px;
+                font-size: 0.9rem;
+            }
+
+            /* Toast */
+            .toast {
+                min-width: auto;
+                width: calc(100vw - 24px);
+                font-size: 0.9rem;
+                padding: 12px 16px;
+            }
+
+            /* Touch targets */
+            button, .link { min-height: 44px; }
+        }
+
+        /* Touch-friendly */
+        @media (hover: none) and (pointer: coarse) {
+            .btn,
+            .search-btn,
+            .example-chip,
+            .recent-item,
+            .mobile-menu-btn,
+            .profile-btn {
+                min-height: 48px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Hidden Report Container for PDF Generation -->
+    <div id="reportContainer" class="report-container"></div>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo" onclick="return false;">
+                <div class="logo-icon">
+                    <i class="fas fa-map-marked-alt"></i>
+                </div>
+                <span class="logo-text">BueaLand<span>Registry</span></span>
+            </a>
+
+            <!-- Desktop Navigation -->
+            <div class="nav-menu">
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="userdashboard.html">Dashboard</a></li>
+                    <li><a href="LandVerificationPage.html" class="active">Verify Land</a></li>
+                    <li><a href="LandRegistrationPage.html">Register Land</a></li>
+                </ul>
+
+                <div class="user-menu">
+                    <button class="notification-btn" onclick="showToast('info', 'Notifications', 'You have 3 unread notifications')">
+                        <i class="fa-regular fa-bell"></i>
+                    </button>
+
+                    <div class="profile-menu" id="profileMenu">
+                        <button class="profile-btn" id="profileBtn">
+                            <div class="profile-avatar" id="profileAvatar">Ebort</div>
+                            <span class="profile-info" id="profileName">Prince</span>
+                            <i class="fas fa-chevron-down" style="font-size: 0.8rem; color: var(--neutral-400);"></i>
+                        </button>
+
+                        <div class="profile-dropdown" id="profileDropdown">
+                            <div class="dropdown-header-profile">
+                                <div class="name" id="dropdownPName">Prince Ebort</div>
+                                <div class="email" id="dropdownPEmail">prince@example.com</div>
+                            </div>
+                            <ul class="profile-dropdown-menu">
+                                <li><a href="profile.html" class="profile-dropdown-item"><i class="fas fa-user"></i> My Profile</a></li>
+                                <li><a href="my-properties.html" class="profile-dropdown-item"><i class="fas fa-map-marked-alt"></i> My Properties</a></li>
+                                <li><a href="transactions.html" class="profile-dropdown-item"><i class="fas fa-exchange-alt"></i> Transactions</a></li>
+                                <li><a href="settings.html" class="profile-dropdown-item"><i class="fas fa-cog"></i> Settings</a></li>
+                                <li class="dropdown-divider-profile"></li>
+                                <li><a href="index.html" class="profile-dropdown-item logout" id="verifyPageLogoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-overlay" id="mobileOverlay"></div>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-menu-header">
+            <div class="mobile-user-info">
+                <div class="mobile-avatar">Tomson Glen</div>
+                <div class="mobile-user-details">
+                    <h4>Tomson Glen</h4>
+                    <p>Buyer</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="mobile-menu-body">
+            <div class="mobile-menu-section">
+                <h3>Main Menu</h3>
+                <ul class="mobile-menu-links">
+                    <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="userdashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="LandVerificationPage.html" class="active"><i class="fas fa-search"></i> Verify Land</a></li>
+                    <li><a href="LandRegistrationPage.html"><i class="fas fa-plus-circle"></i> Register Land</a></li>
+                    <li><a href="my-properties.html"><i class="fas fa-map-marked-alt"></i> My Properties</a></li>
+                </ul>
+            </div>
+
+            <div class="mobile-menu-section">
+                <h3>Account</h3>
+                <ul class="mobile-menu-links">
+                    <li><a href="profile.html"><i class="fas fa-user"></i> Profile</a></li>
+                    <li><a href="notifications.html"><i class="fas fa-bell"></i> Notifications</a></li>
+                    <li><a href="settings.html"><i class="fas fa-cog"></i> Settings</a></li>
+                    <li><a href="login.html" class="mobile-logout" id="mobileLogoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="mobile-menu-footer">
+            <p>&copy; 2026 BueaLand Registry</p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1><i class="fas fa-search" style="color: var(--secondary);"></i> Verify Land Ownership</h1>
+            <p>Enter the Plot ID to verify land authenticity and availability before purchase</p>
+        </div>
+
+        <!-- Search Section -->
+        <div class="search-card">
+            <div class="search-header">
+                <div class="search-header-content">
+                    <div class="search-header-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="search-header-text">
+                        <h2>Plot Verification</h2>
+                        <p>Check ownership, availability and verification status</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="search-body">
+                <div class="search-box">
+                    <div class="search-input-wrapper">
+                        <i class="fas fa-map-pin"></i>
+                        <input type="text" id="plotIdInput" placeholder="Enter Plot ID (e.g., BUEA-2024-001)" value="BUEA-2024-001">
+                    </div>
+                    <button class="search-btn" onclick="verifyLand()">
+                        <i class="fas fa-search"></i>
+                        <span>Verify</span>
+                    </button>
+                </div>
+
+                <!-- Example Plot IDs -->
+                <div class="example-ids">
+                    <div class="example-label">
+                        <i class="fas fa-lightbulb"></i>
+                        <span>Try examples:</span>
+                    </div>
+                    <div class="example-chips">
+                        <span class="example-chip" onclick="setPlotId('BUEA-2024-001')">BUEA-2024-001 (Available)</span>
+                        <span class="example-chip" onclick="setPlotId('BUEA-2024-002')">BUEA-2024-002 (Sold)</span>
+                        <span class="example-chip" onclick="setPlotId('BUEA-2023-045')">BUEA-2023-045 (Disputed)</span>
+                    </div>
+                </div>
+
+                <!-- Recent Searches -->
+                <div class="recent-searches" id="recentSearches">
+                    <div class="recent-label">
+                        <i class="fas fa-history"></i>
+                        <span>Recent searches:</span>
+                    </div>
+                    <div class="recent-items" id="recentItems">
+                        <span class="recent-item">No recent searches</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Verification Result -->
+        <div id="resultSection">
+            <!-- Results will be displayed here -->
+        </div>
+    </main>
+
+    <script>
+        // ========== MOBILE MENU FUNCTIONALITY ==========
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileOverlay = document.getElementById('mobileOverlay');
+        const body = document.body;
+
+        function openMobileMenu() {
+            mobileMenu.classList.add('active');
+            mobileOverlay.classList.add('active');
+            mobileMenuBtn.classList.add('active');
+            mobileMenuBtn.innerHTML = '<i class="fas fa-times"></i>';
+            body.classList.add('menu-open');
+        }
+
+        function closeMobileMenu() {
+            mobileMenu.classList.remove('active');
+            mobileOverlay.classList.remove('active');
+            mobileMenuBtn.classList.remove('active');
+            mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+            body.classList.remove('menu-open');
+        }
+
+        mobileMenuBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (mobileMenu.classList.contains('active')) {
+                closeMobileMenu();
+            } else {
+                openMobileMenu();
+            }
+        });
+
+        mobileOverlay.addEventListener('click', closeMobileMenu);
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && mobileMenu.classList.contains('active')) {
+                closeMobileMenu();
+            }
+        });
+
+        // Close mobile menu when clicking on a link
+        window.closeMobileMenu = closeMobileMenu;
+
+        // ========== PROFILE DROPDOWN ==========
+        const profileMenu = document.getElementById('profileMenu');
+        const profileBtn = document.getElementById('profileBtn');
+        const profileDropdown = document.getElementById('profileDropdown');
+
+        profileBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            profileMenu.classList.toggle('active');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!profileMenu.contains(e.target)) {
+                profileMenu.classList.remove('active');
+            }
+        });
+
+        // ========== LOGOUT FUNCTION ==========
+        const verifyPageLogoutBtn = document.getElementById('verifyPageLogoutBtn');
+        if (verifyPageLogoutBtn) {
+            verifyPageLogoutBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                // Clear credentials
+                localStorage.removeItem('bueaUser');
+                // Redirect to login
+                window.location.href = 'login.html';
+            });
+        }
+
+        // ========== USER DATA LOADING ==========
+        // ========== USER PROFILE LOADING ==========
+        function loadProfileData() {
+            const current = localStorage.getItem('bueaUser');
+            if(current) {
+                const u = JSON.parse(current);
+                const firstName = u.name.split(' ')[0];
+                const initials = u.name.split(' ').map(n=>n[0]).join('').substring(0,2).toUpperCase();
+                
+                // Update Desktop Navbar
+                const pName = document.getElementById('profileName');
+                if(pName) pName.textContent = firstName;
+                
+                const pAvatar = document.getElementById('profileAvatar');
+                if(pAvatar) pAvatar.textContent = initials;
+                
+                const dName = document.getElementById('dropdownPName');
+                if(dName) dName.innerHTML = `${u.name} <span style="font-size: 0.7rem; background: var(--primary-soft); color: var(--primary); padding: 2px 8px; border-radius: 10px; margin-left: 5px;">You</span>`;
+                
+                const dEmail = document.getElementById('dropdownPEmail');
+                if(dEmail) dEmail.textContent = u.email || 'user@example.com';
+
+                // Update Mobile Menu
+                const mName = document.getElementById('mobileUserName');
+                if(mName) mName.innerHTML = `${u.name} (You)`;
+                
+                const mAvatar = document.getElementById('mobileAvatar');
+                if(mAvatar) mAvatar.textContent = initials;
+                
+                const mRole = document.getElementById('mobileUserRole');
+                if(mRole) mRole.textContent = u.role === 'admin' ? 'Administrator' : 'User Account';
+            } else {
+                window.location.href = 'login.html';
+            }
+        }
+
+        // ========== DATA LOADING ==========
+        function getCombinedProperties() {
+            const hardcoded = [
+                {
+                    id: 'BUEA-2024-001',
+                    owner: { name: 'Tayim Rene', id: 'USR001', registered: '2024-01-15', phone: '+237 677123456', email: 'tayim.rene@email.com' },
+                    location: 'Molyko, Buea', size: '500 sq m', coordinates: '4.1667° N, 9.2333° E', status: 'verified', availability: 'available', price: '15,000,000 FCFA', registeredDate: '2024-01-15', verifiedDate: '2024-01-20', certificateNumber: 'CERT-2024-001', landUse: 'Residential', documents: ['deed_001.pdf', 'survey_001.pdf'],
+                    history: [{ date: '2024-01-15', event: 'Land Registered', officer: 'Reg. Officer', details: 'Initial registration by Tayim Rene' }, { date: '2024-01-20', event: 'Land Verified', officer: 'Admin User', details: 'Verification completed' }]
+                },
+                {
+                    id: 'BUEA-2024-002',
+                    owner: { name: 'Akana Smith', id: 'USR002', registered: '2024-02-20', phone: '+237 677123457', email: 'akana.smith@email.com' },
+                    location: 'Bokwaongo, Buea', size: '750 sq m', coordinates: '4.1583° N, 9.2417° E', status: 'verified', availability: 'sold', price: '22,500,000 FCFA', registeredDate: '2024-02-20', verifiedDate: '2024-02-25', certificateNumber: 'CERT-2024-002', landUse: 'Commercial', soldDate: '2024-03-15', soldTo: 'Michael Johnson',
+                    history: [{ date: '2024-02-20', event: 'Land Registered', officer: 'Reg. Officer', details: 'Initial registration by Akana Smith' }, { date: '2024-03-15', event: 'Property Sold', officer: 'Transfer Officer', details: 'Sold to Michael Johnson' }]
+                }
+            ];
+            
+            const userProps = JSON.parse(localStorage.getItem('userProperties') || '[]');
+            
+            // Merge: User properties take priority if IDs match
+            const combined = [...userProps];
+            hardcoded.forEach(h => {
+                if (!combined.find(c => c.id === h.id)) {
+                    combined.push(h);
+                }
+            });
+            
+            return combined;
+        }
+
+        let propertiesDB = getCombinedProperties();
+
+        // ========== RECENT SEARCHES ==========
+        let recentSearches = JSON.parse(localStorage.getItem('recentSearches')) || [];
+
+        function updateRecentSearches(plotId) {
+            recentSearches = recentSearches.filter(id => id !== plotId);
+            recentSearches.unshift(plotId);
+            recentSearches = recentSearches.slice(0, 5);
+            localStorage.setItem('recentSearches', JSON.stringify(recentSearches));
+            displayRecentSearches();
+        }
+
+        function displayRecentSearches() {
+            const container = document.getElementById('recentItems');
+            if (recentSearches.length === 0) {
+                container.innerHTML = '<span class="recent-item">No recent searches</span>';
+                return;
+            }
+
+            container.innerHTML = recentSearches.map(id => `
+                <span class="recent-item" onclick="setPlotId('${id}')">
+                    <i class="fas fa-history"></i> ${id}
+                </span>
+            `).join('');
+        }
+
+        function setPlotId(id) {
+            document.getElementById('plotIdInput').value = id;
+            verifyLand();
+        }
+
+        // ========== TOAST NOTIFICATIONS ==========
+        function showToast(type, title, message) {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            const colors = {
+                success: '#10b981',
+                error: '#ef4444',
+                info: '#3b82f6'
+            };
+            
+            toast.style.borderLeftColor = colors[type];
+            
+            toast.innerHTML = `
+                <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}" 
+                   style="font-size: 1.3rem; color: ${colors[type]};"></i>
+                <div style="flex: 1;">
+                    <div style="font-weight: 600; margin-bottom: 4px;">${title}</div>
+                    <div style="font-size: 0.9rem; color: var(--neutral-600);">${message}</div>
+                </div>
+            `;
+            
+            container.appendChild(toast);
+            setTimeout(() => toast.remove(), 5000);
+        }
+
+        // ========== PDF GENERATION FUNCTION ==========
+        async function downloadPDF(property) {
+            showToast('info', 'Generating PDF', 'Please wait...');
+            
+            // Create report HTML
+            const reportContainer = document.getElementById('reportContainer');
+            
+            const availabilityText = property.availability === 'available' ? 'AVAILABLE FOR PURCHASE' : 
+                                     property.availability === 'sold' ? 'SOLD' : 'UNAVAILABLE (DISPUTED)';
+            
+            const availabilityClass = property.availability === 'available' ? 'available' : 
+                                      property.availability === 'sold' ? 'sold' : 'disputed';
+            
+            const historyHTML = property.history.map(item => `
+                <tr>
+                    <td style="padding: 8px; border-bottom: 1px solid #e5e7eb;">${item.date}</td>
+                    <td style="padding: 8px; border-bottom: 1px solid #e5e7eb;">${item.event}</td>
+                    <td style="padding: 8px; border-bottom: 1px solid #e5e7eb;">${item.details}</td>
+                </tr>
+            `).join('');
+
+            reportContainer.innerHTML = `
+                <div style="font-family: 'Inter', sans-serif; max-width: 800px; margin: 0 auto; padding: 40px;">
+                    <div style="text-align: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 2px solid #0B3B2A;">
+                        <h1 style="color: #0B3B2A; font-size: 2rem; margin-bottom: 8px;">BueaLand Registry</h1>
+                        <h2 style="color: #B48B4A; font-size: 1.3rem; font-weight: 500;">Official Land Verification Report</h2>
+                    </div>
+                    
+                    <div style="margin-bottom: 25px;">
+                        <div style="background: ${property.availability === 'available' ? '#d1fae5' : property.availability === 'sold' ? '#f3f4f6' : '#fee2e2'}; padding: 20px; border-radius: 8px; text-align: center;">
+                            <span style="display: inline-block; padding: 8px 24px; border-radius: 40px; font-weight: 600; background: white; color: ${property.availability === 'available' ? '#10b981' : property.availability === 'sold' ? '#6b7280' : '#ef4444'};">
+                                ${availabilityText}
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 25px;">
+                        <h3 style="color: #0B3B2A; font-size: 1.2rem; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 1px solid #e5e7eb;">Plot Information</h3>
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <tr>
+                                <td style="padding: 8px 0; width: 150px; color: #6b7280;">Plot ID:</td>
+                                <td style="padding: 8px 0; font-weight: 600;">${property.id}</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px 0; color: #6b7280;">Location:</td>
+                                <td style="padding: 8px 0; font-weight: 600;">${property.location}</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px 0; color: #6b7280;">Size:</td>
+                                <td style="padding: 8px 0; font-weight: 600;">${property.size}</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px 0; color: #6b7280;">Coordinates:</td>
+                                <td style="padding: 8px 0; font-weight: 600;">${property.coordinates}</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px 0; color: #6b7280;">Land Use:</td>
+                                <td style="padding: 8px 0; font-weight: 600;">${property.landUse || 'Residential'}</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px 0; color: #6b7280;">Price:</td>
+                                <td style="padding: 8px 0; font-weight: 600; color: #0B3B2A;">${property.price}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    
+                    <div style="margin-bottom: 25px;">
+                        <h3 style="color: #0B3B2A; font-size: 1.2rem; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 1px solid #e5e7eb;">Owner Information</h3>
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <tr>
+                                <td style="padding: 8px 0; width: 150px; color: #6b7280;">Owner Name:</td>
+                                <td style="padding: 8px 0; font-weight: 600;">${property.owner.name}</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px 0; color: #6b7280;">Owner ID:</td>
+                                <td style="padding: 8px 0; font-weight: 600;">${property.owner.id}</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px 0; color: #6b7280;">Phone:</td>
+                                <td style="padding: 8px 0; font-weight: 600;">${property.owner.phone}</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px 0; color: #6b7280;">Email:</td>
+                                <td style="padding: 8px 0; font-weight: 600;">${property.owner.email}</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px 0; color: #6b7280;">Registered Since:</td>
+                                <td style="padding: 8px 0; font-weight: 600;">${property.owner.registered}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    
+                    <div style="margin-bottom: 25px;">
+                        <h3 style="color: #0B3B2A; font-size: 1.2rem; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 1px solid #e5e7eb;">Registration Details</h3>
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <tr>
+                                <td style="padding: 8px 0; width: 150px; color: #6b7280;">Registered:</td>
+                                <td style="padding: 8px 0; font-weight: 600;">${property.registeredDate}</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px 0; color: #6b7280;">Verified:</td>
+                                <td style="padding: 8px 0; font-weight: 600;">${property.verifiedDate}</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px 0; color: #6b7280;">Certificate:</td>
+                                <td style="padding: 8px 0; font-weight: 600;">${property.certificateNumber}</td>
+                            </tr>
+                            ${property.soldDate ? `
+                            <tr>
+                                <td style="padding: 8px 0; color: #6b7280;">Sold Date:</td>
+                                <td style="padding: 8px 0; font-weight: 600;">${property.soldDate}</td>
+                            </tr>
+                            ` : ''}
+                            ${property.soldTo ? `
+                            <tr>
+                                <td style="padding: 8px 0; color: #6b7280;">Sold To:</td>
+                                <td style="padding: 8px 0; font-weight: 600;">${property.soldTo}</td>
+                            </tr>
+                            ` : ''}
+                            ${property.disputeCase ? `
+                            <tr>
+                                <td style="padding: 8px 0; color: #6b7280;">Dispute Case:</td>
+                                <td style="padding: 8px 0; font-weight: 600;">${property.disputeCase}</td>
+                            </tr>
+                            ` : ''}
+                        </table>
+                    </div>
+                    
+                    <div style="margin-bottom: 25px;">
+                        <h3 style="color: #0B3B2A; font-size: 1.2rem; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 1px solid #e5e7eb;">Ownership History</h3>
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <thead>
+                                <tr style="background: #f3f4f6;">
+                                    <th style="padding: 10px; text-align: left;">Date</th>
+                                    <th style="padding: 10px; text-align: left;">Event</th>
+                                    <th style="padding: 10px; text-align: left;">Details</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${historyHTML}
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #e5e7eb; text-align: center; color: #6b7280; font-size: 0.9rem;">
+                        <p>This is an official verification report from BueaLand Registry.</p>
+                        <p>Generated on: ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}</p>
+                        <p style="margin-top: 10px;">Report ID: RPT-${Date.now()}</p>
+                    </div>
+                </div>
+            `;
+
+            try {
+                // Generate PDF
+                const { jsPDF } = window.jspdf;
+                const canvas = await html2canvas(reportContainer, {
+                    scale: 2,
+                    backgroundColor: '#ffffff'
+                });
+                
+                const imgData = canvas.toDataURL('image/png');
+                const pdf = new jsPDF({
+                    orientation: 'portrait',
+                    unit: 'px',
+                    format: [canvas.width * 0.75, canvas.height * 0.75]
+                });
+                
+                pdf.addImage(imgData, 'PNG', 0, 0, canvas.width * 0.75, canvas.height * 0.75);
+                pdf.save(`Land_Verification_Report_${property.id}.pdf`);
+                
+                showToast('success', 'Success', 'PDF downloaded successfully');
+            } catch (error) {
+                console.error('PDF generation error:', error);
+                showToast('error', 'Error', 'Failed to generate PDF. Please try again.');
+            }
+        }
+
+        // ========== VERIFICATION FUNCTION ==========
+        function verifyLand() {
+            const plotId = document.getElementById('plotIdInput').value.trim();
+            const resultSection = document.getElementById('resultSection');
+            
+            if (!plotId) {
+                showToast('error', 'Error', 'Please enter a Plot ID');
+                return;
+            }
+
+            updateRecentSearches(plotId);
+
+            // Show loading
+            resultSection.innerHTML = `
+                <div class="loading-spinner">
+                    <div class="spinner"></div>
+                </div>
+            `;
+
+            // Simulate API call
+            setTimeout(() => {
+                propertiesDB = getCombinedProperties(); // Refresh from storage
+                const property = propertiesDB.find(p => p.id === plotId);
+
+                if (property) {
+                    displayResult(property);
+                } else {
+                    displayNotFound(plotId);
+                }
+            }, 20);
+        }
+
+        function displayResult(property) {
+            const resultSection = document.getElementById('resultSection');
+            
+            const statusClass = property.status === 'verified' ? 
+                (property.availability === 'available' ? 'verified-available' : 'verified-sold') : 'disputed';
+            
+            const statusIcon = property.status === 'verified' ? 'fa-check-circle' : 'fa-exclamation-triangle';
+            
+            const availabilityText = property.availability === 'available' ? 'Available for Purchase' : 
+                                     property.availability === 'sold' ? 'Sold' : 'Unavailable';
+            
+            const availabilityClass = property.availability === 'available' ? 'available' : 
+                                      property.availability === 'sold' ? 'sold' : 'disputed';
+            
+            const historyHTML = property.history.map(item => `
+                <div class="timeline-item">
+                    <div class="timeline-dot">
+                        <i class="fas fa-circle"></i>
+                    </div>
+                    <div class="timeline-content">
+                        <div class="date">${item.date}</div>
+                        <div style="font-weight: 600; margin-bottom: 4px;">${item.event}</div>
+                        <div style="color: var(--neutral-600);">${item.details} • ${item.officer}</div>
+                    </div>
+                </div>
+            `).join('');
+
+            resultSection.innerHTML = `
+                <div class="result-card">
+                    <div class="status-banner ${statusClass}">
+                        <div class="status-icon">
+                            <i class="fas ${statusIcon}"></i>
+                        </div>
+                        <div class="status-text">
+                            <h3>${property.status === 'verified' ? 'Verified Land' : 'Disputed Land'}</h3>
+                            <p>
+                                ${property.status === 'verified' 
+                                    ? (property.availability === 'available' 
+                                        ? 'This land is verified and available for purchase' 
+                                        : 'This land is verified but has been sold')
+                                    : 'This land has an active dispute'}
+                            </p>
+                        </div>
+                        <div class="status-badge ${availabilityClass}">${availabilityText}</div>
+                    </div>
+
+                    <div class="result-body">
+                        <div class="info-grid">
+                            <!-- Owner Info -->
+                            <div class="info-card">
+                                <h4><i class="fas fa-user"></i> Owner Information</h4>
+                                <div class="info-row">
+                                    <span class="info-label">Name:</span>
+                                    <span class="info-value">${property.owner.name}</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label">Owner ID:</span>
+                                    <span class="info-value">${property.owner.id}</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label">Phone:</span>
+                                    <span class="info-value">${property.owner.phone}</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label">Since:</span>
+                                    <span class="info-value">${property.owner.registered}</span>
+                                </div>
+                            </div>
+
+                            <!-- Plot Info -->
+                            <div class="info-card">
+                                <h4><i class="fas fa-map-marked-alt"></i> Plot Information</h4>
+                                <div class="info-row">
+                                    <span class="info-label">Plot ID:</span>
+                                    <span class="info-value">${property.id}</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label">Location:</span>
+                                    <span class="info-value">${property.location}</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label">Size:</span>
+                                    <span class="info-value">${property.size}</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label">Coordinates:</span>
+                                    <span class="info-value">${property.coordinates}</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label">Price:</span>
+                                    <span class="info-value price-tag">${property.price}</span>
+                                </div>
+                            </div>
+
+                            <!-- Registration Info -->
+                            <div class="info-card">
+                                <h4><i class="fas fa-calendar"></i> Registration Details</h4>
+                                <div class="info-row">
+                                    <span class="info-label">Registered:</span>
+                                    <span class="info-value">${property.registeredDate}</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label">Verified:</span>
+                                    <span class="info-value">${property.verifiedDate}</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label">Certificate:</span>
+                                    <span class="info-value">${property.certificateNumber}</span>
+                                </div>
+                                ${property.soldDate ? `
+                                <div class="info-row">
+                                    <span class="info-label">Sold Date:</span>
+                                    <span class="info-value">${property.soldDate}</span>
+                                </div>
+                                ` : ''}
+                                ${property.soldTo ? `
+                                <div class="info-row">
+                                    <span class="info-label">Sold To:</span>
+                                    <span class="info-value">${property.soldTo}</span>
+                                </div>
+                                ` : ''}
+                            </div>
+
+                            <!-- Status Info -->
+                            <div class="info-card">
+                                <h4><i class="fas fa-shield-alt"></i> Status Information</h4>
+                                <div class="info-row">
+                                    <span class="info-label">Verification:</span>
+                                    <span class="info-value ${property.status}">${property.status.toUpperCase()}</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label">Availability:</span>
+                                    <span class="info-value ${availabilityClass}">
+                                        ${availabilityText}
+                                        ${property.availability === 'available' 
+                                            ? '<span class="availability-tag available">For Sale</span>' 
+                                            : property.availability === 'sold' 
+                                            ? '<span class="availability-tag sold">Sold</span>' 
+                                            : ''}
+                                    </span>
+                                </div>
+                                ${property.disputeDetails ? `
+                                <div class="info-row">
+                                    <span class="info-label">Dispute:</span>
+                                    <span class="info-value">${property.disputeDetails}</span>
+                                </div>
+                                ` : ''}
+                                ${property.disputeCase ? `
+                                <div class="info-row">
+                                    <span class="info-label">Case No:</span>
+                                    <span class="info-value">${property.disputeCase}</span>
+                                </div>
+                                ` : ''}
+                            </div>
+                        </div>
+
+                        <!-- History -->
+                        <div class="history-section">
+                            <h4><i class="fas fa-history"></i> Ownership History</h4>
+                            <div class="timeline">
+                                ${historyHTML}
+                            </div>
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="result-actions">
+                            <button class="btn btn-primary" onclick="downloadPDF(${JSON.stringify(property).replace(/"/g, '&quot;')})">
+                                <i class="fas fa-file-pdf"></i> Download PDF Report
+                            </button>
+                            ${property.availability === 'available' ? `
+                            <button class="btn btn-success" onclick="showToast('success', 'Inquiry Sent', 'Your inquiry has been sent to the owner')">
+                                <i class="fas fa-handshake"></i> Express Interest
+                            </button>
+                            ` : ''}
+                            <button class="btn btn-outline" onclick="showToast('info', 'Contact Owner', 'Message sent to ${property.owner.name}')">
+                                <i class="fas fa-envelope"></i> Contact Owner
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function displayNotFound(plotId) {
+            const resultSection = document.getElementById('resultSection');
+            resultSection.innerHTML = `
+                <div class="no-results">
+                    <i class="fas fa-map-pin"></i>
+                    <h3>Plot ID Not Found</h3>
+                    <p>No land registered with Plot ID: <strong>${plotId}</strong></p>
+                    <button class="btn btn-primary" style="margin-top: 24px;" onclick="document.getElementById('plotIdInput').focus()">
+                        <i class="fas fa-search"></i> Try Again
+                    </button>
+                </div>
+            `;
+        }
+
+        // ========== ENTER KEY SUPPORT ==========
+        document.getElementById('plotIdInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                verifyLand();
+            }
+        });
+
+        // ========== INITIALIZE ==========
+        window.addEventListener('load', () => {
+            loadProfileData();
+            displayRecentSearches();
+            // Auto-verify default ID on load
+            setTimeout(verifyLand, 500);
+        });
+    </script>
+</body>
+</html>

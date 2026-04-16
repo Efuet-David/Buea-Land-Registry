@@ -1,0 +1,2883 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Register Land | Buea Land Registry</title>
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- Leaflet JS CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <style>
+        /* ========== CSS RESET & PROFESSIONAL VARIABLES ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-50: #f0f9f6;
+            --primary-100: #dcf0e9;
+            --primary-200: #b9e1d3;
+            --primary-300: #8fcbbc;
+            --primary-400: #65b5a5;
+            --primary-500: #0B3B2A;
+            --primary-600: #093223;
+            --primary-700: #07291d;
+            --primary-800: #052016;
+            --primary-900: #031710;
+
+            --secondary-50: #fef9f0;
+            --secondary-100: #fdf0da;
+            --secondary-200: #fbe1b5;
+            --secondary-300: #f9d290;
+            --secondary-400: #f7c36b;
+            --secondary-500: #B48B4A;
+            --secondary-600: #9c763d;
+            --secondary-700: #846231;
+
+            --neutral-50: #f9fafb;
+            --neutral-100: #f3f4f6;
+            --neutral-200: #e5e7eb;
+            --neutral-300: #d1d5db;
+            --neutral-400: #9ca3af;
+            --neutral-500: #6b7280;
+            --neutral-600: #4b5563;
+            --neutral-700: #374151;
+            --neutral-800: #1f2937;
+            --neutral-900: #111827;
+
+            --success-50: #ecfdf5;
+            --success-500: #10b981;
+            --success-700: #047857;
+
+            --warning-50: #fffbeb;
+            --warning-500: #f59e0b;
+            --warning-700: #b45309;
+
+            --error-50: #fef2f2;
+            --error-500: #ef4444;
+            --error-700: #b91c1c;
+
+            --info-50: #eff6ff;
+            --info-500: #3b82f6;
+            --info-700: #1d4ed8;
+
+            --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+
+            --radius-sm: 0.375rem;
+            --radius: 0.5rem;
+            --radius-md: 0.75rem;
+            --radius-lg: 1rem;
+            --radius-xl: 1.5rem;
+
+            --transition-all: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            --sidebar-width: 280px;
+            --header-height: 72px;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--neutral-50);
+            color: var(--neutral-900);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-weight: 600;
+            letter-spacing: -0.025em;
+        }
+
+        /* ========== LAYOUT ========== */
+        .app-wrapper {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ========== TOP NAVIGATION ========== */
+        .navbar {
+            background: white;
+            border-bottom: 1px solid var(--neutral-200);
+            position: sticky;
+            top: 0;
+            z-index: 40;
+            padding: 16px 0;
+            display: flex;
+            align-items: center;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .nav-container {
+            width: 100%;
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            z-index: 50;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary-500), var(--primary-700));
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition-all);
+        }
+
+        .logo:hover .logo-icon {
+            transform: scale(1.05);
+        }
+
+        .logo-text {
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--neutral-900);
+            letter-spacing: -0.5px;
+        }
+
+        .logo-text span {
+            color: var(--secondary-500);
+            font-weight: 800;
+        }
+
+        /* Navigation Menu */
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 24px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--neutral-700);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: var(--transition-all);
+            padding: 8px 16px;
+            border-radius: var(--radius);
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--primary-500);
+            background: var(--primary-50);
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .notification-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius);
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            color: var(--neutral-600);
+            transition: var(--transition-all);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .notification-btn:hover {
+            background: var(--neutral-100);
+            color: var(--primary-500);
+        }
+
+        .profile-menu {
+            position: relative;
+        }
+
+        .profile-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 4px 8px 4px 4px;
+            background: transparent;
+            border: none;
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            transition: var(--transition-all);
+        }
+
+        .profile-btn:hover {
+            background: var(--neutral-100);
+        }
+
+        .profile-avatar {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--primary-500), var(--primary-700));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .profile-info {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--neutral-900);
+            display: none;
+        }
+
+        .profile-dropdown {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            width: 280px;
+            background: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-2xl);
+            border: 1px solid var(--neutral-200);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: var(--transition-all);
+            z-index: 50;
+        }
+
+        .profile-menu.active .profile-dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-header-profile {
+            padding: 20px;
+            border-bottom: 1px solid var(--neutral-200);
+        }
+
+        .dropdown-header-profile .name {
+            font-weight: 600;
+            color: var(--neutral-900);
+            margin-bottom: 4px;
+        }
+
+        .dropdown-header-profile .email {
+            font-size: 0.9rem;
+            color: var(--neutral-500);
+        }
+
+        .profile-dropdown-menu {
+            padding: 8px;
+            list-style: none;
+        }
+
+        .profile-dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: var(--radius);
+            color: var(--neutral-700);
+            text-decoration: none;
+            transition: var(--transition-all);
+            font-size: 0.95rem;
+        }
+
+        .profile-dropdown-item i {
+            width: 20px;
+            color: var(--neutral-400);
+            transition: var(--transition-all);
+        }
+
+        .profile-dropdown-item:hover {
+            background: var(--primary-50);
+            color: var(--primary-700);
+        }
+
+        .profile-dropdown-item:hover i {
+            color: var(--primary-500);
+        }
+
+        .dropdown-divider-profile {
+            height: 1px;
+            background: var(--neutral-200);
+            margin: 8px;
+        }
+
+        .profile-dropdown-item.logout {
+            color: var(--error-500);
+        }
+
+        .profile-dropdown-item.logout i {
+            color: var(--error-400);
+        }
+
+        .profile-dropdown-item.logout:hover {
+            background: var(--error-50);
+        }
+
+        .user-menu-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 6px 12px 6px 6px;
+            background: transparent;
+            border: none;
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            transition: var(--transition-all);
+        }
+
+        .user-menu-btn:hover {
+            background: var(--neutral-100);
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary-500), var(--primary-700));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .user-info {
+            text-align: left;
+            display: none;
+        }
+
+        .user-info .name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--neutral-900);
+        }
+
+        .user-info .role {
+            font-size: 0.8rem;
+            color: var(--neutral-500);
+        }
+
+        .user-menu {
+            position: relative;
+        }
+
+        .user-dropdown {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            width: 280px;
+            background: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-2xl);
+            border: 1px solid var(--neutral-200);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: var(--transition-all);
+            z-index: 50;
+        }
+
+        .user-menu.active .user-dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--neutral-200);
+        }
+
+        .dropdown-header .name {
+            font-weight: 600;
+            color: var(--neutral-900);
+            margin-bottom: 4px;
+        }
+
+        .dropdown-header .email {
+            font-size: 0.9rem;
+            color: var(--neutral-500);
+        }
+
+        .dropdown-menu {
+            padding: 8px;
+            list-style: none;
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: var(--radius);
+            color: var(--neutral-700);
+            text-decoration: none;
+            transition: var(--transition-all);
+            font-size: 0.95rem;
+        }
+
+        .dropdown-item i {
+            width: 20px;
+            color: var(--neutral-400);
+            transition: var(--transition-all);
+        }
+
+        .dropdown-item:hover {
+            background: var(--primary-50);
+            color: var(--primary-700);
+        }
+
+        .dropdown-item:hover i {
+            color: var(--primary-500);
+        }
+
+        .dropdown-divider {
+            height: 1px;
+            background: var(--neutral-200);
+            margin: 8px;
+        }
+
+        .dropdown-item.logout {
+            color: var(--error-500);
+        }
+
+        .dropdown-item.logout i {
+            color: var(--error-400);
+        }
+
+        .dropdown-item.logout:hover {
+            background: var(--error-50);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            width: 44px;
+            height: 44px;
+            border-radius: var(--radius);
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--neutral-600);
+            transition: var(--transition-all);
+            z-index: 51;
+        }
+
+        .mobile-menu-btn:hover {
+            background: var(--neutral-100);
+            color: var(--primary-500);
+        }
+
+        .mobile-menu-btn.active {
+            color: var(--primary-500);
+        }
+
+        .mobile-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 48;
+        }
+
+        .mobile-overlay.active {
+            display: block;
+        }
+
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 72px;
+            left: 0;
+            width: 100%;
+            max-width: 300px;
+            height: calc(100vh - 72px);
+            background: white;
+            box-shadow: var(--shadow-2xl);
+            z-index: 49;
+            overflow-y: auto;
+            transform: translateX(-100%);
+            transition: var(--transition-all);
+        }
+
+        .mobile-menu.active {
+            display: block;
+            transform: translateX(0);
+        }
+
+        .mobile-menu-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--neutral-200);
+            background: var(--primary-50);
+        }
+
+        .mobile-user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .mobile-avatar {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--primary-500), var(--primary-700));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .mobile-user-details h4 {
+            font-weight: 600;
+            color: var(--neutral-900);
+            margin: 0 0 2px 0;
+            font-size: 0.95rem;
+        }
+
+        .mobile-user-details p {
+            font-size: 0.8rem;
+            color: var(--neutral-500);
+            margin: 0;
+        }
+
+        .mobile-menu-body {
+            padding: 16px 0;
+        }
+
+        .mobile-menu-section {
+            margin-bottom: 16px;
+        }
+
+        .mobile-menu-section h3 {
+            padding: 12px 20px;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            color: var(--neutral-500);
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .mobile-menu-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .mobile-menu-links li {
+            margin: 0;
+        }
+
+        .mobile-menu-links a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 20px;
+            color: var(--neutral-700);
+            text-decoration: none;
+            transition: var(--transition-all);
+            font-size: 0.95rem;
+        }
+
+        .mobile-menu-links a i {
+            width: 20px;
+            color: var(--neutral-400);
+            transition: var(--transition-all);
+        }
+
+        .mobile-menu-links a:hover {
+            background: var(--primary-50);
+            color: var(--primary-700);
+            padding-left: 24px;
+        }
+
+        .mobile-menu-links a:hover i {
+            color: var(--primary-500);
+        }
+
+        .mobile-menu-links a.active {
+            background: var(--primary-100);
+            color: var(--primary-700);
+            border-left: 3px solid var(--primary-500);
+            padding-left: 17px;
+        }
+
+        .mobile-menu-links a.active i {
+            color: var(--primary-500);
+        }
+
+        .mobile-menu-links a.mobile-logout {
+            color: var(--error-500);
+        }
+
+        .mobile-menu-links a.mobile-logout i {
+            color: var(--error-400);
+        }
+
+        .mobile-menu-links a.mobile-logout:hover {
+            background: var(--error-50);
+        }
+
+        .mobile-menu-footer {
+            padding: 16px 20px;
+            border-top: 1px solid var(--neutral-200);
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--neutral-500);
+            margin-top: auto;
+        }
+
+        /* ========== RESPONSIVE NAVBAR ========== */
+
+        /* ========== MAIN LAYOUT ========== */
+        .main-layout {
+            display: flex;
+            flex: 1;
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 24px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        /* ========== SIDEBAR ========== */
+        .sidebar {
+            display: none;
+        }
+
+        .sidebar-section {
+            margin-bottom: 32px;
+        }
+
+        .sidebar-section h3 {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            color: var(--neutral-500);
+            margin-bottom: 16px;
+            padding-left: 12px;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 4px;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: var(--radius);
+            color: var(--neutral-700);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition-all);
+        }
+
+        .sidebar-menu a i {
+            width: 24px;
+            color: var(--neutral-400);
+            transition: var(--transition-all);
+        }
+
+        .sidebar-menu a:hover {
+            background: var(--primary-50);
+            color: var(--primary-700);
+        }
+
+        .sidebar-menu a:hover i {
+            color: var(--primary-500);
+        }
+
+        .sidebar-menu a.active {
+            background: var(--primary-500);
+            color: white;
+        }
+
+        .sidebar-menu a.active i {
+            color: white;
+        }
+
+        .menu-badge {
+            margin-left: auto;
+            background: var(--secondary-500);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .main-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        /* ========== PAGE HEADER ========== */
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .page-title h1 {
+            font-size: 1.8rem;
+            color: var(--neutral-900);
+            margin-bottom: 4px;
+        }
+
+        .page-title p {
+            color: var(--neutral-500);
+            font-size: 0.95rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: var(--radius);
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-decoration: none;
+            cursor: pointer;
+            transition: var(--transition-all);
+            border: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-500), var(--primary-700));
+            color: white;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* ========== FILTERS ========== */
+        .filters-bar {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 16px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--neutral-200);
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+            position: relative;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--neutral-400);
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 16px 12px 40px;
+            border: 1px solid var(--neutral-300);
+            border-radius: var(--radius);
+            font-size: 0.95rem;
+            color: var(--neutral-900);
+            transition: var(--transition-all);
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary-500);
+            box-shadow: 0 0 0 3px var(--primary-100);
+        }
+
+        .filter-select {
+            padding: 12px 16px;
+            border: 1px solid var(--neutral-300);
+            border-radius: var(--radius);
+            font-size: 0.95rem;
+            color: var(--neutral-700);
+            background-color: white;
+            cursor: pointer;
+            min-width: 150px;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: var(--primary-500);
+        }
+
+        /* ========== PROPERTIES GRID ========== */
+        .properties-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .property-card {
+            background: white;
+            border-radius: var(--radius-xl);
+            border: 1px solid transparent;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.04);
+            transition: var(--transition-all);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .property-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 40px rgba(11, 59, 42, 0.1);
+            border-color: var(--primary-200);
+        }
+
+        .property-image {
+            height: 180px;
+            background: var(--neutral-100);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .property-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .property-card:hover .property-image img {
+            transform: scale(1.05);
+        }
+
+        .property-image::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.5) 100%);
+            pointer-events: none;
+        }
+
+        .property-image-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--neutral-100), var(--neutral-200));
+            color: var(--neutral-400);
+            font-size: 3rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .status-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            padding: 4px 12px;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .status-badge.verified {
+            background: var(--success-500);
+            color: white;
+        }
+
+        .status-badge.pending {
+            background: var(--warning-500);
+            color: white;
+        }
+
+        .status-badge.disputed {
+            background: var(--error-500);
+            color: white;
+        }
+
+        .property-body {
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .property-title {
+            font-size: 1.1rem;
+            color: var(--neutral-900);
+            margin-bottom: 4px;
+        }
+
+        .property-location {
+            color: var(--neutral-500);
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .property-details {
+            margin-top: auto;
+            padding: 16px 0;
+            border-top: 1px solid var(--neutral-100);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .detail-label {
+            font-size: 0.75rem;
+            color: var(--neutral-500);
+            margin-bottom: 2px;
+        }
+
+        .detail-val {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--neutral-800);
+        }
+
+        .property-actions {
+            padding: 16px 20px;
+            background: var(--neutral-50);
+            border-top: 1px solid var(--neutral-200);
+            display: flex;
+            gap: 12px;
+            justify-content: space-between;
+        }
+
+        .btn-outline {
+            flex: 1;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+            padding: 8px;
+            border: 1px solid var(--neutral-300);
+            border-radius: var(--radius);
+            background: white;
+            color: var(--neutral-700);
+            font-weight: 500;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: var(--transition-all);
+        }
+
+        .btn-outline:hover {
+            background: var(--neutral-100);
+            color: var(--primary-600);
+            border-color: var(--primary-300);
+        }
+
+        .btn-icon {
+            padding: 8px 12px;
+            border-radius: var(--radius);
+            background: var(--primary-50);
+            color: var(--primary-600);
+            border: 1px solid var(--primary-100);
+            cursor: pointer;
+            transition: var(--transition-all);
+        }
+
+        .btn-icon:hover {
+            background: var(--primary-100);
+            color: var(--primary-700);
+        }
+
+        /* ========== MODAL STYLES ========== */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition-all);
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: var(--radius-xl);
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-2xl);
+            transform: translateY(20px);
+            transition: var(--transition-all);
+            position: relative;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--neutral-200);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 10;
+            border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+        }
+
+        .modal-header h2 {
+            font-size: 1.25rem;
+            color: var(--neutral-900);
+        }
+
+        .modal-close {
+            background: transparent;
+            border: none;
+            color: var(--neutral-500);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: var(--transition-all);
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius);
+        }
+
+        .modal-close:hover {
+            background: var(--neutral-100);
+            color: var(--neutral-900);
+        }
+
+        .modal-body {
+            padding: 24px;
+        }
+
+        .modal-hero-img {
+            width: 100%;
+            height: 200px;
+            border-radius: var(--radius-lg);
+            object-fit: cover;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--neutral-100);
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-row .label {
+            color: var(--neutral-500);
+            font-size: 0.9rem;
+        }
+
+        .detail-row .val {
+            font-weight: 600;
+            color: var(--neutral-900);
+            font-size: 0.95rem;
+            text-align: right;
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media screen and (min-width: 1024px) {
+            .user-info {
+                display: block;
+            }
+        }
+
+        @media screen and (max-width: 1024px) {
+            .sidebar {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: flex;
+            }
+
+            .main-layout {
+                padding: 16px;
+            }
+
+            /* Navbar responsive */
+            .navbar {
+                padding: 12px 0;
+            }
+
+            .nav-links {
+                gap: 16px;
+                display: none;
+            }
+
+            .nav-menu {
+                display: none !important;
+            }
+
+            .nav-container {
+                padding: 0 16px;
+            }
+
+            .logo {
+                gap: 8px;
+            }
+
+            .logo-text {
+                font-size: 1.1rem;
+            }
+
+            .logo-icon {
+                width: 36px;
+                height: 36px;
+                font-size: 1.3rem;
+            }
+
+            .profile-info {
+                display: none !important;
+            }
+
+            .notification-btn {
+                display: none;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            .properties-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filters-bar {
+                flex-direction: column;
+            }
+
+            .filter-select {
+                width: 100%;
+            }
+
+            /* Navbar */
+            .navbar {
+                padding: 10px 0;
+            }
+
+            .nav-container {
+                padding: 0 12px;
+            }
+
+            .mobile-menu {
+                max-width: 85vw;
+            }
+
+            .logo-text {
+                font-size: 1rem;
+            }
+
+            .logo-text .sub {
+                display: none;
+            }
+
+            .logo-icon {
+                width: 32px;
+                height: 32px;
+                font-size: 1.2rem;
+            }
+
+            .mobile-avatar {
+                width: 40px;
+                height: 40px;
+                font-size: 0.9rem;
+            }
+
+            .mobile-user-details h4 {
+                font-size: 0.9rem;
+            }
+
+            .mobile-user-details p {
+                font-size: 0.75rem;
+            }
+
+            .mobile-menu-links a {
+                padding: 10px 16px;
+                font-size: 0.9rem;
+            }
+
+            .mobile-menu-section h3 {
+                padding: 10px 16px;
+                font-size: 0.8rem;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .nav-container {
+                padding: 0 16px;
+            }
+
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* ========== PAGE HEADER ========== */
+        .page-header {
+            margin-bottom: 32px;
+            text-align: center;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-700);
+            margin-bottom: 12px;
+        }
+
+        .page-header p {
+            font-size: 1.1rem;
+            color: var(--neutral-600);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* ========== FORM CARD ========== */
+        .form-card {
+            background: white;
+            border-radius: var(--radius-2xl);
+            border: 1px solid var(--neutral-200);
+            box-shadow: var(--shadow-xl);
+            overflow: hidden;
+            margin-bottom: 40px;
+        }
+
+        .form-header {
+            background: linear-gradient(135deg, var(--primary-500), var(--primary-700));
+            padding: 40px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .form-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            animation: rotate 30s linear infinite;
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .form-header-content {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .form-header-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .form-header-icon i {
+            font-size: 2.5rem;
+            color: var(--secondary-400);
+        }
+
+        .form-header-text h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .form-header-text p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .form-body {
+            padding: 40px;
+        }
+
+        /* ========== FORM SECTIONS ========== */
+        .form-section {
+            margin-bottom: 40px;
+            padding-bottom: 40px;
+            border-bottom: 1px solid var(--neutral-200);
+        }
+
+        .form-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .section-title .step-number {
+            width: 36px;
+            height: 36px;
+            background: var(--primary-100);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-700);
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .section-title h3 {
+            font-size: 1.3rem;
+            color: var(--neutral-800);
+        }
+
+        .section-title p {
+            color: var(--neutral-500);
+            font-size: 0.9rem;
+            margin-left: auto;
+        }
+
+        /* ========== FORM GRID ========== */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+
+        .form-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--neutral-700);
+            margin-bottom: 8px;
+        }
+
+        .form-label i {
+            color: var(--secondary-500);
+            font-size: 1rem;
+        }
+
+        .form-label .required {
+            color: var(--error-500);
+            margin-left: 4px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-wrapper i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--neutral-400);
+            transition: var(--transition-all);
+            z-index: 1;
+        }
+
+        .input-wrapper input,
+        .input-wrapper select,
+        .input-wrapper textarea {
+            width: 100%;
+            padding: 14px 16px 14px 48px;
+            border: 2px solid var(--neutral-200);
+            border-radius: var(--radius-lg);
+            font-size: 1rem;
+            transition: var(--transition-all);
+            background: var(--neutral-50);
+            font-family: 'Inter', sans-serif;
+            color: var(--neutral-900);
+        }
+
+        .input-wrapper textarea {
+            padding: 14px 16px 14px 48px;
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .input-wrapper input:focus,
+        .input-wrapper select:focus,
+        .input-wrapper textarea:focus {
+            outline: none;
+            border-color: var(--primary-500);
+            background: white;
+            box-shadow: 0 0 0 4px var(--primary-100);
+        }
+
+        .input-wrapper input:hover,
+        .input-wrapper select:hover,
+        .input-wrapper textarea:hover {
+            border-color: var(--secondary-400);
+            background: white;
+        }
+
+        .input-wrapper.focused i {
+            color: var(--primary-500);
+        }
+
+        /* ========== MAP CONTAINER ========== */
+        .map-container {
+            margin-top: 16px;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            border: 2px solid var(--neutral-200);
+            position: relative;
+        }
+
+        #map {
+            height: 300px;
+            width: 100%;
+            min-height: 300px;
+        }
+
+        .map-instructions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+            background: var(--neutral-50);
+            border-radius: var(--radius);
+            margin-top: 12px;
+            font-size: 0.95rem;
+            color: var(--neutral-600);
+        }
+
+        .map-instructions i {
+            color: var(--info-500);
+        }
+
+        /* ========== FILE UPLOADS ========== */
+        .upload-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        .upload-area {
+            border: 2px dashed var(--neutral-300);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition-all);
+            background: var(--neutral-50);
+            position: relative;
+        }
+
+        .upload-area:hover {
+            border-color: var(--primary-500);
+            background: var(--primary-50);
+        }
+
+        .upload-area.has-file {
+            border-color: var(--success-500);
+            background: var(--success-50);
+        }
+
+        .upload-area i {
+            font-size: 3rem;
+            color: var(--neutral-400);
+            margin-bottom: 12px;
+            transition: var(--transition-all);
+        }
+
+        .upload-area:hover i {
+            color: var(--primary-500);
+        }
+
+        .upload-area.has-file i {
+            color: var(--success-500);
+        }
+
+        .upload-area h4 {
+            font-size: 1.1rem;
+            margin-bottom: 4px;
+            color: var(--neutral-700);
+        }
+
+        .upload-area p {
+            font-size: 0.85rem;
+            color: var(--neutral-500);
+            margin-bottom: 12px;
+        }
+
+        .upload-area .file-info {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 8px;
+            background: white;
+            border-radius: var(--radius);
+            font-size: 0.9rem;
+            color: var(--neutral-700);
+        }
+
+        .upload-area.has-file .file-info {
+            display: flex;
+        }
+
+        .upload-area.has-file .upload-prompt {
+            display: none;
+        }
+
+        .file-input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        /* ========== FORM ACTIONS ========== */
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+            padding-top: 24px;
+            border-top: 2px solid var(--neutral-200);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 14px 32px;
+            border-radius: var(--radius-lg);
+            font-weight: 600;
+            font-size: 1rem;
+            text-decoration: none;
+            transition: var(--transition-all);
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn i {
+            font-size: 1.1rem;
+            transition: var(--transition-all);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-500), var(--primary-700));
+            color: white;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-primary:hover i {
+            transform: translateX(4px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--neutral-700);
+            border: 2px solid var(--neutral-300);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--primary-500);
+            color: var(--primary-500);
+            background: var(--primary-50);
+        }
+
+        .btn-large {
+            padding: 16px 40px;
+            font-size: 1.1rem;
+        }
+
+        /* ========== TOAST NOTIFICATIONS ========== */
+        .toast-container {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            z-index: 1100;
+        }
+
+        .toast {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 16px 20px;
+            margin-bottom: 12px;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 320px;
+            max-width: 400px;
+            animation: slideIn 0.3s ease;
+            border-left: 4px solid;
+        }
+
+        .toast.success {
+            border-left-color: var(--success-500);
+        }
+
+        .toast.error {
+            border-left-color: var(--error-500);
+        }
+
+        .toast.warning {
+            border-left-color: var(--warning-500);
+        }
+
+        .toast.info {
+            border-left-color: var(--info-500);
+        }
+
+        .toast i {
+            font-size: 1.3rem;
+        }
+
+        .toast.success i {
+            color: var(--success-500);
+        }
+
+        .toast .toast-content {
+            flex: 1;
+        }
+
+        .toast .toast-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .toast .toast-message {
+            font-size: 0.9rem;
+            color: var(--neutral-600);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* ========== RESPONSIVE BREAKPOINTS ========== */
+        @media screen and (max-width: 1200px) {
+            .form-grid {
+                gap: 20px;
+            }
+        }
+
+        @media screen and (max-width: 1024px) {
+            .profile-info {
+                display: none;
+            }
+
+            .profile-btn {
+                padding: 6px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full-width {
+                grid-column: span 1;
+            }
+
+            .upload-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+        }
+
+        @media screen and (max-width: 900px) {
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: flex;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            .nav-container {
+                padding: 0 16px;
+            }
+
+            .logo-icon {
+                width: 36px;
+                height: 36px;
+            }
+
+            .logo-icon i {
+                font-size: 1.2rem;
+            }
+
+            .logo-text {
+                font-size: 1.1rem;
+            }
+
+            .notification-btn {
+                width: 40px;
+                height: 40px;
+            }
+
+            .profile-avatar {
+                width: 36px;
+                height: 36px;
+                font-size: 0.9rem;
+            }
+
+            .main-content {
+                margin: 24px auto;
+                padding: 0 16px;
+            }
+
+            .form-header {
+                padding: 30px 20px;
+            }
+
+            .form-header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .form-header-text h2 {
+                font-size: 1.5rem;
+            }
+
+            .form-body {
+                padding: 24px;
+            }
+
+            .section-title {
+                flex-wrap: wrap;
+            }
+
+            .section-title p {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .form-actions {
+                flex-direction: column-reverse;
+                gap: 16px;
+            }
+
+            .form-actions .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .toast {
+                min-width: auto;
+                width: calc(100vw - 32px);
+                right: 16px;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .nav-container {
+                padding: 0 12px;
+            }
+
+            .logo-text {
+                font-size: 1rem;
+            }
+
+            .logo-text span {
+                font-size: 1rem;
+            }
+
+            .notification-btn {
+                width: 36px;
+                height: 36px;
+            }
+
+            .mobile-menu {
+                width: 280px;
+            }
+
+            .page-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .page-header p {
+                font-size: 0.95rem;
+            }
+
+            .form-body {
+                padding: 20px;
+            }
+
+            .upload-area {
+                padding: 20px;
+            }
+
+            .upload-area i {
+                font-size: 2rem;
+            }
+
+            .btn {
+                padding: 12px 24px;
+            }
+
+            .btn-large {
+                padding: 14px 24px;
+                font-size: 1rem;
+            }
+        }
+
+        @media screen and (max-width: 360px) {
+            .logo-text {
+                font-size: 0.9rem;
+            }
+
+            .logo-text span {
+                font-size: 0.9rem;
+            }
+
+            .mobile-menu {
+                width: 260px;
+            }
+        }
+
+        /* Touch-friendly improvements */
+        @media (hover: none) and (pointer: coarse) {
+
+            .btn,
+            .upload-area,
+            .input-wrapper input,
+            .input-wrapper select,
+            .input-wrapper textarea,
+            .profile-btn,
+            .notification-btn,
+            .mobile-menu-btn,
+            .mobile-menu-links a {
+                min-height: 48px;
+            }
+
+            .mobile-menu-links a {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-wrapper">
+        <!-- Top Navigation -->
+        <nav class="navbar">
+            <div class="nav-container">
+                <a href="index.html" class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                    <span class="logo-text">BueaLand<span>Registry</span></span>
+                </a>
+
+                <!-- Desktop Navigation -->
+                <div class="nav-menu">
+                    <ul class="nav-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="userdashboard.html">Dashboard</a></li>
+                        <li><a href="LandVerificationPage.html">Verify Land</a></li>
+                        <li><a href="LandRegistrationPage.html" class="active">Register Land</a></li>
+                    </ul>
+
+                    <div class="user-menu">
+                        <button class="notification-btn" onclick="showToast('info', 'Notifications', 'You have 3 unread notifications')">
+                            <i class="fa-regular fa-bell"></i>
+                        </button>
+
+                        <div class="profile-menu" id="profileMenu">
+                            <button class="profile-btn" id="profileBtn">
+                                <div class="profile-avatar" id="profileAvatar">U</div>
+                                <span class="profile-info" id="profileName">User</span>
+                                <i class="fas fa-chevron-down" style="font-size: 0.8rem; color: var(--neutral-400);"></i>
+                            </button>
+
+                            <div class="profile-dropdown" id="profileDropdown">
+                                <div class="dropdown-header-profile">
+                                    <div class="name" id="dropdownName">User</div>
+                                    <div class="email" id="dropdownEmail">user@example.com</div>
+                                </div>
+                                <ul class="profile-dropdown-menu">
+                                    <li><a href="profile.html" class="profile-dropdown-item"><i class="fas fa-user"></i> My Profile</a></li>
+                                    <li><a href="my-properties.html" class="profile-dropdown-item"><i class="fas fa-map-marked-alt"></i> My Properties</a></li>
+                                    <li><a href="transactions.html" class="profile-dropdown-item"><i class="fas fa-exchange-alt"></i> Transactions</a></li>
+                                    <li><a href="settings.html" class="profile-dropdown-item"><i class="fas fa-cog"></i> Settings</a></li>
+                                    <li class="dropdown-divider-profile"></li>
+                                    <li><a href="index.html" class="profile-dropdown-item logout" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </nav>
+
+        <!-- Mobile Menu Overlay -->
+        <div class="mobile-overlay" id="mobileOverlay"></div>
+
+        <!-- Mobile Menu -->
+        <div class="mobile-menu" id="mobileMenu">
+            <div class="mobile-menu-header">
+                <div class="mobile-user-info">
+                    <div class="mobile-avatar" id="mobileAvatar">U</div>
+                    <div class="mobile-user-details">
+                        <h4 id="mobileUserName">User</h4>
+                        <p id="mobileUserRole">Account</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mobile-menu-body">
+                <div class="mobile-menu-section">
+                    <h3>Main Menu</h3>
+                    <ul class="mobile-menu-links">
+                        <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                        <li><a href="userdashboard.html" ><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                        <li><a href="LandVerificationPage.html"><i class="fas fa-search"></i> Verify Land</a></li>
+                        <li><a href="LandRegistrationPage.html" class="active"><i class="fas fa-plus-circle"></i> Register Land</a></li>
+                        <li><a href="my-properties.html"><i class="fas fa-map-marked-alt"></i> My Properties</a></li>
+                    </ul>
+                </div>
+
+                <div class="mobile-menu-section">
+                    <h3>Account</h3>
+                    <ul class="mobile-menu-links">
+                        <li><a href="profile.html"><i class="fas fa-user"></i> Profile</a></li>
+                        <li><a href="notifications.html"><i class="fas fa-bell"></i> Notifications</a></li>
+                        <li><a href="settings.html"><i class="fas fa-cog"></i> Settings</a></li>
+                        <li><a href="#" class="mobile-logout" id="mobileLogoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="mobile-menu-footer">
+                <p>&copy; 2026 BueaLand Registry</p>
+            </div>
+        </div>
+
+        <!-- Main Layout -->
+        <div class="main-layout">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="sidebar-section">
+                    <h3>Main Menu</h3>
+                    <ul class="sidebar-menu">
+                        <li><a href="userdashboard.html"><i class="fas fa-home"></i> Dashboard</a></li>
+                        <li><a href="my-properties.html"><i class="fas fa-map-marked-alt"></i> My Properties <span
+                                    class="menu-badge" id="sidebarBadge">0</span></a></li>
+                        <li><a href="LandRegistrationPage.html" class="active"><i class="fas fa-plus-circle"></i>
+                                Register Land</a></li>
+                        <li><a href="LandVerificationPage.html"><i class="fas fa-search"></i> Verify Land</a></li>
+                    </ul>
+                </div>
+                <div class="sidebar-section">
+                    <h3>Account</h3>
+                    <ul class="sidebar-menu">
+                        <li><a href="index.html"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                    </ul>
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="main-content">
+                <div class="page-header" data-aos="fade-down">
+                    <h1>Register Your Land</h1>
+                    <p>Submit your land details for verification and get a unique Plot ID</p>
+                </div>
+
+                <!-- Form Card -->
+                <div class="form-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="form-header">
+                        <div class="form-header-content">
+                            <div class="form-header-icon">
+                                <i class="fas fa-map-marked-alt"></i>
+                            </div>
+                            <div class="form-header-text">
+                                <h2>Land Registration Form</h2>
+                                <p>All fields marked with <span style="color: var(--error-500);">*</span> are required
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-body">
+                        <form id="landRegistrationForm" onsubmit="handleSubmit(event)">
+                            <!-- Section 1: Basic Information -->
+                            <div class="form-section">
+                                <div class="section-title">
+                                    <div class="step-number">1</div>
+                                    <h3>Basic Land Information</h3>
+                                    <p>Step 1 of 5</p>
+                                </div>
+
+                                <div class="form-grid">
+                                    <!-- Plot Location -->
+                                    <div class="form-group full-width">
+                                        <label class="form-label">
+                                            <i class="fas fa-map-pin"></i>
+                                            Plot Location <span class="required">*</span>
+                                        </label>
+                                        <div class="input-wrapper">
+                                            <i class="fas fa-location-dot"></i>
+                                            <input type="text" id="plotLocation"
+                                                placeholder="e.g., Molyko, Buea (near UB Junction)" value="Molyko, Buea"
+                                                required>
+                                        </div>
+                                    </div>
+
+                                    <!-- Land Size -->
+                                    <div class="form-group">
+                                        <label class="form-label">
+                                            <i class="fas fa-ruler-combined"></i>
+                                            Land Size <span class="required">*</span>
+                                        </label>
+                                        <div class="input-wrapper">
+                                            <i class="fas fa-arrows-up-down-left-right"></i>
+                                            <input type="text" id="landSize" placeholder="e.g., 500" value="500"
+                                                required>
+                                        </div>
+                                    </div>
+
+                                    <!-- Size Unit -->
+                                    <div class="form-group">
+                                        <label class="form-label">
+                                            <i class="fas fa-cubes"></i>
+                                            Unit
+                                        </label>
+                                        <div class="input-wrapper">
+                                            <i class="fas fa-chevron-down"></i>
+                                            <select id="sizeUnit">
+                                                <option value="sqm" selected>Square Meters (sq m)</option>
+                                                <option value="hectares">Hectares</option>
+                                                <option value="acres">Acres</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <!-- Section 2: Owner & Value -->
+                            <div class="form-section">
+                                <div class="section-title">
+                                    <div class="step-number">2</div>
+                                    <h3>Owner & Value Declaration</h3>
+                                    <p>Step 2 of 5</p>
+                                </div>
+                                <div class="form-grid">
+                                    <!-- Current Owner Name -->
+                                    <div class="form-group full-width">
+                                        <label class="form-label">
+                                            <i class="fas fa-user-tag"></i> Current Owner Name <span
+                                                class="required">*</span>
+                                        </label>
+                                        <div class="input-wrapper">
+                                            <i class="fas fa-user"></i>
+                                            <input type="text" id="ownerName" placeholder="e.g. Dave weby" required>
+                                        </div>
+                                    </div>
+                                    <!-- Owner ID Card Number -->
+                                    <div class="form-group">
+                                        <label class="form-label">
+                                            <i class="fas fa-id-badge"></i> Owner ID Number <span
+                                                class="required">*</span>
+                                        </label>
+                                        <div class="input-wrapper">
+                                            <i class="fas fa-passport"></i>
+                                            <input type="text" id="ownerId" placeholder="e.g. 123456789" required>
+                                        </div>
+                                    </div>
+                                    <!-- Owner Phone Number -->
+                                    <div class="form-group">
+                                        <label class="form-label">
+                                            <i class="fas fa-phone"></i> Owner Phone Number <span
+                                                class="required">*</span>
+                                        </label>
+                                        <div class="input-wrapper">
+                                            <i class="fas fa-hashtag"></i>
+                                            <input type="tel" id="ownerPhone" placeholder="e.g. +237670000000" required>
+                                        </div>
+                                    </div>
+                                    <!-- Owner Location/Address -->
+                                    <div class="form-group full-width">
+                                        <label class="form-label">
+                                            <i class="fas fa-home"></i> Owner Location / Address <span
+                                                class="required">*</span>
+                                        </label>
+                                        <div class="input-wrapper">
+                                            <i class="fas fa-map-pin"></i>
+                                            <input type="text" id="ownerLocation" placeholder="e.g. Molyko, Buea"
+                                                required>
+                                        </div>
+                                    </div>
+                                    <!-- Declared Value -->
+                                    <div class="form-group full-width">
+                                        <label class="form-label">
+                                            <i class="fas fa-money-bill-wave"></i> Declared Value <span
+                                                class="required">*</span>
+                                        </label>
+                                        <div class="input-wrapper">
+                                            <i class="fas fa-coins"></i>
+                                            <input type="text" id="declaredValue" placeholder="e.g. 15,000,000 FCFA"
+                                                required>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Section 3: GPS Coordinates -->
+                            <div class="form-section">
+                                <div class="section-title">
+                                    <div class="step-number">3</div>
+                                    <h3>GPS Coordinates</h3>
+                                    <p>Step 3 of 5</p>
+                                </div>
+
+                                <div class="form-grid">
+                                    <!-- Latitude -->
+                                    <div class="form-group">
+                                        <label class="form-label">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                            Latitude <span class="required">*</span>
+                                        </label>
+                                        <div class="input-wrapper">
+                                            <i class="fas fa-arrow-up"></i>
+                                            <input type="text" id="latitude" placeholder="e.g., 4.1667" value="4.1667"
+                                                required>
+                                        </div>
+                                    </div>
+
+                                    <!-- Longitude -->
+                                    <div class="form-group">
+                                        <label class="form-label">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                            Longitude <span class="required">*</span>
+                                        </label>
+                                        <div class="input-wrapper">
+                                            <i class="fas fa-arrow-right"></i>
+                                            <input type="text" id="longitude" placeholder="e.g., 9.2333" value="9.2333"
+                                                required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Map Preview -->
+                                <div class="map-container">
+                                    <div id="map"></div>
+                                </div>
+                                <div class="map-instructions">
+                                    <i class="fas fa-info-circle"></i>
+                                    <span>Click on the map to set coordinates or drag the marker.</span>
+                                </div>
+                            </div>
+
+                            <!-- Section 4: Boundary Description -->
+                            <div class="form-section">
+                                <div class="section-title">
+                                    <div class="step-number">4</div>
+                                    <h3>Boundary Description</h3>
+                                    <p>Step 4 of 5</p>
+                                </div>
+
+                                <div class="form-group full-width">
+                                    <label class="form-label">
+                                        <i class="fas fa-draw-polygon"></i>
+                                        Boundary Description <span class="required">*</span>
+                                    </label>
+                                    <div class="input-wrapper">
+                                        <i class="fas fa-pen"></i>
+                                        <textarea id="boundaryDescription"
+                                            placeholder="Describe the boundaries of your land (e.g., North: Molyko Road, South: Stream, East: Mr. John's land, West: Mrs. Smith's land)"
+                                            required>North: Molyko Road, South: Stream, East: Mr. Tayim's land, West: Mrs. Smith's land</textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Section 5: Document Uploads -->
+                            <div class="form-section">
+                                <div class="section-title">
+                                    <div class="step-number">5</div>
+                                    <h3>Document Uploads</h3>
+                                    <p>Step 5 of 5</p>
+                                </div>
+
+                                <div class="upload-grid">
+                                    <!-- Survey Plan Upload -->
+                                    <div class="upload-area" id="surveyPlanArea">
+                                        <i class="fas fa-draw-polygon"></i>
+                                        <div class="upload-prompt">
+                                            <h4>Upload Survey Plan</h4>
+                                            <p>Click or drag & drop</p>
+                                            <p style="font-size: 0.8rem;">PDF, JPG, PNG (Max 10MB)</p>
+                                        </div>
+                                        <div class="file-info">
+                                            <i class="fas fa-check-circle" style="color: var(--success-500);"></i>
+                                            <span id="surveyPlanName">survey_plan_2024.pdf</span>
+                                        </div>
+                                        <input type="file" class="file-input" id="surveyPlan"
+                                            accept=".pdf,.jpg,.jpeg,.png">
+                                    </div>
+
+                                    <!-- Ownership Documents Upload -->
+                                    <div class="upload-area" id="ownershipDocsArea">
+                                        <i class="fas fa-file-contract"></i>
+                                        <div class="upload-prompt">
+                                            <h4>Ownership Documents</h4>
+                                            <p>Click or drag & drop</p>
+                                            <p style="font-size: 0.8rem;">PDF, JPG, PNG (Max 10MB each)</p>
+                                        </div>
+                                        <div class="file-info">
+                                            <i class="fas fa-check-circle" style="color: var(--success-500);"></i>
+                                            <span id="ownershipDocsName">deed_of_ownership.pdf</span>
+                                        </div>
+                                        <input type="file" class="file-input" id="ownershipDocs"
+                                            accept=".pdf,.jpg,.jpeg,.png" multiple>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Form Actions -->
+                            <div class="form-actions">
+                                <button type="button" class="btn btn-outline"
+                                    onclick="window.location.href='userdashboard.html'">
+                                    <i class="fas fa-times"></i>
+                                    Cancel
+                                </button>
+                                <button type="submit" class="btn btn-primary btn-large" id="submitBtn">
+                                    <i class="fas fa-check-circle"></i>
+                                    Submit for Verification
+                                    <i class="fas fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    <!-- Leaflet JS for maps -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!-- AOS Animation Library -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 600,
+            once: true
+        });
+
+        // ========== MOBILE MENU FUNCTIONALITY ==========
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileOverlay = document.getElementById('mobileOverlay');
+        const body = document.body;
+
+        function openMobileMenu() {
+            mobileMenu.classList.add('active');
+            mobileOverlay.classList.add('active');
+            mobileMenuBtn.classList.add('active');
+            body.classList.add('menu-open');
+        }
+
+        function closeMobileMenu() {
+            mobileMenu.classList.remove('active');
+            mobileOverlay.classList.remove('active');
+            mobileMenuBtn.classList.remove('active');
+            body.classList.remove('menu-open');
+        }
+
+        mobileMenuBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (mobileMenu.classList.contains('active')) {
+                closeMobileMenu();
+            } else {
+                openMobileMenu();
+            }
+        });
+
+        mobileOverlay.addEventListener('click', (e) => {
+            e.stopPropagation();
+            closeMobileMenu();
+        });
+
+        // Close mobile menu on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && mobileMenu.classList.contains('active')) {
+                closeMobileMenu();
+            }
+        });
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.mobile-menu-links a').forEach(link => {
+            link.addEventListener('click', closeMobileMenu);
+        });
+
+        // ========== PROFILE DROPDOWN ==========
+        const profileMenu = document.getElementById('profileMenu');
+        const profileBtn = document.getElementById('profileBtn');
+        const profileDropdown = document.getElementById('profileDropdown');
+
+        profileBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            profileMenu.classList.toggle('active');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!profileMenu.contains(e.target)) {
+                profileMenu.classList.remove('active');
+            }
+        });
+
+        // ========== LOGOUT FUNCTION ==========
+        const logoutBtn = document.getElementById('logoutBtn');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                // Clear credentials
+                localStorage.removeItem('bueaUser');
+                // Redirect to login
+                window.location.href = 'login.html';
+            });
+        }
+
+        // ========== USER DATA LOADING ==========
+        function loadUserData() {
+            const current = localStorage.getItem('bueaUser');
+            if(current) {
+                const u = JSON.parse(current);
+                const firstName = u.name.split(' ')[0];
+                document.getElementById('profileName').textContent = firstName;
+                
+                // Show "You" indicator in the avatar or near it
+                const initials = u.name.split(' ').map(n=>n[0]).join('').substring(0,2).toUpperCase();
+                document.getElementById('profileAvatar').textContent = initials;
+                
+                document.getElementById('dropdownName').innerHTML = `${u.name} <span style="font-size: 0.7rem; background: var(--primary-50); color: var(--primary-700); padding: 2px 8px; border-radius: 10px; margin-left: 5px;">You</span>`;
+                document.getElementById('dropdownEmail').textContent = u.email || 'user@example.com';
+                
+                // Update mobile menu
+                document.getElementById('mobileUserName').innerHTML = `${u.name} (You)`;
+                document.getElementById('mobileUserRole').textContent = u.role === 'admin' ? 'Administrator' : 'User Account';
+                document.getElementById('mobileAvatar').textContent = initials;
+
+                // Sync sidebar if exists
+                const sidebarBadge = document.getElementById('sidebarBadge');
+                if(sidebarBadge) {
+                    const props = JSON.parse(localStorage.getItem('userProperties') || '[]');
+                    sidebarBadge.textContent = props.length;
+                }
+            } else {
+                window.location.href = 'login.html';
+            }
+        }
+
+        // ========== MOBILE LOGOUT ==========
+        const mobileLogoutBtn = document.getElementById('mobileLogoutBtn');
+        if (mobileLogoutBtn) {
+            mobileLogoutBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                localStorage.removeItem('bueaUser');
+                window.location.href = 'login.html';
+            });
+        }
+
+        // ========== MAP INITIALIZATION ==========
+        let map;
+        let marker;
+
+        function initMap() {
+            // Fix Leaflet's default icon path issues
+            delete L.Icon.Default.prototype._getIconUrl;
+            L.Icon.Default.mergeOptions({
+                iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png',
+                iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png',
+                shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
+            });
+
+            // Default coordinates for Buea
+            const defaultLat = 4.1667;
+            const defaultLng = 9.2333;
+
+            map = L.map('map').setView([defaultLat, defaultLng], 15);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+
+            // Add marker at default position
+            marker = L.marker([defaultLat, defaultLng], {
+                draggable: true
+            }).addTo(map);
+
+            // Update input fields when marker is dragged
+            marker.on('dragend', function (e) {
+                const latlng = e.target.getLatLng();
+                document.getElementById('latitude').value = latlng.lat.toFixed(4);
+                document.getElementById('longitude').value = latlng.lng.toFixed(4);
+            });
+
+            // Update marker when map is clicked
+            map.on('click', function (e) {
+                marker.setLatLng(e.latlng);
+                document.getElementById('latitude').value = e.latlng.lat.toFixed(4);
+                document.getElementById('longitude').value = e.latlng.lng.toFixed(4);
+            });
+
+            // Prevent map blank tile issue due to AOS animation hiding the container's true size
+            // Ensure map renders after AOS animation completes (600ms) + buffer
+            const invalidateTimings = [100, 400, 700, 1000, 1500];
+            invalidateTimings.forEach(ms => {
+                setTimeout(() => {
+                    if (map) {
+                        map.invalidateSize();
+                    }
+                }, ms);
+            });
+        }
+
+        // ========== FILE UPLOAD HANDLING ==========
+        function setupFileUploads() {
+            // Survey Plan Upload
+            const surveyPlanInput = document.getElementById('surveyPlan');
+            const surveyPlanArea = document.getElementById('surveyPlanArea');
+            const surveyPlanName = document.getElementById('surveyPlanName');
+
+            surveyPlanInput.addEventListener('change', function (e) {
+                if (this.files && this.files[0]) {
+                    surveyPlanArea.classList.add('has-file');
+                    surveyPlanName.textContent = this.files[0].name;
+                } else {
+                    surveyPlanArea.classList.remove('has-file');
+                }
+            });
+
+            // Ownership Documents Upload
+            const ownershipDocsInput = document.getElementById('ownershipDocs');
+            const ownershipDocsArea = document.getElementById('ownershipDocsArea');
+            const ownershipDocsName = document.getElementById('ownershipDocsName');
+
+            ownershipDocsInput.addEventListener('change', function (e) {
+                if (this.files && this.files[0]) {
+                    ownershipDocsArea.classList.add('has-file');
+                    const fileCount = this.files.length;
+                    ownershipDocsName.textContent = fileCount === 1 ? this.files[0].name : `${fileCount} files selected`;
+                } else {
+                    ownershipDocsArea.classList.remove('has-file');
+                }
+            });
+
+            // Click on upload area triggers file input
+            surveyPlanArea.addEventListener('click', function (e) {
+                if (e.target !== surveyPlanInput) {
+                    surveyPlanInput.click();
+                }
+            });
+
+            ownershipDocsArea.addEventListener('click', function (e) {
+                if (e.target !== ownershipDocsInput) {
+                    ownershipDocsInput.click();
+                }
+            });
+        }
+
+        // ========== INPUT FOCUS EFFECTS ==========
+        function setupInputEffects() {
+            document.querySelectorAll('.input-wrapper input, .input-wrapper select, .input-wrapper textarea').forEach(input => {
+                input.addEventListener('focus', () => {
+                    input.parentElement.classList.add('focused');
+                });
+
+                input.addEventListener('blur', () => {
+                    input.parentElement.classList.remove('focused');
+                });
+            });
+        }
+
+        // ========== GPS COORDINATES UPDATE ==========
+        function setupGPSInputs() {
+            const latInput = document.getElementById('latitude');
+            const lngInput = document.getElementById('longitude');
+
+            latInput.addEventListener('change', function () {
+                const lat = parseFloat(this.value);
+                const lng = parseFloat(lngInput.value);
+                if (!isNaN(lat) && !isNaN(lng)) {
+                    marker.setLatLng([lat, lng]);
+                    map.setView([lat, lng], 15);
+                }
+            });
+
+            lngInput.addEventListener('change', function () {
+                const lat = parseFloat(latInput.value);
+                const lng = parseFloat(this.value);
+                if (!isNaN(lat) && !isNaN(lng)) {
+                    marker.setLatLng([lat, lng]);
+                    map.setView([lat, lng], 15);
+                }
+            });
+        }
+
+        // ========== TOAST NOTIFICATIONS ==========
+        function showToast(type, title, message) {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+
+            const icons = {
+                success: 'fa-check-circle',
+                error: 'fa-exclamation-circle',
+                warning: 'fa-exclamation-triangle',
+                info: 'fa-info-circle'
+            };
+
+            toast.innerHTML = `
+                <i class="fas ${icons[type]}"></i>
+                <div class="toast-content">
+                    <div class="toast-title">${title}</div>
+                    <div class="toast-message">${message}</div>
+                </div>
+            `;
+
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.remove();
+            }, 5000);
+        }
+
+        // ========== FORM VALIDATION ==========
+        function validateForm() {
+            const location = document.getElementById('plotLocation').value.trim();
+            const size = document.getElementById('landSize').value.trim();
+            const ownerName = document.getElementById('ownerName').value.trim();
+            const declaredValue = document.getElementById('declaredValue').value.trim();
+            const latitude = document.getElementById('latitude').value.trim();
+            const longitude = document.getElementById('longitude').value.trim();
+            const boundary = document.getElementById('boundaryDescription').value.trim();
+            const surveyPlan = document.getElementById('surveyPlan').files;
+            const ownershipDocs = document.getElementById('ownershipDocs').files;
+
+            if (!location) {
+                showToast('error', 'Validation Error', 'Please enter the plot location');
+                document.getElementById('plotLocation').focus();
+                return false;
+            }
+
+            if (!size || isNaN(size) || parseFloat(size) <= 0) {
+                showToast('error', 'Validation Error', 'Please enter a valid land size');
+                document.getElementById('landSize').focus();
+                return false;
+            }
+
+            if (!ownerName) {
+                showToast('error', 'Validation Error', 'Please enter the current owner name');
+                document.getElementById('ownerName').focus();
+                return false;
+            }
+
+            if (!declaredValue) {
+                showToast('error', 'Validation Error', 'Please enter the declared value (e.g., 15,000,000 FCFA)');
+                document.getElementById('declaredValue').focus();
+                return false;
+            }
+
+            if (!latitude || !longitude) {
+                showToast('error', 'Validation Error', 'Please provide GPS coordinates');
+                return false;
+            }
+
+            if (!boundary) {
+                showToast('error', 'Validation Error', 'Please describe the boundaries');
+                document.getElementById('boundaryDescription').focus();
+                return false;
+            }
+
+            if (surveyPlan.length === 0) {
+                showToast('error', 'Validation Error', 'Please upload the survey plan');
+                return false;
+            }
+
+            if (ownershipDocs.length === 0) {
+                showToast('error', 'Validation Error', 'Please upload ownership documents');
+                return false;
+            }
+
+            return true;
+        }
+
+        // ========== FORM SUBMISSION ==========
+        function handleSubmit(event) {
+            event.preventDefault();
+
+            if (!validateForm()) {
+                return;
+            }
+
+            // Show loading state
+            const submitBtn = document.getElementById('submitBtn');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+            submitBtn.disabled = true;
+
+            // Simulate API call
+            setTimeout(() => {
+                // Generate random Plot ID
+                const plotId = 'BUEA-' + new Date().getFullYear() + '-' +
+                    Math.floor(100 + Math.random() * 900);
+
+                // --- NEW UNIFIED DATA STRUCTURE ---
+                const location = document.getElementById('plotLocation').value.trim();
+                const sizeVal = document.getElementById('landSize').value.trim();
+                const unit = document.getElementById('sizeUnit').value;
+                const ownerNameVal = document.getElementById('ownerName').value.trim();
+                const ownerIdVal = document.getElementById('ownerId').value.trim();
+                const ownerPhoneVal = document.getElementById('ownerPhone').value.trim();
+                const declaredValueVal = document.getElementById('declaredValue').value.trim();
+                const lat = document.getElementById('latitude').value;
+                const lng = document.getElementById('longitude').value;
+                
+                // Fetch current user details for email if available
+                const userData = JSON.parse(localStorage.getItem('bueaUser') || '{}');
+                const ownerEmail = userData.email || 'not-provided@example.com';
+
+                const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                const today = new Date().toLocaleDateString('en-US', options);
+
+                const newProperty = {
+                    id: plotId,
+                    owner: {
+                        name: ownerNameVal,
+                        id: ownerIdVal,
+                        registered: today,
+                        phone: ownerPhoneVal,
+                        email: ownerEmail
+                    },
+                    location: location,
+                    size: sizeVal + ' ' + (unit === 'sqm' ? 'sq m' : unit),
+                    coordinates: lat + '° N, ' + lng + '° E',
+                    status: 'pending',
+                    availability: 'unavailable',
+                    price: declaredValueVal,
+                    registeredDate: today,
+                    verifiedDate: 'Pending',
+                    certificateNumber: 'PENDING',
+                    landUse: 'Residential', // Default or could be added to form
+                    image: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                    history: [
+                        {
+                            date: today,
+                            event: 'Land Registered',
+                            officer: 'System',
+                            details: 'Initial registration by ' + ownerNameVal
+                        }
+                    ]
+                };
+
+                let props = JSON.parse(localStorage.getItem('userProperties'));
+                if (!props) {
+                    // Initialize with some defaults if empty
+                    props = [
+                        { 
+                            id: 'BUEA-2024-001', 
+                            owner: { name: 'Tayim Rene', id: 'USR001', registered: 'January 15, 2024', phone: '+237 677123456', email: 'tayim.rene@email.com' },
+                            location: 'Molyko, Buea', size: '500 sq m', coordinates: '4.1667° N, 9.2333° E', status: 'verified', availability: 'available', price: '15,000,000 FCFA', registeredDate: 'January 15, 2024', verifiedDate: 'January 20, 2024', certificateNumber: 'CERT-2024-001', landUse: 'Residential',
+                            image: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                            history: [{ date: 'January 15, 2024', event: 'Land Registered', officer: 'Reg. Officer', details: 'Initial registration' }]
+                        }
+                    ];
+                }
+                props.unshift(newProperty);
+                localStorage.setItem('userProperties', JSON.stringify(props));
+
+                showToast('success', 'Registration Successful!',
+                    `Your land has been registered with Plot ID: ${plotId}. It will be verified within 2-3 business days.`);
+
+                // Reset button
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+
+                // Redirect to my-properties page after 0.5 seconds
+                setTimeout(() => {
+                    window.location.href = 'my-properties.html';
+                }, 20);
+            }, 20);
+        }
+
+        // ========== INITIALIZE ==========
+        window.addEventListener('load', () => {
+            loadUserData();
+            initMap();
+            setupFileUploads();
+            setupInputEffects();
+            setupGPSInputs();
+        });
+
+        // Handle window resize for map
+        window.addEventListener('resize', () => {
+            if (map) {
+                setTimeout(() => {
+                    map.invalidateSize();
+                }, 100);
+            }
+        });
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <title>Notifications | Buea Land Registry</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;}
+        :root{
+            --primary-50:#f0f9f6;--primary-100:#dcf0e9;--primary-200:#b9e1d3;
+            --primary-500:#0B3B2A;--primary-600:#093223;--primary-700:#07291d;
+            --secondary-50:#fef9f0;--secondary-400:#f7c36b;--secondary-500:#B48B4A;
+            --neutral-50:#f9fafb;--neutral-100:#f3f4f6;--neutral-200:#e5e7eb;
+            --neutral-300:#d1d5db;--neutral-400:#9ca3af;--neutral-500:#6b7280;
+            --neutral-600:#4b5563;--neutral-700:#374151;--neutral-800:#1f2937;--neutral-900:#111827;
+            --success-50:#ecfdf5;--success-500:#10b981;--success-700:#047857;
+            --warning-50:#fffbeb;--warning-500:#f59e0b;--warning-700:#b45309;
+            --error-50:#fef2f2;--error-500:#ef4444;--error-700:#b91c1c;
+            --info-50:#eff6ff;--info-500:#3b82f6;--info-700:#1d4ed8;
+            --shadow-sm:0 1px 3px 0 rgb(0 0 0/.1),0 1px 2px -1px rgb(0 0 0/.1);
+            --shadow-md:0 4px 6px -1px rgb(0 0 0/.1),0 2px 4px -2px rgb(0 0 0/.1);
+            --shadow-lg:0 10px 15px -3px rgb(0 0 0/.1),0 4px 6px -4px rgb(0 0 0/.1);
+            --shadow-xl:0 20px 25px -5px rgb(0 0 0/.1),0 8px 10px -6px rgb(0 0 0/.1);
+            --shadow-2xl:0 25px 50px -12px rgb(0 0 0/.25);
+            --radius-sm:.375rem;--radius:.5rem;--radius-md:.75rem;
+            --radius-lg:1rem;--radius-xl:1.5rem;--radius-2xl:2rem;
+            --transition-all:all .2s cubic-bezier(.4,0,.2,1);
+            --sidebar-width:280px;--header-height:72px;
+        }
+        body{font-family:'Inter',sans-serif;background:var(--neutral-50);color:var(--neutral-900);line-height:1.5;-webkit-font-smoothing:antialiased;}
+        h1,h2,h3,h4,h5,h6{font-weight:600;letter-spacing:-.025em;}
+        a{text-decoration:none;}
+        .app-wrapper{min-height:100vh;display:flex;flex-direction:column;}
+        /* TOP NAV */
+        .top-nav{background:#fff;border-bottom:1px solid var(--neutral-200);position:sticky;top:0;z-index:40;height:var(--header-height);display:flex;align-items:center;}
+        .nav-container{width:100%;max-width:1440px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;}
+        .nav-left{display:flex;align-items:center;gap:40px;}
+        .logo{display:flex;align-items:center;gap:12px;}
+        .logo-icon{width:40px;height:40px;background:linear-gradient(135deg,var(--primary-500),var(--primary-700));border-radius:var(--radius);display:flex;align-items:center;justify-content:center;}
+        .logo-icon i{font-size:1.3rem;color:#fff;}
+        .logo-text{font-weight:700;font-size:1.25rem;color:var(--neutral-900);letter-spacing:-.5px;}
+        .logo-text span{color:var(--secondary-500);font-weight:800;}
+        .nav-menu{display:flex;gap:8px;}
+        .nav-item{padding:8px 16px;border-radius:var(--radius);font-weight:500;font-size:.95rem;color:var(--neutral-600);transition:var(--transition-all);}
+        .nav-item:hover{background:var(--neutral-100);color:var(--primary-600);}
+        .nav-item.active{background:var(--primary-50);color:var(--primary-700);font-weight:600;}
+        .nav-right{display:flex;align-items:center;gap:16px;}
+        .notification-btn{position:relative;width:40px;height:40px;border-radius:var(--radius);background:transparent;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--neutral-600);font-size:1.1rem;transition:var(--transition-all);}
+        .notification-btn:hover{background:var(--neutral-100);}
+        .notif-dot{position:absolute;top:8px;right:9px;width:8px;height:8px;background:var(--error-500);border-radius:50%;border:2px solid #fff;}
+        .user-menu{position:relative;}
+        .user-btn{display:flex;align-items:center;gap:10px;padding:6px 10px 6px 6px;background:transparent;border:none;border-radius:var(--radius-lg);cursor:pointer;transition:var(--transition-all);}
+        .user-btn:hover{background:var(--neutral-100);}
+        .user-avatar{width:38px;height:38px;background:linear-gradient(135deg,var(--primary-500),var(--primary-700));border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:.95rem;}
+        .user-name{font-weight:600;font-size:.9rem;color:var(--neutral-900);}
+        .user-role-text{font-size:.75rem;color:var(--neutral-500);}
+        .user-info-text{text-align:left;display:none;}
+        .dropdown{position:absolute;top:calc(100% + 8px);right:0;width:260px;background:#fff;border-radius:var(--radius-lg);box-shadow:var(--shadow-2xl);border:1px solid var(--neutral-200);opacity:0;visibility:hidden;transform:translateY(-8px);transition:var(--transition-all);z-index:50;}
+        .user-menu.open .dropdown{opacity:1;visibility:visible;transform:translateY(0);}
+        .dropdown-head{padding:16px 20px;border-bottom:1px solid var(--neutral-200);}
+        .dropdown-head .dn{font-weight:600;color:var(--neutral-900);margin-bottom:2px;}
+        .dropdown-head .de{font-size:.85rem;color:var(--neutral-500);}
+        .dropdown-list{padding:8px;list-style:none;}
+        .dd-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:var(--radius);color:var(--neutral-700);font-size:.9rem;transition:var(--transition-all);cursor:pointer;}
+        .dd-item i{width:18px;color:var(--neutral-400);}
+        .dd-item:hover{background:var(--primary-50);color:var(--primary-700);}
+        .dd-item:hover i{color:var(--primary-500);}
+        .dd-sep{height:1px;background:var(--neutral-200);margin:6px 8px;}
+        .dd-item.logout{color:var(--error-500);}
+        .dd-item.logout i{color:var(--error-400);}
+        .dd-item.logout:hover{background:var(--error-50);}
+        /* MOBILE */
+        .hamburger{display:none;width:40px;height:40px;border-radius:var(--radius);background:transparent;border:none;cursor:pointer;align-items:center;justify-content:center;font-size:1.4rem;color:var(--neutral-600);}
+        .hamburger:hover{background:var(--neutral-100);}
+        .mob-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(4px);z-index:45;opacity:0;visibility:hidden;transition:var(--transition-all);}
+        .mob-overlay.open{opacity:1;visibility:visible;}
+        .mob-menu{position:fixed;top:0;right:-320px;width:320px;height:100%;background:#fff;z-index:46;transition:right .3s cubic-bezier(.4,0,.2,1);box-shadow:var(--shadow-2xl);display:flex;flex-direction:column;}
+        .mob-menu.open{right:0;}
+        .mob-head{padding:20px;border-bottom:1px solid var(--neutral-200);display:flex;align-items:center;gap:14px;}
+        .mob-avatar{width:50px;height:50px;background:linear-gradient(135deg,var(--primary-500),var(--primary-700));border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:1.1rem;}
+        .mob-head h4{font-weight:600;margin-bottom:2px;}
+        .mob-head p{font-size:.85rem;color:var(--neutral-500);}
+        .mob-close{margin-left:auto;width:36px;height:36px;border-radius:var(--radius);background:var(--neutral-100);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--neutral-600);font-size:1rem;}
+        .mob-body{flex:1;padding:20px;overflow-y:auto;}
+        .mob-section{margin-bottom:28px;}
+        .mob-section h3{font-size:.8rem;text-transform:uppercase;letter-spacing:.5px;color:var(--neutral-400);margin-bottom:12px;}
+        .mob-links{list-style:none;}
+        .mob-links li{margin-bottom:2px;}
+        .mob-links a{display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:var(--radius);color:var(--neutral-700);font-weight:500;font-size:.9rem;transition:var(--transition-all);}
+        .mob-links a i{width:20px;color:var(--neutral-400);}
+        .mob-links a:hover{background:var(--primary-50);color:var(--primary-700);}
+        .mob-links a.active{background:var(--primary-500);color:#fff;}
+        .mob-links a.active i{color:#fff;}
+        .mob-foot{padding:20px;border-top:1px solid var(--neutral-200);text-align:center;font-size:.85rem;color:var(--neutral-500);}
+        /* LAYOUT */
+        .main-layout{display:flex;flex:1;max-width:1440px;margin:0 auto;padding:24px;gap:24px;}
+        .sidebar{width:var(--sidebar-width);background:#fff;border-radius:var(--radius-xl);border:1px solid var(--neutral-200);padding:20px;height:fit-content;position:sticky;top:calc(var(--header-height)+24px);box-shadow:var(--shadow-sm);}
+        .sb-section{margin-bottom:28px;}
+        .sb-section h3{font-size:.78rem;text-transform:uppercase;letter-spacing:.5px;color:var(--neutral-400);margin-bottom:12px;padding-left:12px;}
+        .sb-menu{list-style:none;}
+        .sb-menu li{margin-bottom:2px;}
+        .sb-menu a{display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:var(--radius);color:var(--neutral-700);font-weight:500;font-size:.9rem;transition:var(--transition-all);}
+        .sb-menu a i{width:20px;color:var(--neutral-400);transition:var(--transition-all);}
+        .sb-menu a:hover{background:var(--primary-50);color:var(--primary-700);}
+        .sb-menu a:hover i{color:var(--primary-500);}
+        .sb-menu a.active{background:var(--primary-500);color:#fff;}
+        .sb-menu a.active i{color:#fff;}
+        .sb-badge{margin-left:auto;background:var(--secondary-500);color:#fff;padding:2px 7px;border-radius:20px;font-size:.72rem;font-weight:600;}
+        .main-content{flex:1;min-width:0;}
+        /* SHARED COMPONENTS */
+        .card{background:#fff;border-radius:var(--radius-xl);border:1px solid var(--neutral-200);padding:24px;box-shadow:var(--shadow-sm);}
+        .card-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+        .card-hdr h2{font-size:1.05rem;font-weight:600;color:var(--neutral-900);display:flex;align-items:center;gap:8px;}
+        .card-hdr h2 i{color:var(--secondary-500);}
+        .page-banner{background:linear-gradient(135deg,var(--primary-500),var(--primary-700));border-radius:var(--radius-xl);padding:28px 32px;margin-bottom:28px;color:#fff;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;box-shadow:var(--shadow-lg);position:relative;overflow:hidden;}
+        .page-banner::before{content:'';position:absolute;top:-50%;right:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(255,255,255,.08) 0%,transparent 70%);animation:spin 30s linear infinite;}
+        @keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+        .page-banner h1{font-size:1.7rem;font-weight:700;margin-bottom:6px;position:relative;z-index:1;}
+        .page-banner p{font-size:.95rem;opacity:.85;position:relative;z-index:1;}
+        .banner-icon{width:60px;height:60px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:var(--radius-lg);display:flex;align-items:center;justify-content:center;font-size:1.8rem;position:relative;z-index:1;}
+        .btn{display:inline-flex;align-items:center;gap:7px;padding:9px 18px;border-radius:var(--radius);font-weight:600;font-size:.9rem;cursor:pointer;transition:var(--transition-all);border:none;font-family:inherit;}
+        .btn-primary{background:var(--primary-500);color:#fff;}
+        .btn-primary:hover{background:var(--primary-600);transform:translateY(-1px);box-shadow:var(--shadow-md);}
+        .btn-secondary{background:#fff;color:var(--neutral-700);border:1px solid var(--neutral-300);}
+        .btn-secondary:hover{background:var(--neutral-50);border-color:var(--neutral-400);}
+        .btn-ghost{background:transparent;color:var(--primary-600);}
+        .btn-ghost:hover{background:var(--primary-50);}
+        .btn-danger{background:var(--error-500);color:#fff;}
+        .btn-danger:hover{background:var(--error-700);}
+        .btn-sm{padding:6px 13px;font-size:.82rem;}
+        .btn-white{background:rgba(255,255,255,.18);color:#fff;border:1px solid rgba(255,255,255,.35);backdrop-filter:blur(10px);}
+        .btn-white:hover{background:rgba(255,255,255,.28);}
+        .badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:100px;font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.4px;}
+        .badge-success{background:var(--success-50);color:var(--success-700);}
+        .badge-warning{background:var(--warning-50);color:var(--warning-700);}
+        .badge-error{background:var(--error-50);color:var(--error-700);}
+        .badge-info{background:var(--info-50);color:var(--info-700);}
+        .badge-neutral{background:var(--neutral-100);color:var(--neutral-600);}
+        .empty{text-align:center;padding:48px 24px;color:var(--neutral-400);}
+        .empty i{font-size:2.5rem;margin-bottom:12px;display:block;}
+        .empty p{font-size:.95rem;}
+        @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+        @media(min-width:1024px){.user-info-text{display:block;}}
+        @media(max-width:1024px){.sidebar{display:none;}.hamburger{display:flex;}}
+        @media(max-width:900px){.nav-menu{display:none;}.hamburger{display:flex;}}
+        @media(max-width:600px){.main-layout{padding:12px;}.page-banner{padding:20px;}.page-banner h1{font-size:1.3rem;}}
+
+        .notif-toolbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:20px;}
+        .notif-filters{display:flex;gap:7px;flex-wrap:wrap;}
+        .nf-btn{padding:7px 14px;border-radius:100px;border:1px solid var(--neutral-300);background:#fff;color:var(--neutral-600);font-size:.82rem;font-weight:500;cursor:pointer;transition:var(--transition-all);}
+        .nf-btn:hover,.nf-btn.active{background:var(--primary-500);color:#fff;border-color:var(--primary-500);}
+        .mark-all{background:none;border:none;color:var(--primary-600);font-weight:600;font-size:.85rem;cursor:pointer;font-family:inherit;}
+        .mark-all:hover{text-decoration:underline;}
+        .notif-list{list-style:none;}
+        .notif-item{display:flex;align-items:flex-start;gap:14px;padding:18px;border-radius:var(--radius-lg);transition:background .15s;cursor:pointer;position:relative;}
+        .notif-item:hover{background:var(--neutral-50);}
+        .notif-item.unread{background:var(--primary-50);}
+        .notif-item.unread::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:3px;height:55%;background:var(--primary-500);border-radius:0 3px 3px 0;}
+        .ni-icon{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
+        .ni-icon.success{background:var(--success-50);color:var(--success-700);}
+        .ni-icon.warning{background:var(--warning-50);color:var(--warning-700);}
+        .ni-icon.info{background:var(--info-50);color:var(--info-700);}
+        .ni-icon.error{background:var(--error-50);color:var(--error-700);}
+        .ni-body{flex:1;}
+        .ni-title{font-weight:600;color:var(--neutral-900);font-size:.9rem;}
+        .ni-text{font-size:.85rem;color:var(--neutral-600);margin-top:4px;line-height:1.5;}
+        .ni-meta{display:flex;align-items:center;gap:8px;margin-top:7px;}
+        .ni-time{font-size:.78rem;color:var(--neutral-400);}
+        .ni-tag{font-size:.72rem;padding:2px 8px;border-radius:100px;background:var(--neutral-100);color:var(--neutral-500);font-weight:500;}
+        .unread-dot{width:8px;height:8px;background:var(--primary-500);border-radius:50%;flex-shrink:0;margin-top:5px;}
+        .notif-sep{height:1px;background:var(--neutral-100);}
+    </style>
+</head>
+<body>
+<div class="app-wrapper">
+
+    <!-- TOP NAV -->
+    <nav class="top-nav">
+      <div class="nav-container">
+        <div class="nav-left">
+          <a href="index.html" class="logo">
+            <div class="logo-icon"><i class="fas fa-map-marked-alt"></i></div>
+            <span class="logo-text">BueaLand<span>Registry</span></span>
+          </a>
+          <nav class="nav-menu">
+            <a href="index.html" class="nav-item">Home</a>
+            <a href="userdashboard.html" class="nav-item">Dashboard</a>
+            <a href="LandRegistrationPage.html" class="nav-item">Register Land</a>
+            <a href="LandVerificationPage.html" class="nav-item">Verify Land</a>
+          </nav>
+        </div>
+        <div class="nav-right">
+          <button class="notification-btn" onclick="window.location='notifications.html'">
+            <i class="fa-regular fa-bell"></i><span class="notif-dot"></span>
+          </button>
+          <div class="user-menu" id="userMenu">
+            <button class="user-btn" id="userBtn">
+              <div class="user-avatar" id="uAvatar">TR</div>
+              <div class="user-info-text">
+                <div class="user-name" id="uName">Tayim Rene</div>
+                <div class="user-role-text" id="uRole">Land Owner</div>
+              </div>
+              <i class="fas fa-chevron-down" style="font-size:.75rem;color:var(--neutral-400);"></i>
+            </button>
+            <div class="dropdown">
+              <div class="dropdown-head">
+                <div class="dn" id="uDropName">Tayim Rene</div>
+                <div class="de" id="uEmail">tayim.rene@example.com</div>
+              </div>
+              <ul class="dropdown-list">
+                <li><a href="profile.html" class="dd-item"><i class="fas fa-user"></i> My Profile</a></li>
+                <li><a href="my-properties.html" class="dd-item"><i class="fas fa-map-marked-alt"></i> My Properties</a></li>
+                <li><a href="transactions.html" class="dd-item"><i class="fas fa-exchange-alt"></i> Transactions</a></li>
+                <li><a href="settings.html" class="dd-item"><i class="fas fa-cog"></i> Settings</a></li>
+                <li class="dd-sep"></li>
+                <li><a href="index.html" class="dd-item logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+              </ul>
+            </div>
+          </div>
+          <button class="hamburger" id="mobileMenuBtn"><i class="fas fa-bars"></i></button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- MOBILE MENU -->
+    <div class="mob-overlay" id="mobileOverlay"></div>
+    <div class="mob-menu" id="mobileMenu">
+      <div class="mob-head">
+        <div class="mob-avatar" id="uAvatarMob">TR</div>
+        <div><h4 id="uNameMob">Tayim Rene</h4><p id="uRoleMob">Land Owner</p></div>
+        <button class="mob-close" id="mobClose"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="mob-body">
+        <div class="mob-section"><h3>Main Menu</h3><ul class="mob-links"><li><a href="userdashboard.html"><i class="fas fa-home"></i> Dashboard</a></li><li><a href="my-properties.html"><i class="fas fa-map-marked-alt"></i> My Properties</a></li><li><a href="LandRegistrationPage.html"><i class="fas fa-plus-circle"></i> Register Land</a></li><li><a href="LandVerificationPage.html"><i class="fas fa-search"></i> Verify Land</a></li><li><a href="transactions.html"><i class="fas fa-exchange-alt"></i> Transactions</a></li></ul></div>
+        <div class="mob-section"><h3>Account</h3><ul class="mob-links"><li><a href="profile.html"><i class="fas fa-user"></i> Profile</a></li><li><a href="notifications.html" class="active"><i class="fas fa-bell"></i> Notifications</a></li><li><a href="settings.html"><i class="fas fa-cog"></i> Settings</a></li><li><a href="help.html"><i class="fas fa-question-circle"></i> Help</a></li></ul></div>
+      </div>
+      <div class="mob-foot">&copy; 2026 BueaLand Registry. All rights reserved.</div>
+    </div>
+
+    <!-- SIDEBAR + CONTENT -->
+    <div class="main-layout">
+      <aside class="sidebar">
+        <div class="sb-section"><h3>Main Menu</h3><ul class="sb-menu"><li><a href="userdashboard.html"><i class="fas fa-home"></i> Dashboard</a></li><li><a href="my-properties.html"><i class="fas fa-map-marked-alt"></i> My Properties<span class="sb-badge">3</span></a></li><li><a href="LandRegistrationPage.html"><i class="fas fa-plus-circle"></i> Register Land</a></li><li><a href="LandVerificationPage.html"><i class="fas fa-search"></i> Verify Land</a></li><li><a href="transactions.html"><i class="fas fa-exchange-alt"></i> Transactions</a></li></ul></div>
+        <div class="sb-section"><h3>Account</h3><ul class="sb-menu"><li><a href="profile.html"><i class="fas fa-user"></i> Profile</a></li><li><a href="notifications.html" class="active"><i class="fas fa-bell"></i> Notifications</a></li><li><a href="settings.html"><i class="fas fa-cog"></i> Settings</a></li><li><a href="help.html"><i class="fas fa-question-circle"></i> Help</a></li></ul></div>
+      </aside>
+      <main class="main-content">
+
+        <div class="page-banner" data-aos="fade-up">
+          <div>
+            <h1><i class="fas fa-bell" style="margin-right:10px;"></i>Notifications</h1>
+            <p>Stay updated on all your land registry activities</p>
+          </div>
+          <div class="banner-icon"><i class="fas fa-bell"></i></div>
+        </div>
+
+        <div class="card" data-aos="fade-up" data-aos-delay="80">
+          <div class="notif-toolbar">
+            <div class="notif-filters">
+              <button class="nf-btn active" id="nf-all"          onclick="setNotifFilter('all')">All</button>
+              <button class="nf-btn"        id="nf-unread"        onclick="setNotifFilter('unread')">Unread</button>
+              <button class="nf-btn"        id="nf-verification"  onclick="setNotifFilter('verification')">Verification</button>
+              <button class="nf-btn"        id="nf-transfer"      onclick="setNotifFilter('transfer')">Transfer</button>
+              <button class="nf-btn"        id="nf-system"        onclick="setNotifFilter('system')">System</button>
+            </div>
+            <button class="mark-all" onclick="markAllRead()"><i class="fas fa-check-double"></i> Mark all read</button>
+          </div>
+          <ul class="notif-list" id="notifList"></ul>
+        </div>
+      </main>
+    </div>
+</div>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+
+    // Toast helper - globally available
+    function showToast(msg, type) {
+        var colors = {success:'#10b981', error:'#ef4444', info:'#3b82f6', warning:'#f59e0b'};
+        var t = document.createElement('div');
+        t.style.cssText = 'position:fixed;bottom:24px;right:24px;background:' + (colors[type]||colors.info) + ';color:#fff;padding:13px 20px;border-radius:12px;font-weight:500;font-size:.9rem;box-shadow:0 20px 40px rgba(0,0,0,.2);z-index:9999;max-width:340px;animation:fadeUp .3s ease;font-family:Inter,sans-serif;';
+        t.textContent = msg;
+        document.body.appendChild(t);
+        setTimeout(function(){ t.style.opacity='0'; t.style.transition='opacity .3s'; setTimeout(function(){t.remove();},300); }, 3200);
+    }
+
+    // ========== MOBILE MENU FUNCTIONALITY ==========
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const mobileOverlay = document.getElementById('mobileOverlay');
+    const body = document.body;
+
+    function openMobileMenu() {
+        mobileMenu.classList.add('open');
+        mobileOverlay.classList.add('open');
+        body.style.overflow = 'hidden';
+    }
+
+    function closeMobileMenu() {
+        mobileMenu.classList.remove('open');
+        mobileOverlay.classList.remove('open');
+        body.style.overflow = '';
+    }
+
+    mobileMenuBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (mobileMenu.classList.contains('open')) {
+            closeMobileMenu();
+        } else {
+            openMobileMenu();
+        }
+    });
+
+    mobileOverlay.addEventListener('click', closeMobileMenu);
+    document.getElementById('mobClose').addEventListener('click', closeMobileMenu);
+    document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeMobileMenu(); });
+
+    // User dropdown
+    var userMenuEl = document.getElementById('userMenu');
+    var userBtn = document.getElementById('userBtn');
+    userBtn.addEventListener('click', function(e){ e.stopPropagation(); userMenuEl.classList.toggle('open'); });
+    document.addEventListener('click', function(e){ if(!userMenuEl.contains(e.target)) userMenuEl.classList.remove('open'); });
+
+    // Load user from localStorage
+    function loadUser() {
+        var u = JSON.parse(localStorage.getItem('bueaUser') || '{"name":"User","email":"user@example.com","role":"User"}');
+        var initials = u.name.split(' ').map(function(n){return n[0];}).join('').toUpperCase();
+        
+        ['uAvatar','uAvatarMob'].forEach(function(id){ 
+            var el=document.getElementById(id); 
+            if(el) el.textContent=initials; 
+        });
+        
+        ['uName','uNameMob'].forEach(function(id){ 
+            var el=document.getElementById(id); 
+            if(el) el.innerHTML = u.name + ' <span style="font-size: 0.7rem; background: var(--primary-50); color: var(--primary-700); padding: 2px 8px; border-radius: 10px; margin-left: 5px; font-weight: 600;">You</span>'; 
+        });
+        
+        ['uRole','uRoleMob'].forEach(function(id){ 
+            var el=document.getElementById(id); 
+            if(el) el.textContent = u.role === 'admin' ? 'Administrator' : u.role; 
+        });
+        
+        var de=document.getElementById('uEmail'); if(de) de.textContent=u.email;
+        
+        var dn=document.getElementById('uDropName'); 
+        if(dn) dn.innerHTML = u.name + ' <span style="font-size: 0.7rem; background: var(--primary-50); color: var(--primary-700); padding: 2px 8px; border-radius: 10px; margin-left: 5px;">You</span>';
+        
+        return u;
+    }
+    loadUser();
+    AOS.init({duration:550, once:true, offset:40});
+
+var NOTIFS = [
+  {id:1,type:'success',icon:'fa-check-circle',title:'Land Verification Complete',text:'Your plot BUEA-2024-001 at Molyko has been successfully verified and certified.',time:'2 hours ago',tag:'verification',unread:true},
+  {id:2,type:'info',icon:'fa-file-alt',title:'New Document Available',text:'Certificate of Occupancy for plot BUEA-2024-002 is now available for download.',time:'Yesterday, 3:45 PM',tag:'document',unread:true},
+  {id:3,type:'warning',icon:'fa-hourglass-half',title:'Pending Approval Reminder',text:'Your registration for BUEA-2023-045 (Mile 16) has been pending review for 5 days.',time:'2 days ago',tag:'system',unread:true},
+  {id:4,type:'info',icon:'fa-exchange-alt',title:'Transfer Request Received',text:'You received a land transfer request for plot BUEA-2024-001 from Mr. Ambe Collins.',time:'3 days ago',tag:'transfer',unread:false},
+  {id:5,type:'success',icon:'fa-shield-alt',title:'Account Security Update',text:'Your account password was changed successfully.',time:'5 days ago',tag:'system',unread:false},
+  {id:6,type:'error',icon:'fa-exclamation-triangle',title:'Document Expiry Warning',text:'Your surveyor\'s report for BUEA-2023-045 will expire in 30 days. Please renew.',time:'1 week ago',tag:'verification',unread:false},
+  {id:7,type:'info',icon:'fa-bell',title:'Scheduled Maintenance',text:'The portal will be down for maintenance on Saturday April 12 from 2:00–6:00 AM.',time:'1 week ago',tag:'system',unread:false},
+];
+var notifFilter = 'all';
+var notifData = NOTIFS.map(function(n){ return Object.assign({},n); });
+
+function setNotifFilter(val) {
+  notifFilter = val;
+  ['all','unread','verification','transfer','system'].forEach(function(v){
+    var el = document.getElementById('nf-'+v);
+    if(el) el.classList.toggle('active', v===val);
+  });
+  renderNotifs();
+}
+
+function markAllRead() {
+  notifData.forEach(function(n){ n.unread=false; });
+  renderNotifs();
+  showToast('All notifications marked as read.','success');
+}
+
+function markRead(id) {
+  notifData.forEach(function(n){ if(n.id===id) n.unread=false; });
+  renderNotifs();
+}
+
+function renderNotifs() {
+  var list = notifData.filter(function(n){
+    if(notifFilter==='all') return true;
+    if(notifFilter==='unread') return n.unread;
+    return n.tag===notifFilter;
+  });
+  var el = document.getElementById('notifList');
+  if(!list.length){ el.innerHTML='<div class="empty"><i class="fas fa-bell-slash"></i><p>No notifications here.</p></div>'; return; }
+  el.innerHTML = list.map(function(n,i){
+    return (i>0?'<li class="notif-sep"></li>':'')+'<li class="notif-item'+(n.unread?' unread':'')+'" onclick="markRead('+n.id+')"><div class="ni-icon '+n.type+'"><i class="fas '+n.icon+'"></i></div><div class="ni-body"><div class="ni-title">'+n.title+'</div><div class="ni-text">'+n.text+'</div><div class="ni-meta"><span class="ni-time"><i class="fas fa-clock"></i> '+n.time+'</span><span class="ni-tag">'+n.tag+'</span></div></div>'+(n.unread?'<div class="unread-dot"></div>':'')+'</li>';
+  }).join('');
+}
+renderNotifs();
+</script>
+</body>
+</html>
